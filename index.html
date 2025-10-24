@@ -1,14 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Telegram Mini App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Mini Telegram WebApp</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Telegram Web App client (resmi) -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <h1>Telegram Mini App</h1>
-    <button id="sendDataBtn">Veriyi Gönder</button>
+  <main class="container">
+    <header class="header">
+      <h1>Mağaza · Mini App</h1>
+      <div id="userInfo" class="user-info">Giriş yapılıyor...</div>
+    </header>
 
-    <script src="script.js"></script>
+    <section class="products-section">
+      <h2>Ürünler</h2>
+      <div id="products" class="products"></div>
+    </section>
+
+    <section class="buy-panel" id="buyPanel" aria-hidden="true">
+      <div class="buy-card">
+        <button id="closePanel" class="close-btn" title="Kapat">✕</button>
+        <h3 id="buyTitle">Ürün</h3>
+        <p id="buyDesc" class="muted"></p>
+
+        <label>Adet</label>
+        <div class="qty-row">
+          <button id="qtyMinus" class="qty-btn">−</button>
+          <input id="qtyInput" type="number" value="1" min="1"/>
+          <button id="qtyPlus" class="qty-btn">+</button>
+        </div>
+
+        <label>Not (isteğe bağlı)</label>
+        <textarea id="buyNote" placeholder="Ör: Hızlı teslimat..."></textarea>
+
+        <div class="actions">
+          <button id="sendToBot" class="primary">Satın Al ve Gönder</button>
+          <button id="cancelBuy" class="secondary">İptal</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <button id="openMain" class="link-btn">Ana menüye dön</button>
+      <button id="closeApp" class="link-btn">Uygulamayı kapat</button>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
