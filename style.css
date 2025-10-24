@@ -1,0 +1,7 @@
+const tg = window.Telegram.WebApp;
+tg.ready();
+
+document.getElementById("sendDataBtn").addEventListener("click", () => {
+    tg.sendData(JSON.stringify({ info: "Merhaba Bot!" }));
+    alert("Veri gönderildi!");
+});
