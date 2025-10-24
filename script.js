@@ -35,7 +35,7 @@ function showUserInfo() {
     const init = tg.initDataUnsafe || {};
     const user = init.user || tg.initDataUnsafe?.user || {}; // fallback
     if (user && user.first_name) {
-      userInfoEl.innerText = `${user.first_name}${user.last_name ? " " + user.last_name : ""} (@${user.username || "?"})`;
+      userInfoEl.innerText = ${user.first_name}${user.last_name ? " " + user.last_name : ""} (@${user.username || "?"});
     } else {
       // Eğer initData yoksa, Telegram mobil uygulaması üzerinden alınamıyorsa basit bir metin göster
       userInfoEl.innerText = "Telegram bilgisi yüklenemedi";
@@ -71,7 +71,7 @@ function escapeHtml(s){ if(!s) return ""; return String(s).replace(/[&<>"']/g,c=
 function viewDetails(id){
   const p = PRODUCTS.find(x=>x.id===id);
   if(!p) return;
-  alert(`${p.isim}\n\nÖzellik: ${p.ozellik}\nFiyat: ${p.fiyat}₺\nSeri: ${p.seri}`);
+  alert(${p.isim}\n\nÖzellik: ${p.ozellik}\nFiyat: ${p.fiyat}₺\nSeri: ${p.seri});
 }
 
 // Seçilen ürünü saklayacağımız değişken
@@ -80,7 +80,7 @@ let selectedProduct = null;
 function openBuyPanel(product){
   selectedProduct = product;
   buyTitle.innerText = product.isim;
-  buyDesc.innerText = `${product.ozellik}\nFiyat (adet başı): ${product.fiyat.toFixed(2)}₺\nSeri: ${product.seri}`;
+  buyDesc.innerText = ${product.ozellik}\nFiyat (adet başı): ${product.fiyat.toFixed(2)}₺\nSeri: ${product.seri};
   qtyInput.value = 1;
   buyNote.value = "";
   buyPanel.setAttribute("aria-hidden","false");
