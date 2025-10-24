@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telegram E-Ticaret</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f5f5f5; margin:0; padding:0;}
+.container { max-width:600px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+h1 { text-align:center; }
+.product { border-bottom:1px solid #ddd; padding:10px; margin-bottom:10px; border-radius:5px; background:#f9f9f9;}
+button { background:#007bff; color:#fff; border:none; padding:10px 15px; border-radius:5px; cursor:pointer;}
+button:hover { background:#0056b3;}
+.alert { padding:10px; margin:10px 0; border-radius:5px; color:#fff;}
+.success { background: #28a745; }
+.error { background: #dc3545; }
+</style>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>🛒 Mağaza</h1>
+    <div id="product-list">Yükleniyor...</div>
+    <div id="message"></div>
+</div>
+
+<script>
+const API_BASE = "https://sat-s-1.onrender.com"; // Backend Render URL
+
+// Telegram WebApp başlat
+const tg = window.Telegram.WebApp;
+tg.expand(); // WebApp ekranı açılır açılmaz genişlesin
+
+async function loadProducts(){
+    try {
+        const res = await fetch(`${API_BASE}/products`);
+        const products = await res.json();
+        const list = document.getElementById("product-list");
+        list.innerHTML = "";
+        if(products.length === 0){ list.innerHTML = "<p>Ürün bulunamadı.</p>"; return; }
+
+        products.forEach(p=>{
+            const div = document.createElement("div");
+            div.className="product";
+            div.innerHTML = `<strong>${p.isim}</strong> - ${p.fiyat}₺<br>
+                             <button onclick="buyProduct(${p.id}, '${p.isim}')">Satın Al</button>`;
+            list.appendChild(div);
+        });
+    } catch(err){
+        document.getElementById("product-list").innerHTML = "<p>Sunucuya bağlanılamadı.</p>";
+    }
+}
+
+async function buyProduct(id,name){
+    // Telegram WebApp'den kullanıcı bilgisi al
+    const buyer_name = tg.initDataUnsafe.user?.first_name || "Telegram Kullanıcısı";
+    const buyer_id = tg.initDataUnsafe.user?.id || 0;
+
+    if(!buyer_id){
+        document.getElementById("message").innerHTML = `<div class="alert error">❌ Telegram ID alınamadı!</div>`;
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/order`,{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({ product_id:id, buyer_name, buyer_telegram_id:buyer_id })
+        });
+        const result = await res.json();
+        const msgDiv = document.getElementById("message");
+        if(result.ok) msgDiv.innerHTML = `<div class="alert success">✅ Sipariş alındı! ID: ${result.order_id}</div>`;
+        else msgDiv.innerHTML = `<div class="alert error">❌ Hata: ${result.error}</div>`;
+    } catch(err){
+        document.getElementById("message").innerHTML = `<div class="alert error">❌ Sunucuya bağlanılamadı!</div>`;
+    }
+}
+
+window.onload = loadProducts;
+</script>
+</body>
+</html>
