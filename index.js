@@ -1,62 +1,3 @@
-import express from "express";
-import cors from "cors";
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-// 🔹 SMS Onay Ürünleri
-const products = [
-  {
-    id: 1,
-    service: "WhatsApp",
-    country: "TR",
-    stock: 120,
-    price: 1.5,
-    logo: "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg",
-  },
-  {
-    id: 2,
-    service: "Telegram",
-    country: "US",
-    stock: 95,
-    price: 1.2,
-    logo: "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg",
-  },
-  {
-    id: 3,
-    service: "Discord",
-    country: "DE",
-    stock: 75,
-    price: 1.8,
-    logo: "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg",
-  },
-  {
-    id: 4,
-    service: "Instagram",
-    country: "FR",
-    stock: 60,
-    price: 2.0,
-    logo: "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg",
-  },
-  {
-    id: 5,
-    service: "Twitter (X)",
-    country: "TR",
-    stock: 40,
-    price: 2.3,
-    logo: "https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg",
-  },
-];
-
-// 🔹 API
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
-
-// 🔹 Arayüz (HTML)
-app.get("/", (req, res) => {
-  res.type("html").send(`
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -172,17 +113,16 @@ app.get("/", (req, res) => {
   <div id="emptyMsg" class="empty" style="display:none;">Hiç ürün bulunamadı.</div>
 
   <script>
-    const tg = window.Telegram.WebApp;
+    const tg = window.Telegram?.WebApp || { expand: ()=>{}, sendData: ()=>{}, close: ()=>{} };
     tg.expand();
 
-    let allProducts = [];
-
-    async function loadProducts() {
-      const res = await fetch("/api/products");
-      const data = await res.json();
-      allProducts = data;
-      displayProducts(data);
-    }
+    const products = [
+      { id: 1, service: "WhatsApp", country: "TR", stock: 120, price: 1.5, logo: "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" },
+      { id: 2, service: "Telegram", country: "US", stock: 95, price: 1.2, logo: "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" },
+      { id: 3, service: "Discord", country: "DE", stock: 75, price: 1.8, logo: "https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg" },
+      { id: 4, service: "Instagram", country: "FR", stock: 60, price: 2.0, logo: "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" },
+      { id: 5, service: "Twitter (X)", country: "TR", stock: 40, price: 2.3, logo: "https://upload.wikimedia.org/wikipedia/commons/5/53/X_logo_2023_original.svg" }
+    ];
 
     function displayProducts(data) {
       const container = document.getElementById("productList");
@@ -193,43 +133,38 @@ app.get("/", (req, res) => {
         return;
       }
       emptyMsg.style.display = "none";
-      container.innerHTML = data.map(p => \`
+      container.innerHTML = data.map(p => `
         <div class="card">
-          <img src="\${p.logo}" class="logo" alt="\${p.service}">
-          <div class="service">\${p.service}</div>
-          <div class="country">Ülke: \${p.country}</div>
-          <div class="stock">Stok: \${p.stock}</div>
-          <div class="price">Fiyat: \${p.price} ₺</div>
-          <button onclick="buy('\${p.service}', \${p.price})">Satın Al</button>
+          <img src="${p.logo}" class="logo" alt="${p.service}">
+          <div class="service">${p.service}</div>
+          <div class="country">Ülke: ${p.country}</div>
+          <div class="stock">Stok: ${p.stock}</div>
+          <div class="price">Fiyat: ${p.price} ₺</div>
+          <button onclick="buy('${p.service}', ${p.price})">Satın Al</button>
         </div>
-      \`).join('');
+      `).join('');
     }
 
     function buy(service, price) {
       tg.sendData(JSON.stringify({ service, price }));
       tg.close();
+      alert("Satın alma isteği gönderildi: " + service);
     }
-
-    document.getElementById("searchInput").addEventListener("input", filterProducts);
-    document.getElementById("countryFilter").addEventListener("change", filterProducts);
 
     function filterProducts() {
       const search = document.getElementById("searchInput").value.toLowerCase();
       const country = document.getElementById("countryFilter").value;
-      const filtered = allProducts.filter(p =>
+      const filtered = products.filter(p =>
         p.service.toLowerCase().includes(search) &&
         (country ? p.country === country : true)
       );
       displayProducts(filtered);
     }
 
-    loadProducts();
+    document.getElementById("searchInput").addEventListener("input", filterProducts);
+    document.getElementById("countryFilter").addEventListener("change", filterProducts);
+
+    displayProducts(products);
   </script>
 </body>
 </html>
-  `);
-});
-
-// 🔹 PORT
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("✅ Sunucu aktif: " + PORT));
