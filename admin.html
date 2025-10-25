@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Paneli</title>
+<style>
+body{font-family:Poppins,sans-serif;background:#0f172a;color:white;padding:20px;}
+input,select,button{padding:10px;margin:5px;border-radius:8px;border:none;}
+button{background:#38bdf8;color:white;cursor:pointer;}
+#panel{display:none;}
+</style>
+</head>
+<body>
+<h1>🛠 Admin Girişi</h1>
+<input id="password" type="password" placeholder="Şifreyi girin">
+<button onclick="login()">Giriş Yap</button>
+
+<div id="panel">
+  <h2>Yeni Ürün Ekle</h2>
+  <select id="category">
+    <option>TikTok</option><option>Instagram</option><option>Telegram</option>
+    <option>WhatsApp</option><option>PES</option><option>Diğer</option>
+  </select>
+  <input id="name" placeholder="Ürün adı">
+  <input id="stock" type="number" placeholder="Stok">
+  <input id="price" type="number" placeholder="Fiyat">
+  <input id="info" placeholder="Bilgi">
+  <button onclick="addProduct()">Ekle</button>
+  <div id="result"></div>
+</div>
+
+<script>
+async function login(){
+  const password=document.getElementById('password').value;
+  const res=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password})});
+  if(res.ok){document.getElementById('panel').style.display='block';alert('Admin girişi başarılı');}
+  else alert('Hatalı şifre!');
+}
+async function addProduct(){
+  const data={
+    category:document.getElementById('category').value,
+    name:document.getElementById('name').value,
+    stock:+document.getElementById('stock').value,
+    price:+document.getElementById('price').value,
+    info:document.getElementById('info').value
+  };
+  const res=await fetch('/api/admin/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  const r=await res.json();
+  document.getElementById('result').innerText=r.message;
+}
+</script>
+</body>
+</html>
