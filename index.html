@@ -11,17 +11,12 @@
   main.content{max-width:900px;margin:70px auto;padding:0 20px;text-align:center;}
   h1{color:#bb88ff;margin-bottom:15px;}
   p{color:#ddd;margin-bottom:10px;}
-  /* Yan Menü */
   nav.sidebar{position:fixed;top:0;left:-260px;width:260px;height:100vh;background:#120851;box-shadow:2px 0 8px #bb88ffaa;padding:25px 20px;overflow-y:auto;transition:left 0.35s ease;z-index:1150;}
   nav.sidebar.active{left:0;}
   nav.sidebar h2{color:#cdbaff;font-size:1.5rem;margin-bottom:15px;}
   nav.sidebar ul{list-style:none;}
   nav.sidebar ul li{margin-bottom:14px;}
-  nav.sidebar ul li button{
-    display:flex;align-items:center;gap:10px;
-    background:rgba(255,255,255,0.05);border:2px solid #bb88ff;
-    border-radius:12px;padding:8px 12px;font-weight:700;cursor:pointer;transition:0.3s;width:100%;box-sizing:border-box;
-  }
+  nav.sidebar ul li button{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border:2px solid #bb88ff;border-radius:12px;padding:8px 12px;font-weight:700;cursor:pointer;transition:0.3s;width:100%;box-sizing:border-box;}
   nav.sidebar ul li button:hover{background:#bb88ff;color:#36005a;border-color:#7b34ff;box-shadow:0 0 14px #c4a1ff;}
   .submenu{max-height:0;overflow:hidden;transition:max-height 0.3s ease;margin-top:4px;padding-left:20px;}
   .submenu.open{max-height:300px;}
@@ -36,23 +31,19 @@
   .logo{width:50px;height:50px;border-radius:50%;margin-bottom:10px;background:#8b5cf6;display:inline-block;line-height:50px;font-size:24px;font-weight:bold;color:white;}
   button.purchase{margin-top:10px;padding:8px 12px;background:#8b5cf6;border:none;border-radius:8px;cursor:pointer;color:white;font-weight:bold;transition:0.3s;box-shadow:0 0 5px #0ea5e9;}
   button.purchase:hover{background:#6366f1;box-shadow:0 0 10px #8b5cf6;}
-  /* Admin Menü */
-  #adminMenu{margin-top:20px;}
+  #adminMenu{margin-top:20px;display:none;}
   #adminMenu button{margin:5px;padding:8px 12px;background:#8b5cf6;color:white;border:none;border-radius:8px;cursor:pointer;}
   #adminMenu button:hover{background:#6366f1;}
 </style>
 </head>
 <body>
 
-<!-- Menü Butonu -->
-<div class="menu-toggle" id="menuToggle">
-  <span></span><span></span><span></span>
-</div>
+<div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
 
-<!-- Yan Menü -->
 <nav class="sidebar" id="sidebarMenu">
   <h2>Kategoriler</h2>
   <ul id="kategoriListesi"></ul>
+  <button id="adminLoginBtn">🔑 Admin Girişi</button>
   <div id="adminMenu">
     <button onclick="adminUrunEkle()">➕ Ürün Ekle</button>
     <button onclick="adminUrunGuncelle()">✏️ Ürün Güncelle</button>
@@ -61,28 +52,26 @@
   </div>
 </nav>
 
-<!-- Ana İçerik -->
 <main class="content" id="mainContent">
   <h1>Duyuru</h1>
-  <p id="duyuruMetni">Yenilikleri görmek için kategoriye tıklayın.</p>
+  <p id="duyuruMetni">Yükleniyor...</p>
   <div class="grid" id="urunListesi"></div>
 </main>
 
 <script>
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebarMenu');
-menuToggle.onclick = ()=>{sidebar.classList.toggle('active');menuToggle.classList.toggle('active');};
+// Menü toggle
+const menuToggle=document.getElementById('menuToggle');
+const sidebar=document.getElementById('sidebarMenu');
+menuToggle.onclick=()=>{sidebar.classList.toggle('active');menuToggle.classList.toggle('active');};
 
-// Örnek JSON
-let kategoriler=["Instagram","TikTok","WhatsApp","Telegram","PES","Diğer","Hesaplar"];
+// Kategoriler
+let kategoriler=["Instagram","TikTok","WhatsApp","Telegram","PES","Diğer"];
 let urunler=[
   {id:1,ad:"Instagram Hesap 1",kategori:"Instagram",stok:5,fiyat:3.0,desc:"Kullanıcı: @abc, Şifre: xyz"},
   {id:2,ad:"TikTok Hesap 1",kategori:"TikTok",stok:10,fiyat:2.5,desc:"Kullanıcı: @ttuser, Şifre: 123"},
   {id:3,ad:"WhatsApp Numara 1",kategori:"WhatsApp",stok:15,fiyat:1.5,desc:"Numara: +905xx, Sms Onay Aktif"}
 ];
-
-// Kategori menüsünü oluştur
-const kategoriListesi = document.getElementById("kategoriListesi");
+const kategoriListesi=document.getElementById("kategoriListesi");
 kategoriler.forEach(k=>{
   const li=document.createElement("li");
   const btn=document.createElement("button");
@@ -97,9 +86,9 @@ function kategoriGoster(k){
   render(liste);
 }
 
-function render(liste=[]) {
-  const container = document.getElementById("urunListesi");
-  container.innerHTML = liste.map(u=>`
+function render(liste=[]){
+  const container=document.getElementById("urunListesi");
+  container.innerHTML=liste.map(u=>`
     <div class="card">
       <div class="logo">${u.ad[0]}</div>
       <div class="name">${u.ad}</div>
@@ -111,29 +100,52 @@ function render(liste=[]) {
   `).join('');
 }
 
-// Satın al butonu
 function urunSat(id){
-  const urun = urunler.find(u=>u.id==id);
-  if(!urun) return;
-  if(urun.stok<=0){alert("Stokta yok!"); return;}
+  const urun=urunler.find(u=>u.id==id);
+  if(!urun)return;
+  if(urun.stok<=0){alert("Stokta yok!");return;}
   urun.stok--;
   render(urunler.filter(u=>u.kategori===urun.kategori));
-  const mesaj = encodeURIComponent(`Merhaba,\nSatın almak istediğim ürün: ${urun.ad}\nFiyat: ${urun.fiyat}₺\nKullanıcı: @KULLANICI_ADI`);
+  const mesaj=encodeURIComponent(`Merhaba,\nSatın almak istediğim ürün: ${urun.ad}\nFiyat: ${urun.fiyat}₺\nKullanıcı: @KULLANICI_ADI`);
   window.open(`https://t.me/mtowi?text=${mesaj}`,"_blank");
 }
 
-// Admin İşlevleri (Örnek)
+// Admin Girişi
+const adminLoginBtn=document.getElementById("adminLoginBtn");
+const adminMenu=document.getElementById("adminMenu");
+const ADMIN_USER="mtow";
+const ADMIN_PASS="A_9jD!xR2@fG$Qp8#Z";
+
+adminLoginBtn.onclick=()=>{
+  const user=prompt("Kullanıcı adı:");
+  const pass=prompt("Şifre:");
+  if(user===ADMIN_USER && pass===ADMIN_PASS){
+    alert("Giriş başarılı!");
+    adminMenu.style.display="block";
+  }else{
+    alert("Kullanıcı adı veya şifre yanlış!");
+  }
+};
+
+// Duyuru JSON simülasyonu (localStorage)
+if(localStorage.getItem("duyuru")){
+  document.getElementById("duyuruMetni").innerText=localStorage.getItem("duyuru");
+}else{
+  localStorage.setItem("duyuru","Yenilikleri görmek için kategoriye tıklayın.");
+  document.getElementById("duyuruMetni").innerText="Yenilikleri görmek için kategoriye tıklayın.";
+}
+
+// Admin İşlevleri
 function adminUrunEkle(){alert("Ürün ekleme popup çalışacak");}
 function adminUrunGuncelle(){alert("Ürün güncelleme popup çalışacak");}
 function adminSatildi(){alert("Satıldı işaretleme popup çalışacak");}
-function adminDuyuru(){ 
-  const yeniDuyuru = prompt("Yeni duyuru metni girin:");
-  if(yeniDuyuru){document.getElementById("duyuruMetni").innerText=yeniDuyuru;}
+function adminDuyuru(){
+  const yeniDuyuru=prompt("Yeni duyuru metni girin:");
+  if(yeniDuyuru){
+    document.getElementById("duyuruMetni").innerText=yeniDuyuru;
+    localStorage.setItem("duyuru",yeniDuyuru);
+  }
 }
-
-// Başlangıçta ana sayfa boş, sadece duyuru
-document.getElementById("urunListesi").innerHTML="";
 </script>
-
 </body>
 </html>
