@@ -3,45 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profesyonel Ürün Kataloğu</title>
+<title>Profesyonel Katalog</title>
 <style>
-/* Temel ayarlar */
 body {margin:0;font-family:Arial,sans-serif;background:#0a0f30;color:#eee;overflow-x:hidden;}
-header {padding:12px;text-align:center;background:#120851;box-shadow:0 0 20px #bb88ff;}
-header h1 {margin:0;color:#bb88ff;font-size:1.8rem;text-shadow:0 0 10px #bb88ff;}
+header {padding:15px;text-align:center;background:#120851;box-shadow:0 0 20px #bb88ff;}
+header h1 {margin:0;color:#bb88ff;text-shadow:0 0 10px #bb88ff;}
 #announcement {margin:20px;padding:15px;background:rgba(187,136,255,0.2);border-radius:12px;text-align:center;font-size:1.2rem;text-shadow:0 0 6px #bb88ff;}
-#categories {position:fixed;top:80px;left:10px;background:rgba(20,10,50,0.9);padding:10px;border-radius:12px;display:flex;flex-direction:column;gap:10px;z-index:1000;}
-#categories button {display:flex;align-items:center;gap:6px;background:#bb88ff;color:#0a0f30;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:bold;transition:0.3s;}
-#categories button img {width:24px;height:24px;border-radius:4px;}
-#categories button:hover {background:#8b3aff;color:#fff;box-shadow:0 0 12px #bb88ff;}
-#products {display:flex;flex-wrap:wrap;gap:16px;margin:20px 20px 20px 150px;justify-content:center;transition:margin-left 0.3s;}
-.product {background:#1a0f50;padding:15px;border-radius:12px;width:220px;box-shadow:0 0 12px #bb88ff;transition: transform 0.2s;}
+#categoryToggle {position:fixed;top:15px;left:15px;background:#bb88ff;color:#0a0f30;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;z-index:1001;}
+#categoryMenu {position:fixed;top:0;left:-250px;width:220px;height:100vh;background:#120851;overflow-y:auto;padding:20px;box-shadow:2px 0 10px #bb88ff;transition:left 0.3s;z-index:1002;border-radius:0 12px 12px 0;}
+#categoryMenu ul {list-style:none;padding:0;}
+#categoryMenu li {display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;font-weight:bold;font-size:1.1rem;color:#cdbaff;transition:0.3s;}
+#categoryMenu li img {width:30px;height:30px;border-radius:6px;}
+#categoryMenu li:hover {color:#fff;}
+#overlay {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);display:none;z-index:1000;}
+#products {display:flex;flex-wrap:wrap;gap:16px;margin:20px auto;max-width:1000px;justify-content:center;}
+.product {background:#1a0f50;padding:15px;border-radius:12px;width:220px;box-shadow:0 0 12px #bb88ff;transition: transform 0.2s;text-align:center;}
 .product:hover {transform:scale(1.05);}
+.product img {width:100px;height:100px;margin-bottom:10px;}
 .product h2 {font-size:1.2rem;color:#bb88ff;margin:0 0 8px;}
 .product p {font-size:0.95rem;margin:0 0 10px;min-height:48px;}
 .product button {background:#bb88ff;color:#0a0f30;border:none;border-radius:8px;padding:6px 10px;font-weight:bold;cursor:pointer;width:100%;}
 .product button:hover {background:#8b3aff;color:#fff;box-shadow:0 0 10px #bb88ff;}
-/* Arka plan animasyonu */
-@keyframes bgAnim {0%{background-position:0 0;}50%{background-position:100% 100%;}100%{background-position:0 0;}}
 body::before {content:"";position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,#36005a,#bb88ff,#0a0f30,#8b3aff);background-size:400% 400%;animation:bgAnim 20s linear infinite;opacity:0.2;z-index:-1;}
-@media(max-width:640px){#categories{position:static;flex-direction:row;overflow-x:auto;margin:10px 0;}#products{margin-left:0;}}
+@keyframes bgAnim {0%{background-position:0 0;}50%{background-position:100% 100%;}100%{background-position:0 0;}}
+@media(max-width:640px){#products{margin:20px 10px 20px 10px;}}
 </style>
 </head>
 <body>
 <header><h1>Ürün Kataloğu</h1></header>
 <div id="announcement">Yükleniyor...</div>
-<div id="categories"></div>
+<button id="categoryToggle">📂 Kategoriler</button>
+<nav id="categoryMenu">
+<ul>
+<li data-cat="whatsapp"><img src="assets/whatsapp.gif"> WhatsApp</li>
+<li data-cat="instagram"><img src="assets/instagram.gif"> Instagram</li>
+<li data-cat="tiktok"><img src="assets/tiktok.gif"> TikTok</li>
+<li data-cat="telegram"><img src="assets/telegram.gif"> Telegram</li>
+<li data-cat="diger"><img src="assets/diger.gif"> Diğer</li>
+</ul>
+</nav>
+<div id="overlay"></div>
 <div id="products"></div>
 
 <script>
-/******** CONFIG ********/
 const PRODUCTS_JSON = 'https://raw.githubusercontent.com/mtowskicoder/sat-s/main/data/products.json';
 const ANNOUNCE_JSON = 'https://raw.githubusercontent.com/mtowskicoder/sat-s/main/data/announcement.json';
 
-/******** VERİLER ********/
-let productsData = [];
+let productsData=[];
 
-/******** DUYURU ********/
+// Duyuru yükle
 async function loadAnnouncement(){
   try{
     const res=await fetch(ANNOUNCE_JSON);
@@ -50,31 +60,36 @@ async function loadAnnouncement(){
   }catch(e){console.error(e);document.getElementById('announcement').innerText="Duyuru yüklenemedi.";}
 }
 
-/******** ÜRÜNLER ********/
+// Ürünleri yükle
 async function loadProducts(){
   try{
     const res=await fetch(PRODUCTS_JSON);
     productsData=await res.json();
-    buildCategories();
-    displayProducts('all');
-  }catch(e){console.error(e);document.getElementById('products').innerHTML="<p>Ürünler yüklenemedi.</p>";}
+  }catch(e){console.error(e);}
 }
 
-/******** KATEGORİLER ********/
-function buildCategories(){
-  const cats=[...new Set(productsData.map(p=>p.kategori))];
-  const catDiv=document.getElementById('categories');
-  catDiv.innerHTML='';
-  const allBtn=document.createElement('button'); allBtn.textContent='Tüm Kategoriler'; allBtn.onclick=()=>displayProducts('all'); catDiv.appendChild(allBtn);
-  cats.forEach(cat=>{
-    const btn=document.createElement('button');
-    btn.innerHTML=`<img src="https://raw.githubusercontent.com/mtowskicoder/sat-s/main/assets/${cat.toLowerCase()}.png" alt="${cat}"/> ${cat}`;
-    btn.onclick=()=>displayProducts(cat);
-    catDiv.appendChild(btn);
-  });
-}
+// Kategori menüsü
+const categoryToggle=document.getElementById('categoryToggle');
+const categoryMenu=document.getElementById('categoryMenu');
+const overlay=document.getElementById('overlay');
 
-/******** ÜRÜN LİSTELEME ********/
+categoryToggle.onclick=()=>{
+  categoryMenu.style.left='0px';
+  overlay.style.display='block';
+};
+overlay.onclick=()=>{categoryMenu.style.left='-250px';overlay.style.display='none';};
+
+// Kategoriye göre ürün göster
+document.querySelectorAll('#categoryMenu li').forEach(li=>{
+  li.onclick=()=>{
+    const cat=li.dataset.cat;
+    displayProducts(cat);
+    categoryMenu.style.left='-250px';
+    overlay.style.display='none';
+  };
+});
+
+// Ürünleri göster
 function displayProducts(category){
   const container=document.getElementById('products');
   container.innerHTML='';
@@ -85,6 +100,7 @@ function displayProducts(category){
     const div=document.createElement('div');
     div.className='product';
     div.innerHTML=`
+      <img src="${p.gif}" alt="${p.ad}">
       <h2>${p.ad} - $${p.fiyat}</h2>
       <p>${p.desc||''}</p>
       <button onclick="window.open('${p.link}','_blank')">Satın Al</button>
@@ -93,7 +109,7 @@ function displayProducts(category){
   });
 }
 
-/******** BAŞLAT ********/
+// Başlat
 loadAnnouncement();
 loadProducts();
 </script>
