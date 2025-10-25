@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "kategori": "Instagram",
+    "ad": "Instagram Hesap 1",
+    "stok": 5,
+    "fiyat": 2.5,
+    "desc": "Kullanıcı: abc, Şifre: xyz",
+    "sold": false,
+    "link": "https://t.me/mtowi"
+  },
+  {
+    "id": 2,
+    "kategori": "WhatsApp",
+    "ad": "WhatsApp Numara 1",
+    "stok": 10,
+    "fiyat": 1.5,
+    "desc": "Ulke kodu: +90, Numara: 5550000000",
+    "sold": false,
+    "link": "https://t.me/mtowi"
+  }
+]
