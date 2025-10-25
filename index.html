@@ -17,7 +17,7 @@ header h1 {margin:0;color:#bb88ff;text-shadow:0 0 10px #bb88ff;}
 #categoryMenu li:hover {color:#fff;}
 #categoryMenu .mainMenuBtn {margin-top:30px;background:#8b3aff;padding:8px 12px;border-radius:8px;text-align:center;color:#fff;cursor:pointer;font-weight:bold;}
 #overlay {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);display:none;z-index:1000;}
-#products {display:flex;flex-wrap:wrap;gap:16px;margin:20px auto;max-width:1000px;justify-content:center;}
+#products {display:none;flex-wrap:wrap;gap:16px;margin:20px auto;max-width:1000px;justify-content:center;}
 .product {background:#1a0f50;padding:15px;border-radius:12px;width:220px;box-shadow:0 0 12px #bb88ff;transition: transform 0.2s,text-shadow 0.3s;text-align:center;cursor:pointer;}
 .product:hover {transform:scale(1.05);box-shadow:0 0 25px #bb88ff;text-shadow:0 0 10px #bb88ff;}
 .product img {width:100px;height:100px;margin-bottom:10px;}
@@ -63,13 +63,10 @@ body::before {content:"";position:fixed;top:0;left:0;width:100%;height:100%;back
 </div>
 
 <script>
-// JSON dosyaları
 const PRODUCTS_JSON = 'https://raw.githubusercontent.com/mtowskicoder/sat-s/main/data/products.json';
 const ANNOUNCE_JSON = 'https://raw.githubusercontent.com/mtowskicoder/sat-s/main/data/announcement.json';
-
 let productsData=[];
 
-// Duyuru yükle
 async function loadAnnouncement(){
   try{
     const res=await fetch(ANNOUNCE_JSON);
@@ -78,7 +75,6 @@ async function loadAnnouncement(){
   }catch(e){console.error(e);document.getElementById('announcement').innerText="Duyuru yüklenemedi.";}
 }
 
-// Ürünleri yükle
 async function loadProducts(){
   try{
     const res=await fetch(PRODUCTS_JSON);
@@ -86,7 +82,6 @@ async function loadProducts(){
   }catch(e){console.error(e);}
 }
 
-// Menüler
 const categoryToggle=document.getElementById('categoryToggle');
 const categoryMenu=document.getElementById('categoryMenu');
 const overlay=document.getElementById('overlay');
@@ -105,9 +100,8 @@ categoryToggle.onclick=()=>{
   overlay.style.display='block';
 };
 overlay.onclick=()=>{categoryMenu.style.left='-260px';overlay.style.display='none';};
-backToMain.onclick=()=>{productDetail.style.display='none';productsDiv.style.display='none';document.getElementById('announcement').scrollIntoView();};
+backToMain.onclick=()=>{productsDiv.style.display='none';productDetail.style.display='none';document.getElementById('announcement').scrollIntoView();};
 
-// Kategori seçimi
 document.querySelectorAll('#categoryMenu li').forEach(li=>{
   li.onclick=()=>{
     const cat=li.dataset.cat;
@@ -117,11 +111,9 @@ document.querySelectorAll('#categoryMenu li').forEach(li=>{
   };
 });
 
-// Kategoriye göre ürün göster
 function showCategory(cat){
   productsDiv.innerHTML='';
   productsDiv.style.display='flex';
-  document.getElementById('announcement').scrollIntoView();
   let filtered=productsData.filter(p=>p.kategori===cat && !p.sold);
   if(filtered.length===0){productsDiv.innerHTML="<p>Bu kategoride ürün yok.</p>"; return;}
   filtered.forEach(p=>{
@@ -136,9 +128,9 @@ function showCategory(cat){
     div.onclick=()=>showProductDetail(p);
     productsDiv.appendChild(div);
   });
+  document.getElementById('announcement').style.display='none'; // duyuru kategori sayfasında yok
 }
 
-// Ürün detay
 function showProductDetail(p){
   productsDiv.style.display='none';
   productDetail.style.display='block';
@@ -150,7 +142,6 @@ function showProductDetail(p){
 }
 closeDetail.onclick=()=>{productDetail.style.display='none';productsDiv.style.display='flex';};
 
-// Başlat
 loadAnnouncement();
 loadProducts();
 </script>
