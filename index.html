@@ -3,98 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ürün Kataloğu</title>
+<title>Profesyonel Ürün Kataloğu</title>
 <style>
-  body { margin:0; font-family: Arial, sans-serif; background:#0a0f30; color:#eee;}
-  header { background:#120851; padding:12px; display:flex; justify-content:space-between; align-items:center; }
-  h1 { margin:0; color:#bb88ff; }
-  #categories { background:#1a0f50; padding:10px; border-radius:8px; display:flex; gap:8px; overflow-x:auto;}
-  #categories button { background:#bb88ff; color:#0a0f30; border:none; border-radius:6px; padding:6px 12px; cursor:pointer; font-weight:bold;}
-  #categories button:hover { background:#8b3aff; color:#fff; }
-  #announcement { margin:20px; padding:15px; background:rgba(187,136,255,0.2); border-radius:12px; font-size:1.2rem;}
-  #products { display:flex; flex-wrap:wrap; gap:12px; margin:20px;}
-  .product { background:#1a0f50; padding:15px; border-radius:12px; width:220px; box-shadow:0 0 12px #bb88ff; }
-  .product h2 { font-size:1.2rem; margin:0 0 8px 0; color:#bb88ff;}
-  .product p { font-size:0.95rem; margin:0 0 10px 0;}
-  .product button { background:#bb88ff; color:#0a0f30; border:none; border-radius:8px; padding:6px 10px; font-weight:bold; cursor:pointer; }
-  .product button:hover { background:#8b3aff; color:#fff;}
+/* Temel ayarlar */
+body {margin:0;font-family:Arial,sans-serif;background:#0a0f30;color:#eee;overflow-x:hidden;}
+header {padding:12px;text-align:center;background:#120851;box-shadow:0 0 20px #bb88ff;}
+header h1 {margin:0;color:#bb88ff;font-size:1.8rem;text-shadow:0 0 10px #bb88ff;}
+#announcement {margin:20px;padding:15px;background:rgba(187,136,255,0.2);border-radius:12px;text-align:center;font-size:1.2rem;text-shadow:0 0 6px #bb88ff;}
+#categories {position:fixed;top:80px;left:10px;background:rgba(20,10,50,0.9);padding:10px;border-radius:12px;display:flex;flex-direction:column;gap:10px;z-index:1000;}
+#categories button {display:flex;align-items:center;gap:6px;background:#bb88ff;color:#0a0f30;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:bold;transition:0.3s;}
+#categories button img {width:24px;height:24px;border-radius:4px;}
+#categories button:hover {background:#8b3aff;color:#fff;box-shadow:0 0 12px #bb88ff;}
+#products {display:flex;flex-wrap:wrap;gap:16px;margin:20px 20px 20px 150px;justify-content:center;transition:margin-left 0.3s;}
+.product {background:#1a0f50;padding:15px;border-radius:12px;width:220px;box-shadow:0 0 12px #bb88ff;transition: transform 0.2s;}
+.product:hover {transform:scale(1.05);}
+.product h2 {font-size:1.2rem;color:#bb88ff;margin:0 0 8px;}
+.product p {font-size:0.95rem;margin:0 0 10px;min-height:48px;}
+.product button {background:#bb88ff;color:#0a0f30;border:none;border-radius:8px;padding:6px 10px;font-weight:bold;cursor:pointer;width:100%;}
+.product button:hover {background:#8b3aff;color:#fff;box-shadow:0 0 10px #bb88ff;}
+/* Arka plan animasyonu */
+@keyframes bgAnim {0%{background-position:0 0;}50%{background-position:100% 100%;}100%{background-position:0 0;}}
+body::before {content:"";position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,#36005a,#bb88ff,#0a0f30,#8b3aff);background-size:400% 400%;animation:bgAnim 20s linear infinite;opacity:0.2;z-index:-1;}
+@media(max-width:640px){#categories{position:static;flex-direction:row;overflow-x:auto;margin:10px 0;}#products{margin-left:0;}}
 </style>
 </head>
 <body>
-
-<header>
-  <h1>Ürün Kataloğu</h1>
-  <div id="categoryMenu">
-    <button onclick="loadCategory('all')">Tüm Ürünler</button>
-  </div>
-</header>
-
+<header><h1>Ürün Kataloğu</h1></header>
 <div id="announcement">Yükleniyor...</div>
-
 <div id="categories"></div>
 <div id="products"></div>
 
 <script>
-const PRODUCTS_JSON = 'products.json'; // JSON dosyanın yolu
-const ANNOUNCE_JSON = 'announcement.json'; // JSON dosyanın yolu
+/******** CONFIG ********/
+const PRODUCTS_JSON = 'https://raw.githubusercontent.com/mtowskicoder/sat-s/main/data/products.json';
+const ANNOUNCE_JSON = 'https://raw.githubusercontent.com/mtowskicoder/sat-s/main/data/announcement.json';
 
+/******** VERİLER ********/
 let productsData = [];
 
-// JSON’dan duyuru çek
-async function loadAnnouncement() {
-  try {
-    const res = await fetch(ANNOUNCE_JSON);
-    const data = await res.json();
-    document.getElementById('announcement').innerText = data.text || "Hoşgeldiniz!";
-  } catch(e) { console.error(e); }
+/******** DUYURU ********/
+async function loadAnnouncement(){
+  try{
+    const res=await fetch(ANNOUNCE_JSON);
+    const data=await res.json();
+    document.getElementById('announcement').innerText=data.text||"Hoşgeldiniz!";
+  }catch(e){console.error(e);document.getElementById('announcement').innerText="Duyuru yüklenemedi.";}
 }
 
-// JSON’dan ürünleri çek
-async function loadProducts() {
-  try {
-    const res = await fetch(PRODUCTS_JSON);
-    productsData = await res.json();
+/******** ÜRÜNLER ********/
+async function loadProducts(){
+  try{
+    const res=await fetch(PRODUCTS_JSON);
+    productsData=await res.json();
     buildCategories();
     displayProducts('all');
-  } catch(e) { console.error(e); }
+  }catch(e){console.error(e);document.getElementById('products').innerHTML="<p>Ürünler yüklenemedi.</p>";}
 }
 
-// Kategorileri oluştur
-function buildCategories() {
-  const cats = [...new Set(productsData.map(p => p.kategori))];
-  const catDiv = document.getElementById('categories');
-  catDiv.innerHTML = '';
-  cats.forEach(cat => {
-    const btn = document.createElement('button');
-    btn.textContent = cat;
-    btn.onclick = () => displayProducts(cat);
+/******** KATEGORİLER ********/
+function buildCategories(){
+  const cats=[...new Set(productsData.map(p=>p.kategori))];
+  const catDiv=document.getElementById('categories');
+  catDiv.innerHTML='';
+  const allBtn=document.createElement('button'); allBtn.textContent='Tüm Kategoriler'; allBtn.onclick=()=>displayProducts('all'); catDiv.appendChild(allBtn);
+  cats.forEach(cat=>{
+    const btn=document.createElement('button');
+    btn.innerHTML=`<img src="https://raw.githubusercontent.com/mtowskicoder/sat-s/main/assets/${cat.toLowerCase()}.png" alt="${cat}"/> ${cat}`;
+    btn.onclick=()=>displayProducts(cat);
     catDiv.appendChild(btn);
   });
 }
 
-// Ürünleri göster
-function displayProducts(category) {
-  const container = document.getElementById('products');
-  container.innerHTML = '';
-  let filtered = productsData.filter(p => !p.sold);
-  if(category !== 'all') filtered = filtered.filter(p => p.kategori === category);
-  if(filtered.length===0){ container.innerHTML="<p>Bu kategoride ürün yok.</p>"; return;}
-  filtered.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'product';
-    div.innerHTML = `
+/******** ÜRÜN LİSTELEME ********/
+function displayProducts(category){
+  const container=document.getElementById('products');
+  container.innerHTML='';
+  let filtered=productsData.filter(p=>!p.sold);
+  if(category!=='all') filtered=filtered.filter(p=>p.kategori===category);
+  if(filtered.length===0){container.innerHTML="<p>Bu kategoride ürün yok.</p>"; return;}
+  filtered.forEach(p=>{
+    const div=document.createElement('div');
+    div.className='product';
+    div.innerHTML=`
       <h2>${p.ad} - $${p.fiyat}</h2>
-      <p>${p.desc || ''}</p>
-      <button onclick="window.open('https://t.me/mtowi','_blank')">Satın Al</button>
+      <p>${p.desc||''}</p>
+      <button onclick="window.open('${p.link}','_blank')">Satın Al</button>
     `;
     container.appendChild(div);
   });
 }
 
-// Başlat
+/******** BAŞLAT ********/
 loadAnnouncement();
 loadProducts();
 </script>
-
 </body>
 </html>
