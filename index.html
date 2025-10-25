@@ -102,23 +102,6 @@ function urunSat(id){
   window.open(`https://t.me/mtowi?text=${mesaj}`,"_blank");
 }
 
-// Admin Girişi
-const adminLoginBtn=document.getElementById("adminLoginBtn");
-const adminMenu=document.getElementById("adminMenu");
-const ADMIN_USER="mtow";
-const ADMIN_PASS="A_9jD!xR2@fG$Qp8#Z";
-
-adminLoginBtn.onclick=()=>{
-  const user=prompt("Kullanıcı adı:");
-  const pass=prompt("Şifre:");
-  if(user===ADMIN_USER && pass===ADMIN_PASS){
-    alert("Giriş başarılı!");
-    adminMenu.style.display="block";
-  }else{
-    alert("Kullanıcı adı veya şifre yanlış!");
-  }
-};
-
 // Duyuru JSON simülasyonu (localStorage)
 if(localStorage.getItem("duyuru")){
   document.getElementById("duyuruMetni").innerText=localStorage.getItem("duyuru");
