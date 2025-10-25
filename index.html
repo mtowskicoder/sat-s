@@ -1,173 +1,91 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SMS Onay Kataloğu</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #0f172a;
-      color: #fff;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #38bdf8;
-    }
-    .hidden { display: none; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-      margin-top: 25px;
-    }
-    .card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 18px;
-      text-align: center;
-      transition: 0.3s;
-      backdrop-filter: blur(10px);
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 15px #38bdf8;
-    }
-    button {
-      background: #38bdf8;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: white;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-    button:hover { background: #0ea5e9; }
-    input, select {
-      width: 90%;
-      padding: 8px;
-      margin-top: 6px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-      background: #1e293b;
-      color: white;
-    }
-    #adminPanel { margin-top: 20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMS Onay Kataloğu</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  body { font-family: 'Poppins', sans-serif; background: #0f172a; color: white; margin:0; padding:20px; }
+  h1 { text-align: center; color: #38bdf8; }
+  #announcement { background: #1e293b; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align:center; color:#fef3c7; font-weight:bold; }
+  .category-btn { background:#38bdf8; border:none; padding:8px 12px; border-radius:8px; margin:5px; cursor:pointer; font-weight:bold; color:white; }
+  .category-btn:hover{background:#0ea5e9;}
+  .grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:20px; margin-top:15px; }
+  .card { background: rgba(255,255,255,0.05); border-radius:16px; padding:18px; text-align:center; transition:0.3s; backdrop-filter:blur(10px);}
+  .card:hover { transform: translateY(-5px); box-shadow:0 0 15px #38bdf8; }
+  button { margin-top:10px; padding:8px 12px; background:#38bdf8; border:none; border-radius:8px; cursor:pointer; color:white; font-weight:bold; transition:0.3s; }
+  button:hover{background:#0ea5e9;}
+</style>
 </head>
 <body>
-  <h1>📱 SMS Onay Kataloğu</h1>
 
-  <div id="loginPanel">
-    <h3>Admin Girişi</h3>
-    <input type="password" id="adminPass" placeholder="Admin Şifresi">
-    <button onclick="adminLogin()">Giriş Yap</button>
-  </div>
+<h1>📱 SMS Onay Kataloğu</h1>
 
-  <div id="adminPanel" class="hidden">
-    <h2>🛠️ Admin Paneli</h2>
-    <select id="kategoriSelect"></select>
-    <input id="urunAdi" placeholder="Ürün adı">
-    <input id="stok" type="number" placeholder="Stok">
-    <input id="fiyat" type="number" step="0.01" placeholder="Fiyat">
-    <button onclick="urunEkle()">Ürün Ekle</button>
-    <button onclick="kategoriEkle()">Yeni Kategori Ekle</button>
-    <input id="kategoriYeni" placeholder="Yeni kategori adı">
-  </div>
+<div id="announcement">📢 Duyuru yükleniyor...</div>
 
-  <div id="kategoriMenu"></div>
-  <div id="urunListesi" class="grid"></div>
+<div id="categoryMenu"></div>
+<div id="urunListesi" class="grid"></div>
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.expand();
 
-    const ADMIN_PASSWORD = "A_9jD!xR2@fG$Qp8#Z"; // Zor admin şifresi
-    let kategoriler = ["TikTok", "Instagram", "WhatsApp", "Telegram", "Pes", "Diğer"];
-    let urunler = [
-      {id: 1, ad: "TikTok SMS Onay", kategori: "TikTok", stok: 20, fiyat: 1.5},
-      {id: 2, ad: "Instagram SMS Onay", kategori: "Instagram", stok: 10, fiyat: 2.0}
-    ];
+  // Örnek ürünler ve duyuru
+  let announcement = "📢 Tüm ürünlerde %10 indirim var!";
+  let kategoriler = ["TikTok","Instagram","WhatsApp","Telegram","PES","Diğer"];
+  let urunler = [
+    {id:1, ad:"TikTok SMS Onay", kategori:"TikTok", stok:20, fiyat:1.5},
+    {id:2, ad:"Instagram SMS Onay", kategori:"Instagram", stok:10, fiyat:2.0},
+    {id:3, ad:"WhatsApp SMS Onay", kategori:"WhatsApp", stok:15, fiyat:1.2}
+  ];
 
-    function adminLogin() {
-      const pass = document.getElementById("adminPass").value;
-      if (pass === ADMIN_PASSWORD) {
-        document.getElementById("loginPanel").classList.add("hidden");
-        document.getElementById("adminPanel").classList.remove("hidden");
-        kategoriListele();
-        render();
-      } else {
-        alert("Yanlış şifre!");
-      }
-    }
+  // Duyuru göster
+  document.getElementById("announcement").innerText = announcement;
 
-    function kategoriListele() {
-      const sel = document.getElementById("kategoriSelect");
-      sel.innerHTML = kategoriler.map(k => `<option>${k}</option>`).join('');
-      const menu = document.getElementById("kategoriMenu");
-      menu.innerHTML = kategoriler.map(k =>
-        `<button onclick="kategoriGoster('${k}')">${k}</button>`
-      ).join(' ');
-    }
+  // Kategori menüsü oluştur
+  const menuDiv = document.getElementById("categoryMenu");
+  function kategoriListele(){
+    menuDiv.innerHTML = kategoriler.map(k => `<button class="category-btn" onclick="kategoriGoster('${k}')">${k}</button>`).join('');
+  }
 
-    function kategoriEkle() {
-      const yeni = document.getElementById("kategoriYeni").value.trim();
-      if (yeni && !kategoriler.includes(yeni)) {
-        kategoriler.push(yeni);
-        kategoriListele();
-        document.getElementById("kategoriYeni").value = "";
-      }
-    }
+  // Ürünleri render et
+  function render(liste=urunler){
+    const container = document.getElementById("urunListesi");
+    container.innerHTML = liste.map(u => `
+      <div class="card">
+        <div class="name">${u.ad}</div>
+        <div>Kategori: ${u.kategori}</div>
+        <div>Stok: ${u.stok}</div>
+        <div>Fiyat: ${u.fiyat.toFixed(2)} ₺</div>
+        <button onclick="urunSat(${u.id})">Satın Al</button>
+      </div>
+    `).join('');
+  }
 
-    function urunEkle() {
-      const ad = document.getElementById("urunAdi").value.trim();
-      const stok = parseInt(document.getElementById("stok").value);
-      const fiyat = parseFloat(document.getElementById("fiyat").value);
-      const kategori = document.getElementById("kategoriSelect").value;
-      if (!ad || !stok || !fiyat) return alert("Lütfen tüm bilgileri doldurun!");
-      const id = urunler.length + 1;
-      urunler.push({id, ad, kategori, stok, fiyat});
-      render();
-      alert("Ürün eklendi!");
-    }
+  // Kategoriye göre filtre
+  function kategoriGoster(k){
+    const filtreli = urunler.filter(u => u.kategori===k);
+    render(filtreli);
+  }
 
-    function kategoriGoster(k) {
-      const filtreli = urunler.filter(u => u.kategori === k);
-      render(filtreli);
-    }
-
-    function urunSat(id) {
-      const urun = urunler.find(u => u.id === id);
-      if (!urun) return;
-      if (urun.stok <= 0) return alert("Stokta yok!");
-      urun.stok--;
-      if (urun.stok === 0) urunler = urunler.filter(u => u.id !== id);
-      render();
-      const data = { urun: urun.ad, fiyat: urun.fiyat, kategori: urun.kategori };
-      tg.sendData(JSON.stringify(data));
-      alert("Satın alma bilgisi Telegram’a gönderildi.");
-    }
-
-    function render(liste = urunler) {
-      const container = document.getElementById("urunListesi");
-      container.innerHTML = liste.map(u => `
-        <div class="card">
-          <div class="service">${u.ad}</div>
-          <div class="country">Kategori: ${u.kategori}</div>
-          <div>Stok: ${u.stok}</div>
-          <div class="price">${u.fiyat.toFixed(2)} ₺</div>
-          <button onclick="urunSat(${u.id})">Satın Al</button>
-        </div>
-      `).join('');
-    }
-
-    kategoriListele();
+  // Satın alma
+  function urunSat(id){
+    const urun = urunler.find(u=>u.id===id);
+    if(!urun) return;
+    if(urun.stok<=0) return alert("Stokta yok!");
+    urun.stok--;
+    if(urun.stok===0) urunler = urunler.filter(u=>u.id!==id);
     render();
-  </script>
+    // Telegram WebApp ile admin'e bildirim gönder
+    const data = {urun:urun.ad, fiyat:urun.fiyat, kategori:urun.kategori};
+    tg.sendData(JSON.stringify(data));
+    alert("Satın alma bilgisi Telegram'a iletildi!");
+  }
+
+  kategoriListele();
+  render();
+
+</script>
 </body>
 </html>
