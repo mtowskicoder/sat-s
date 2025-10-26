@@ -10,7 +10,6 @@
   --panel: #0b122a;
   --accent: #7c4dff;
   --text: #e0e0ff;
-  --muted: #9ba3b0;
   --shadow: 0 0 25px rgba(124,77,255,0.4);
 }
 body {
@@ -135,6 +134,7 @@ button.backBtn {
   <button id="menuBtn">☰</button>
   <h1>MTOW Satış Paneli</h1>
 </header>
+
 <div id="sideMenu">
   <button class="cat-btn" data-category="home">🏠 Ana Sayfa</button>
   <hr style="border:0.5px solid rgba(255,255,255,0.1)">
@@ -145,17 +145,19 @@ button.backBtn {
   <button class="cat-btn" data-category="other"><img src="https://media.giphy.com/media/hpF9R9M1PHN5e/giphy.gif" width="24"> Diğer</button>
 </div>
 <div id="overlay"></div>
+
 <main id="content">
   <section id="homeSection">
     <div id="announcement">
       <h3>Duyuru</h3>
       <p id="announcementText">Yükleniyor...</p>
-      <button id="editAnnouncementBtn">✏️ Düzenle</button>
     </div>
   </section>
+
   <section id="catalog" style="display:none;">
     <div class="product-grid" id="productGrid"></div>
   </section>
+
   <section id="productDetail">
     <h2 id="detailName"></h2>
     <p id="detailDesc"></p>
@@ -164,15 +166,16 @@ button.backBtn {
     <button class="backBtn">Geri</button>
   </section>
 </main>
+
 <script>
 const menuBtn = document.getElementById('menuBtn');
 const sideMenu = document.getElementById('sideMenu');
 const overlay = document.getElementById('overlay');
+
 menuBtn.onclick = ()=>{ sideMenu.classList.add('active'); overlay.classList.add('active'); };
 overlay.onclick = ()=>{ sideMenu.classList.remove('active'); overlay.classList.remove('active'); };
 
 const annText = document.getElementById('announcementText');
-const editBtn = document.getElementById('editAnnouncementBtn');
 const grid = document.getElementById('productGrid');
 const home = document.getElementById('homeSection');
 const catalog = document.getElementById('catalog');
@@ -183,15 +186,12 @@ async function loadAnnouncement(){
     const res = await fetch('announcement.json');
     const data = await res.json();
     annText.textContent = data.text || 'Henüz duyuru yok.';
-    localStorage.setItem('mtow_announcement', data.text);
   } catch(e){
-    const local = localStorage.getItem('mtow_announcement');
-    annText.textContent = local || 'Henüz duyuru yok.';
+    annText.textContent = 'Henüz duyuru yok.';
   }
 }
 loadAnnouncement();
 
-// Load products
 async function loadProducts(cat){
   const res = await fetch('products.json');
   const data = await res.json();
@@ -239,27 +239,6 @@ document.querySelectorAll('.cat-btn').forEach(btn=>{
     }
   };
 });
-
-// edit announcement
-editBtn.onclick = async ()=>{
-  const current = annText.textContent;
-  const newText = prompt("Yeni duyuru metni:", current);
-  if(!newText) return;
-  try {
-    await fetch('http://localhost:5000/update-announcement', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ text: newText })
-    });
-    annText.textContent = newText;
-    localStorage.setItem('mtow_announcement', newText);
-    alert('Duyuru kaydedildi (GitHub güncellemesi başarılı veya localStorage)');
-  } catch {
-    localStorage.setItem('mtow_announcement', newText);
-    annText.textContent = newText;
-    alert('Sunucuya bağlanamadı. Duyuru localStorage’a kaydedildi.');
-  }
-};
 </script>
 </body>
 </html>
