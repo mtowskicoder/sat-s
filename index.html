@@ -1,468 +1,265 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MTOWSKI - Katalog</title>
-<link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Spider-Man_face_logo.svg/1024px-Spider-Man_face_logo.svg.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTOW Satış Paneli</title>
 <style>
-  :root{
-    --bg:#061025;           /* gece mavisi temel */
-    --panel:#08203a;
-    --accent:#7c4dff;       /* mor neon */
-    --accent-2:#2dd4bf;     /* destek renk */
-    --card:#0f2940;
-    --muted:rgba(255,255,255,0.75);
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Arial; background:var(--bg); color:#eef2ff; -webkit-font-smoothing:antialiased;}
-  /* arka plan hafif gradient animasyonu */
-  body::before{
-    content:""; position:fixed; inset:0; z-index:-2;
-    background: linear-gradient(120deg, rgba(9,20,40,0.8), rgba(4,10,20,0.9), rgba(12,6,40,0.7));
-  }
-  body::after{
-    content:""; position:fixed; inset:0; z-index:-3;
-    background: radial-gradient(circle at 10% 10%, rgba(124,77,255,0.08), transparent 12%),
-                radial-gradient(circle at 90% 80%, rgba(45,212,191,0.05), transparent 10%);
-    animation: moveBG 22s linear infinite;
-    opacity:0.9;
-  }
-  @keyframes moveBG{0%{transform:translate(0,0)}50%{transform:translate(40px,40px)}100%{transform:translate(0,0)}}
-
-  /* header / duyuru */
-  header{padding:18px 16px; display:flex; align-items:center; justify-content:center; position:relative;}
-  h1{margin:0;font-size:20px;color:var(--accent); text-shadow:0 6px 30px rgba(124,77,255,0.12); letter-spacing:0.6px}
-  /* duyuru kutusu */
-  #announcementWrap{max-width:1080px;margin:0 auto;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(12,28,50,0.6), rgba(6,15,30,0.4)); box-shadow:0 8px 40px rgba(9,14,30,0.6); border:1px solid rgba(124,77,255,0.08); display:flex; align-items:center; gap:14px;}
-  #announcementSpark{width:60px;height:60px;border-radius:10px;flex:0 0 60px;background:linear-gradient(135deg, rgba(124,77,255,0.18), rgba(45,212,191,0.08));display:flex;align-items:center;justify-content:center;box-shadow:0 6px 30px rgba(124,77,255,0.06);animation: glow 2.8s ease-in-out infinite;}
-  @keyframes glow{0%{transform:translateY(0);box-shadow:0 6px 30px rgba(124,77,255,0.02);}50%{transform:translateY(-4px);box-shadow:0 22px 60px rgba(124,77,255,0.18);}100%{transform:translateY(0);box-shadow:0 6px 30px rgba(124,77,255,0.02);}}
-  #announcementText{flex:1;color:var(--muted); font-weight:600; font-size:1rem; text-align:center; text-shadow:0 2px 8px rgba(0,0,0,0.5);}
-  #editAnnouncementBtn{position:absolute; right:16px; top:14px; background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:20px; padding:8px; border-radius:8px;}
-  #editAnnouncementBtn:hover{color:var(--accent)}
-
-  /* sol üst category toggle */
-  #categoryToggle{position:fixed; left:14px; top:14px; z-index:1200; border:0; background:linear-gradient(180deg,var(--accent),#5f3cff); padding:10px 12px; border-radius:10px; color:#021025; font-weight:800; cursor:pointer; box-shadow:0 8px 30px rgba(124,77,255,0.18)}
-  #categoryToggle:active{transform:translateY(1px)}
-
-  /* slide-in category panel */
-  #categoryPanel{position:fixed; left:-320px; top:0; bottom:0; width:320px; background:linear-gradient(180deg,var(--panel), rgba(6,20,40,0.95)); z-index:1300; padding:18px; transition:left .36s cubic-bezier(.2,.9,.2,1); border-right:1px solid rgba(124,77,255,0.06); box-shadow:8px 0 40px rgba(5,8,20,0.6); overflow-y:auto}
-  #categoryPanel.open{left:0}
-  #categoryPanel h3{color:var(--accent); margin:6px 0 14px 0; font-size:16px}
-  .catList{display:flex;flex-direction:column; gap:10px}
-  .catBtn{display:flex; align-items:center; gap:12px; padding:10px; background:rgba(255,255,255,0.02); border-radius:10px; cursor:pointer; border:1px solid transparent; transition:all .18s}
-  .catBtn img{width:46px;height:46px;border-radius:8px;object-fit:cover;flex-shrink:0}
-  .catBtn .catName{font-weight:700;color:rgba(230,230,255,.95)}
-  .catBtn .catSub{font-size:12px;color:rgba(220,220,255,.6)}
-  .catBtn:hover{transform:translateX(6px); box-shadow:0 8px 26px rgba(124,77,255,0.09); border-color:rgba(124,77,255,0.12)}
-  .spaceTop{height:14px}
-  .homeBtn{margin-top:18px;padding:10px;background:linear-gradient(90deg,var(--accent),#5f3cff);color:#021025;border-radius:10px;font-weight:800;text-align:center;cursor:pointer}
-  .homeBtn:hover{opacity:.95; transform:translateY(-2px)}
-
-  /* overlay when panel open */
-  #overlay{position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:1250; display:none}
-
-  /* products grid */
-  #viewWrap{max-width:1200px;margin:28px auto;padding:16px; min-height:320px}
-  .grid{display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:18px}
-  .card{background:linear-gradient(180deg,var(--card), rgba(9,20,40,0.7)); padding:14px;border-radius:12px; box-shadow:0 8px 30px rgba(2,6,16,0.6); border:1px solid rgba(124,77,255,0.04); opacity:0; transform:translateY(14px) scale(.995); transition: all .36s cubic-bezier(.2,.9,.2,1) }
-  .card.visible{opacity:1; transform:none}
-  .card .thumb{width:100%;height:140px;border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.02)}
-  .card .thumb img{max-width:100%; max-height:100%; object-fit:contain; display:block}
-  .card h4{margin:10px 0 6px 0;color:var(--accent); font-size:15px}
-  .card p{margin:0;color:rgba(230,230,255,0.85); font-size:13px; min-height:40px}
-  .card .price{margin-top:10px; font-weight:800; color:var(--accent-2)}
-  .card button{margin-top:10px;width:100%; padding:10px;border-radius:8px;border:0;background:linear-gradient(90deg,var(--accent),#5f3cff); color:#021025; font-weight:800; cursor:pointer; box-shadow:0 12px 30px rgba(124,77,255,0.12)}
-  .card button:hover{transform:translateY(-2px)}
-
-  /* detail overlay */
-  #detailOverlay{position:fixed; inset:0; display:none; z-index:1400; align-items:center; justify-content:center; padding:20px}
-  #detailCard{width:100%; max-width:720px; background:linear-gradient(180deg,var(--panel), rgba(6,20,40,0.96)); border-radius:12px; padding:18px; box-shadow:0 30px 80px rgba(3,8,25,0.7); border:1px solid rgba(124,77,255,0.06); opacity:0; transform:translateY(10px) scale(.995); transition:all .26s ease}
-  #detailCard.show{opacity:1; transform:none}
-  #detailCard .top{display:flex; gap:18px; align-items:center}
-  #detailCard img{width:160px;height:160px;border-radius:12px;object-fit:cover; background:#021025}
-  #detailCard h2{margin:0;color:var(--accent)}
-  #detailCard p{color:var(--muted)}
-  #detailCard .buyRow{display:flex; gap:12px; margin-top:12px; align-items:center}
-  .smallBtn{padding:8px 12px;border-radius:8px;border:0; cursor:pointer; font-weight:700}
-  .closeBtn{background:transparent;color:var(--muted); border:1px solid rgba(255,255,255,0.04)}
-  .buyBtn{background:linear-gradient(90deg,var(--accent),#5f3cff); color:#021025}
-  .mutedNote{font-size:13px;color:rgba(220,220,255,0.6); margin-top:8px}
-
-  /* responsive tweaks */
-  @media (max-width:720px){
-    #categoryPanel{width:100%; left:-100%}
-    #categoryPanel.open{left:0}
-    #categoryToggle{left:12px; top:12px}
-    .top{flex-direction:column}
-    #detailCard img{width:120px;height:120px}
-  }
+:root {
+  --bg: #03091b;
+  --panel: #0b122a;
+  --accent: #7c4dff;
+  --text: #e0e0ff;
+  --muted: #9ba3b0;
+  --shadow: 0 0 25px rgba(124,77,255,0.4);
+}
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  height: 100%;
+}
+header {
+  background: linear-gradient(90deg,#0f1734,#0b0f25);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+header h1 {
+  margin: 0;
+  font-size: 1.2em;
+  color: var(--accent);
+}
+#menuBtn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 1.8em;
+  cursor: pointer;
+}
+#sideMenu {
+  position: fixed;
+  top: 0; left: -280px;
+  width: 250px;
+  height: 100%;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  transition: left 0.4s ease;
+  z-index: 1000;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#sideMenu.active { left: 0; }
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  z-index: 500;
+}
+#overlay.active { display: block; }
+button.cat-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 1em;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+button.cat-btn:hover {
+  transform: scale(1.05);
+  color: var(--accent);
+}
+main {
+  padding: 20px;
+  min-height: calc(100vh - 60px);
+}
+#announcement {
+  background: radial-gradient(circle at top left,rgba(124,77,255,0.1),rgba(10,10,20,0.6));
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  margin-bottom: 30px;
+  animation: glow 3s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  0% { box-shadow: 0 0 15px rgba(124,77,255,0.2); }
+  100% { box-shadow: 0 0 40px rgba(124,77,255,0.6); }
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+  gap: 20px;
+}
+.product {
+  background: linear-gradient(180deg,#0b0f25,#13183b);
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform .2s;
+}
+.product:hover { transform: translateY(-5px); }
+.product img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+#productDetail {
+  display: none;
+}
+button.backBtn {
+  margin-top: 20px;
+  background: none;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: var(--accent);
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
-
 <header>
-  <div id="announcementWrap" role="region" aria-live="polite">
-    <div id="announcementSpark" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l2.9 6.1L21 10l-5 3.9L17.8 21 12 17.7 6.2 21 8 13.9 3 10l6.1-1.9L12 2z" fill="rgba(124,77,255,0.85)"/></svg></div>
-    <div id="announcementText">Yükleniyor...</div>
-    <button id="editAnnouncementBtn" title="Duyuruyu düzenle">✏️</button>
-  </div>
+  <button id="menuBtn">☰</button>
+  <h1>MTOW Satış Paneli</h1>
 </header>
-
-<!-- category toggle button -->
-<button id="categoryToggle" aria-controls="categoryPanel" aria-expanded="false">📂 Kategoriler</button>
-
-<!-- slide-in category panel -->
-<aside id="categoryPanel" aria-hidden="true">
-  <h3>Kategoriler</h3>
-  <div class="catList" id="catList"></div>
-  <div class="spaceTop"></div>
-  <div class="homeBtn" id="homeBtn">🏠 Ana Menü</div>
-</aside>
-
-<!-- overlay for closing -->
-<div id="overlay" tabindex="-1" aria-hidden="true"></div>
-
-<!-- main view wrapper -->
-<main id="viewWrap" role="main" aria-live="polite">
-  <!-- products grid (hidden on home) -->
-  <section id="productsSection" style="display:none">
-    <div class="grid" id="grid"></div>
-  </section>
-  <!-- product detail overlay container -->
-  <div id="detailOverlay" aria-hidden="true">
-    <div id="detailCard" role="dialog" aria-modal="true">
-      <div style="display:flex;justify-content:flex-end"><button class="smallBtn closeBtn" id="closeDetailBtn">Kapat</button></div>
-      <div class="top" style="margin-top:6px">
-        <img id="detailImg" src="" alt="">
-        <div style="flex:1">
-          <h2 id="detailTitle"></h2>
-          <p id="detailDesc"></p>
-          <div class="mutedNote" id="detailPrice"></div>
-          <div class="buyRow">
-            <button class="smallBtn buyBtn" id="confirmBuyBtn">Satın Al</button>
-            <button class="smallBtn closeBtn" id="backToListBtn">Katalog</button>
-          </div>
-        </div>
-      </div>
+<div id="sideMenu">
+  <button class="cat-btn" data-category="home">🏠 Ana Sayfa</button>
+  <hr style="border:0.5px solid rgba(255,255,255,0.1)">
+  <button class="cat-btn" data-category="tiktok"><img src="https://media.giphy.com/media/1xVbC4zB9Yl5wcYbS7/giphy.gif" width="24"> TikTok</button>
+  <button class="cat-btn" data-category="instagram"><img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="24"> Instagram</button>
+  <button class="cat-btn" data-category="whatsapp"><img src="https://media.giphy.com/media/WRQBXSCnEFJIuxktnw/giphy.gif" width="24"> WhatsApp</button>
+  <button class="cat-btn" data-category="telegram"><img src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif" width="24"> Telegram</button>
+  <button class="cat-btn" data-category="other"><img src="https://media.giphy.com/media/hpF9R9M1PHN5e/giphy.gif" width="24"> Diğer</button>
+</div>
+<div id="overlay"></div>
+<main id="content">
+  <section id="homeSection">
+    <div id="announcement">
+      <h3>Duyuru</h3>
+      <p id="announcementText">Yükleniyor...</p>
+      <button id="editAnnouncementBtn">✏️ Düzenle</button>
     </div>
-  </div>
+  </section>
+  <section id="catalog" style="display:none;">
+    <div class="product-grid" id="productGrid"></div>
+  </section>
+  <section id="productDetail">
+    <h2 id="detailName"></h2>
+    <p id="detailDesc"></p>
+    <p id="detailPrice"></p>
+    <button id="buyBtn">Satın Al</button>
+    <button class="backBtn">Geri</button>
+  </section>
 </main>
-
 <script>
-/* =======================
-   CONFIG
-   ======================= */
-const PRODUCTS_JSON = 'https://raw.githubusercontent.com/mtowskicoder/sat-s/main/data/products.json';
-const CATEGORY_GIFS = {
-  TikTok: 'https://media.giphy.com/media/xT0GqssRweIhlz209i/giphy.gif',
-  Instagram: 'https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif',
-  WhatsApp: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif',
-  Telegram: 'https://media.giphy.com/media/3o7TKPdx0B0b2ZgZbC/giphy.gif',
-  Diğer: 'https://media.giphy.com/media/l0ExncehJzexFpRHq/giphy.gif'
-};
-const ADMIN_PASS = 'A_9jD!xR2@fG$Qp8#Z'; // duyuru düzeni için kullanılan şifre (localStorage)
-
-let productsData = [];
-let currentCategory = null;
-let detailProduct = null;
-
-/* =======================
-   Helper: fetch JSON safely
-   ======================= */
-async function fetchJSON(url){
-  const res = await fetch(url, {cache:'no-cache'});
-  if(!res.ok) throw new Error('Veri çekilemedi: '+res.status);
-  return res.json();
-}
-
-/* =======================
-   Load initial data
-   ======================= */
-async function init(){
-  // load products
-  try{
-    productsData = await fetchJSON(PRODUCTS_JSON);
-    // basic validation: ensure fields exist
-    productsData = productsData.map((p, i)=>{
-      return {
-        id: p.id ?? i+1,
-        ad: p.ad ?? ('Ürün '+(i+1)),
-        kategori: p.kategori ?? 'Diğer',
-        fiyat: (p.fiyat ?? 0),
-        desc: p.desc ?? '',
-        gif: p.gif ?? CATEGORY_GIFS[p.kategori] ?? CATEGORY_GIFS['Diğer'],
-        link: p.link ?? 'https://t.me/mtowi',
-        sold: !!p.sold
-      };
-    });
-  }catch(err){
-    console.error('Products load error', err);
-    productsData = [];
-  }
-
-  // load announcement: prefer localStorage (editable), otherwise try repo
-  const saved = localStorage.getItem('mtow_announcement');
-  if(saved){
-    setAnnouncement(saved);
-  }else{
-    try{
-      const ann = await fetchJSON('https://raw.githubusercontent.com/mtowskicoder/sat-s/main/data/announcement.json');
-      setAnnouncement(ann.text ?? 'Hoşgeldiniz! Yeni ürünler için kategorilere bakın.');
-    }catch(err){
-      setAnnouncement('Hoşgeldiniz! (Duyuru yüklenemedi — ağ hatası)');
-    }
-  }
-
-  // build category list from products (guarantee our fixed categories appear in order)
-  buildCategoryPanel();
-}
-init();
-
-/* =======================
-   Announcement handling
-   ======================= */
-const announcementTextEl = document.getElementById('announcementText');
-const editBtn = document.getElementById('editAnnouncementBtn');
-function setAnnouncement(text){
-  announcementTextEl.textContent = text;
-}
-editBtn.addEventListener('click', ()=>{
-  // protected edit using ADMIN_PASS
-  const pass = prompt('Duyuru düzenleme şifresi:');
-  if(pass !== ADMIN_PASS){ alert('Şifre yanlış.'); return; }
-  const newText = prompt('Yeni duyuru metnini girin:', announcementTextEl.textContent || '');
-  if(newText !== null){
-    localStorage.setItem('mtow_announcement', newText);
-    setAnnouncement(newText);
-    // small confirmation glow
-    editBtn.animate([{opacity:0.6},{opacity:1}],{duration:400});
-  }
-});
-
-/* =======================
-   Category panel UI
-   ======================= */
-const toggleBtn = document.getElementById('categoryToggle');
-const categoryPanel = document.getElementById('categoryPanel');
+const menuBtn = document.getElementById('menuBtn');
+const sideMenu = document.getElementById('sideMenu');
 const overlay = document.getElementById('overlay');
-const catListEl = document.getElementById('catList');
-const homeBtn = document.getElementById('homeBtn');
-toggleBtn.addEventListener('click', openCategoryPanel);
-overlay.addEventListener('click', closeCategoryPanel);
-function openCategoryPanel(){
-  categoryPanel.classList.add('open');
-  overlay.style.display='block';
-  toggleBtn.setAttribute('aria-expanded','true');
-  categoryPanel.setAttribute('aria-hidden','false');
-}
-function closeCategoryPanel(){
-  categoryPanel.classList.remove('open');
-  overlay.style.display='none';
-  toggleBtn.setAttribute('aria-expanded','false');
-  categoryPanel.setAttribute('aria-hidden','true');
-}
-homeBtn.addEventListener('click', ()=>{
-  // go to home (announcement)
-  document.getElementById('productsSection').style.display='none';
-  document.getElementById('grid').innerHTML='';
-  currentCategory = null;
-  closeCategoryPanel();
-  window.scrollTo({top:0,behavior:'smooth'});
-});
+menuBtn.onclick = ()=>{ sideMenu.classList.add('active'); overlay.classList.add('active'); };
+overlay.onclick = ()=>{ sideMenu.classList.remove('active'); overlay.classList.remove('active'); };
 
-/* build categories list in panel */
-function buildCategoryPanel(){
-  // fixed order categories requested by you
-  const order = ['TikTok','Instagram','WhatsApp','Telegram','Diğer'];
-  catListEl.innerHTML = '';
-  const uniqueCats = new Set(productsData.map(p=>p.kategori));
-  order.forEach(cat => {
-    // if category exists in data or to show categories even if empty, include it
-    const has = true; // we keep all in fixed list
-    const gif = CATEGORY_GIFS[cat] || CATEGORY_GIFS['Diğer'];
-    const el = document.createElement('div');
-    el.className = 'catBtn';
-    el.innerHTML = `<img src="${gif}" alt="${cat}"><div><div class="catName">${cat}</div><div class="catSub">${Array.from(uniqueCats).filter(x=>x===cat).length} ürün</div></div>`;
-    el.dataset.cat = cat;
-    el.addEventListener('click', ()=>{
-      openCategory(cat);
-    });
-    catListEl.appendChild(el);
+const annText = document.getElementById('announcementText');
+const editBtn = document.getElementById('editAnnouncementBtn');
+const grid = document.getElementById('productGrid');
+const home = document.getElementById('homeSection');
+const catalog = document.getElementById('catalog');
+const detail = document.getElementById('productDetail');
+
+async function loadAnnouncement(){
+  try {
+    const res = await fetch('announcement.json');
+    const data = await res.json();
+    annText.textContent = data.text || 'Henüz duyuru yok.';
+    localStorage.setItem('mtow_announcement', data.text);
+  } catch(e){
+    const local = localStorage.getItem('mtow_announcement');
+    annText.textContent = local || 'Henüz duyuru yok.';
+  }
+}
+loadAnnouncement();
+
+// Load products
+async function loadProducts(cat){
+  const res = await fetch('products.json');
+  const data = await res.json();
+  const list = data[cat] || [];
+  grid.innerHTML = '';
+  list.forEach(p=>{
+    const div = document.createElement('div');
+    div.className='product';
+    div.innerHTML = `<img src="${p.icon}"><h4>${p.name}</h4><p>${p.price}</p>`;
+    div.onclick = ()=> openProduct(p, cat);
+    grid.appendChild(div);
   });
 }
 
-/* =======================
-   Open a category => show category products
-   ======================= */
-const productsSection = document.getElementById('productsSection');
-const gridEl = document.getElementById('grid');
-
-function openCategory(cat){
-  currentCategory = cat;
-  closeCategoryPanel();
-  // clear announcement (hide) while in category
-  document.getElementById('announcementWrap').style.display = 'none';
-  productsSection.style.display = 'block';
-  gridEl.innerHTML = '';
-  // filter products
-  const items = productsData.filter(p => p.kategori === cat && !p.sold);
-  if(items.length === 0){
-    gridEl.innerHTML = `<div style="color:var(--muted);padding:20px">Bu kategoride ürün yok.</div>`;
-    return;
-  }
-  items.forEach((p, idx) => {
-    const card = document.createElement('article');
-    card.className = 'card';
-    // set initial small animation delay
-    setTimeout(()=>card.classList.add('visible'), idx * 80 + 50);
-    card.innerHTML = `
-      <div class="thumb"><img src="${p.gif}" alt="${p.ad}"></div>
-      <h4>${escapeHtml(p.ad)}</h4>
-      <p>${escapeHtml(truncate(p.desc, 140))}</p>
-      <div class="price">${formatPrice(p.fiyat)}</div>
-      <button data-id="${p.id}">Satın Al</button>
-    `;
-    // click card => open detail
-    card.addEventListener('click', (e)=>{
-      // if button clicked, also open detail (uniform behaviour)
-      const target = e.target;
-      const id = Number(card.querySelector('button').dataset.id);
-      const prod = productsData.find(x=>x.id===id);
-      if(prod) openDetail(prod);
-    });
-    // button explicit click (prevent double)
-    card.querySelector('button').addEventListener('click',(ev)=>{
-      ev.stopPropagation();
-      const id = Number(ev.currentTarget.dataset.id);
-      const prod = productsData.find(x=>x.id===id);
-      if(prod) openDetail(prod);
-    });
-    gridEl.appendChild(card);
-  });
+function openProduct(p, cat){
+  catalog.style.display='none';
+  home.style.display='none';
+  detail.style.display='block';
+  document.getElementById('detailName').textContent = p.name;
+  document.getElementById('detailDesc').textContent = p.desc;
+  document.getElementById('detailPrice').textContent = p.price;
+  const buyBtn = document.getElementById('buyBtn');
+  buyBtn.onclick = ()=> window.open(`https://t.me/mtowi?text=Satın%20almak%20istiyorum:%20${encodeURIComponent(p.name)}%20(%20${cat}%20)`, '_blank');
 }
+document.querySelector('.backBtn').onclick = ()=>{
+  detail.style.display='none';
+  home.style.display='none';
+  catalog.style.display='block';
+};
 
-/* =======================
-   Product detail overlay
-   ======================= */
-const detailOverlay = document.getElementById('detailOverlay');
-const detailCard = document.getElementById('detailCard');
-const detailImgEl = document.getElementById('detailImg');
-const detailTitleEl = document.getElementById('detailTitle');
-const detailDescEl = document.getElementById('detailDesc');
-const detailPriceEl = document.getElementById('detailPrice');
-const confirmBuyBtn = document.getElementById('confirmBuyBtn');
-const backToListBtn = document.getElementById('backToListBtn');
-const closeDetailBtn = document.getElementById('closeDetailBtn');
-
-function openDetail(prod){
-  detailProduct = prod;
-  detailImgEl.src = prod.gif || CATEGORY_GIFS[prod.kategori] || CATEGORY_GIFS['Diğer'];
-  detailTitleEl.textContent = prod.ad;
-  detailDescEl.textContent = prod.desc || '';
-  detailPriceEl.textContent = 'Fiyat: ' + formatPrice(prod.fiyat);
-  // show overlay
-  detailOverlay.style.display='flex';
-  detailOverlay.setAttribute('aria-hidden','false');
-  setTimeout(()=> detailCard.classList.add('show'), 20);
-}
-function closeDetail(){
-  detailCard.classList.remove('show');
-  setTimeout(()=>{ detailOverlay.style.display='none'; detailOverlay.setAttribute('aria-hidden','true'); }, 220);
-}
-closeDetailBtn.addEventListener('click', closeDetail);
-backToListBtn.addEventListener('click', ()=>{ closeDetail(); productsSection.style.display='block'; });
-detailOverlay.addEventListener('click', (e)=>{ if(e.target===detailOverlay) closeDetail(); });
-
-/* Buy flow: ask for user handle once, store in localStorage, prefill message with product info */
-confirmBuyBtn.addEventListener('click', ()=>{
-  if(!detailProduct) return;
-  let handle = localStorage.getItem('mtow_telegram_handle');
-  if(!handle){
-    handle = prompt('Telegram kullanıcı adınız (örn: @kullanici):');
-    if(!handle){ alert('Satın alma işlemi iptal edildi.'); return; }
-    localStorage.setItem('mtow_telegram_handle', handle.trim());
-  }
-  // create message
-  const msg = `Merhaba,\nSatın almak istiyorum:\nÜrün: ${detailProduct.ad}\nKategori: ${detailProduct.kategori}\nFiyat: ${formatPrice(detailProduct.fiyat)}\nKullanıcı: ${handle}`;
-  // open Telegram with prefilled message
-  const url = detailProduct.link ? addTextToTelegramUrl(detailProduct.link, msg) : `https://t.me/mtowi?text=${encodeURIComponent(msg)}`;
-  window.open(url, '_blank');
-});
-
-/* =======================
-   Utilities
-   ======================= */
-function formatPrice(v){
-  // show with 2 decimals and ₺ sign if integer considered TRY? Use ₺ as earlier used currency.
-  if(isNaN(v)) return v;
-  // if price < 100 maybe show with 2 decimals
-  return typeof v === 'number' ? (v % 1 === 0 ? `${v}₺` : `${v.toFixed(2)}₺`) : `${v}₺`;
-}
-function truncate(s, n){ if(!s) return ''; return s.length>n ? s.slice(0,n-1)+'…' : s; }
-function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
-function addTextToTelegramUrl(link, text){
-  // if link already contains ?text= maybe use it, else add
-  try{
-    const u = new URL(link);
-    // if URL host is t.me or telegram.me, add text param
-    if(u.hostname.includes('t.me') || u.hostname.includes('telegram.me')){
-      u.searchParams.set('text', text);
-      return u.toString();
+document.querySelectorAll('.cat-btn').forEach(btn=>{
+  btn.onclick = ()=>{
+    const cat = btn.dataset.category;
+    sideMenu.classList.remove('active');
+    overlay.classList.remove('active');
+    if(cat==='home'){
+      catalog.style.display='none';
+      detail.style.display='none';
+      home.style.display='block';
+    } else {
+      home.style.display='none';
+      detail.style.display='none';
+      catalog.style.display='block';
+      loadProducts(cat);
     }
-  }catch(e){}
-  // fallback: direct t.me with text
-  return `https://t.me/mtowi?text=${encodeURIComponent(text)}`;
-}
+  };
+});
 
-/* =======================
-   Small accessibility + keyboard shortcuts
-   ======================= */
-document.addEventListener('keydown', (e)=>{
-  if(e.key === 'Escape'){
-    // close things
-    if(detailOverlay.style.display === 'flex') closeDetail();
-    if(categoryPanel.classList.contains('open')) closeCategoryPanel();
+// edit announcement
+editBtn.onclick = async ()=>{
+  const current = annText.textContent;
+  const newText = prompt("Yeni duyuru metni:", current);
+  if(!newText) return;
+  try {
+    await fetch('http://localhost:5000/update-announcement', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ text: newText })
+    });
+    annText.textContent = newText;
+    localStorage.setItem('mtow_announcement', newText);
+    alert('Duyuru kaydedildi (GitHub güncellemesi başarılı veya localStorage)');
+  } catch {
+    localStorage.setItem('mtow_announcement', newText);
+    annText.textContent = newText;
+    alert('Sunucuya bağlanamadı. Duyuru localStorage’a kaydedildi.');
   }
-});
-
-/* =======================
-   Escape hatch: if network fails to fetch products,
-   show helpful message and allow user to paste products JSON.
-   ======================= */
-window.addEventListener('load', ()=>{
-  // if productsData empty after short delay, show helpful fallback
-  setTimeout(()=>{
-    if(productsData.length === 0){
-      const grid = document.getElementById('grid');
-      grid.innerHTML = `<div style="padding:18px;color:var(--muted);">Ürün verisi yüklenemedi. Eğer yerel JSON ile çalışıyorsan <b>data/products.json</b> dosyasının raw linkini kontrol et. İstersen hızlıca yapıştırarak test edebilirsin: <button id="pasteDataBtn" style="margin-left:8px;padding:6px;border-radius:8px;background:rgba(124,77,255,0.12);border:1px solid rgba(124,77,255,0.08);color:var(--muted)">JSON Yapıştır</button></div>`;
-      const btn = document.getElementById('pasteDataBtn');
-      if(btn) btn.addEventListener('click', async ()=>{
-        const txt = prompt('products.json içeriğini yapıştırın (JSON array):');
-        if(!txt) return;
-        try{
-          const parsed = JSON.parse(txt);
-          productsData = parsed.map((p,i)=>({
-            id:p.id ?? i+1,
-            ad:p.ad ?? ('Ürün '+(i+1)),
-            kategori:p.kategori ?? 'Diğer',
-            fiyat:p.fiyat ?? 0,
-            desc:p.desc ?? '',
-            gif:p.gif ?? (CATEGORY_GIFS[p.kategori] || CATEGORY_GIFS['Diğer']),
-            link:p.link ?? 'https://t.me/mtowi',
-            sold:!!p.sold
-          }));
-          alert('Veri yüklendi, kategori paneli güncelleniyor.');
-          buildCategoryPanel();
-        }catch(err){
-          alert('Geçersiz JSON: '+err.message);
-        }
-      });
-    }
-  }, 800);
-});
-
-/* Helper: escape HTML built-in earlier; end of file */
+};
 </script>
 </body>
 </html>
