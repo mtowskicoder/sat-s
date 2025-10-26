@@ -5,68 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MTOW Satış Paneli</title>
 <style>
-:root {
-  --bg: #03091b;
-  --panel: #0b122a;
-  --accent: #7c4dff;
-  --text: #e0e0ff;
-  --shadow: 0 0 25px rgba(124,77,255,0.4);
+:root{
+  --bg:#03091b; --panel:#0b122a; --accent:#7c4dff; --text:#e0e0ff; --shadow:0 0 25px rgba(124,77,255,0.4);
 }
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
-}
-header {
-  background: linear-gradient(90deg,#0f1734,#0b0f25);
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: var(--shadow);
-}
-header h1 { margin:0; font-size:1.2em; color:var(--accent); }
-#menuBtn { background:none; border:none; color:var(--accent); font-size:1.8em; cursor:pointer; }
+body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+header{background:linear-gradient(90deg,#0f1734,#0b0f25);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow);}
+header h1{margin:0;font-size:1.2em;color:var(--accent);}
+#menuBtn{background:none;border:none;color:var(--accent);font-size:1.8em;cursor:pointer;}
 
-#sideMenu {
-  position: fixed; top:0; left:-280px; width:250px; height:100%; background:var(--panel);
-  box-shadow:var(--shadow); transition:left 0.4s ease; z-index:1000; padding:20px; display:flex; flex-direction:column; gap:14px;
+#sideMenu{
+  position:fixed;top:0;left:-280px;width:250px;height:100%;background:var(--panel);
+  box-shadow:var(--shadow);transition:left .3s ease;z-index:1000;padding:20px;display:flex;flex-direction:column;gap:12px;
 }
-#sideMenu.active { left:0; }
-#overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); display:none; z-index:500; }
-#overlay.active { display:block; }
+#sideMenu.active{left:0;}
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;z-index:500;}
+#overlay.active{display:block;}
 
-button.cat-btn {
-  display:flex; align-items:center; gap:8px; background:none; border:none; color:var(--text);
-  font-size:1em; cursor:pointer; transition: transform 0.2s;
+button.cat-btn{
+  display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--text);
+  font-size:1em;cursor:pointer;transition: transform 0.2s;
 }
-button.cat-btn:hover { transform:scale(1.05); color:var(--accent); }
+button.cat-btn:hover{transform:scale(1.05);color:var(--accent);}
 
-main { padding:20px; min-height:calc(100vh - 60px); }
-#announcement { background:radial-gradient(circle at top left,rgba(124,77,255,0.1),rgba(10,10,20,0.6));
-  padding:16px; border-radius:12px; box-shadow:var(--shadow); text-align:center; margin-bottom:30px;
-  animation: glow 3s ease-in-out infinite alternate; }
-@keyframes glow { 0%{box-shadow:0 0 15px rgba(124,77,255,0.2);} 100%{box-shadow:0 0 40px rgba(124,77,255,0.6);} }
-
-.product-grid {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;
+main{padding:20px;min-height:calc(100vh-60px);}
+#announcement{
+  background:radial-gradient(circle at top left,rgba(124,77,255,0.1),rgba(10,10,20,0.6));
+  padding:16px;border-radius:12px;box-shadow:var(--shadow);text-align:center;margin-bottom:30px;
+  animation: glow 3s ease-in-out infinite alternate;
 }
-.product {
+@keyframes glow{0%{box-shadow:0 0 15px rgba(124,77,255,0.2);}100%{box-shadow:0 0 40px rgba(124,77,255,0.6);}}
+
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;}
+.product{
   background:linear-gradient(180deg,#0b0f25,#13183b);
-  border-radius:15px; padding:15px; text-align:center; box-shadow:var(--shadow); cursor:pointer;
-  transition:transform .2s;
+  border-radius:15px;padding:12px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:transform .2s;
 }
-.product:hover { transform:translateY(-5px); }
-.product img { width:60px; height:60px; object-fit:contain; }
+.product:hover{transform:translateY(-5px);}
+.product img{width:60px;height:60px;object-fit:contain;}
 
-#productDetail { display:none; }
-button.backBtn, #buyBtn { margin-top:20px; background:none; border:1px solid var(--accent); border-radius:8px; padding:8px 16px; color:var(--accent); cursor:pointer; }
-button.backBtn:hover, #buyBtn:hover { background:var(--accent); color:#03091b; }
+#productDetail{display:none;}
+button.backBtn,#buyBtn{margin-top:20px;background:none;border:1px solid var(--accent);border-radius:8px;padding:8px 16px;color:var(--accent);cursor:pointer;}
+button.backBtn:hover,#buyBtn:hover{background:var(--accent);color:#03091b;}
+
+@media(max-width:640px){
+  #sideMenu{width:220px;padding:18px;}
+}
 </style>
 </head>
 <body>
+
 <header>
   <button id="menuBtn">☰</button>
   <h1>MTOW Satış Paneli</h1>
@@ -85,15 +72,10 @@ button.backBtn:hover, #buyBtn:hover { background:var(--accent); color:#03091b; }
 
 <main id="content">
   <section id="homeSection">
-    <div id="announcement">
-      <h3>Duyuru</h3>
-      <p id="announcementText">Yükleniyor...</p>
-    </div>
+    <div id="announcement"><h3>Duyuru</h3><p id="announcementText">Yükleniyor...</p></div>
   </section>
 
-  <section id="catalog" style="display:none;">
-    <div class="product-grid" id="productGrid"></div>
-  </section>
+  <section id="catalog" style="display:none;"><div class="product-grid" id="productGrid"></div></section>
 
   <section id="productDetail">
     <h2 id="detailName"></h2>
@@ -105,80 +87,66 @@ button.backBtn:hover, #buyBtn:hover { background:var(--accent); color:#03091b; }
 </main>
 
 <script>
-const menuBtn = document.getElementById('menuBtn');
-const sideMenu = document.getElementById('sideMenu');
-const overlay = document.getElementById('overlay');
+const menuBtn=document.getElementById('menuBtn');
+const sideMenu=document.getElementById('sideMenu');
+const overlay=document.getElementById('overlay');
+menuBtn.onclick=()=>{sideMenu.classList.add('active');overlay.classList.add('active');};
+overlay.onclick=()=>{sideMenu.classList.remove('active');overlay.classList.remove('active');};
 
-menuBtn.onclick = ()=>{ sideMenu.classList.add('active'); overlay.classList.add('active'); };
-overlay.onclick = ()=>{ sideMenu.classList.remove('active'); overlay.classList.remove('active'); };
+const annText=document.getElementById('announcementText');
+const grid=document.getElementById('productGrid');
+const home=document.getElementById('homeSection');
+const catalog=document.getElementById('catalog');
+const detail=document.getElementById('productDetail');
 
-const annText = document.getElementById('announcementText');
-const grid = document.getElementById('productGrid');
-const home = document.getElementById('homeSection');
-const catalog = document.getElementById('catalog');
-const detail = document.getElementById('productDetail');
-
-// JSON dosyalarını data klasöründen al
+// JSON verilerini yükleme
 async function loadAnnouncement(){
-  try {
-    const res = await fetch('data/announcement.json');
-    const data = await res.json();
-    annText.textContent = data.text || 'Henüz duyuru yok.';
-  } catch(e){
-    annText.textContent = 'Henüz duyuru yok.';
-  }
+  try{const res=await fetch('data/announcement.json');const data=await res.json();annText.textContent=data.text||'Henüz duyuru yok.';}
+  catch(e){annText.textContent='Henüz duyuru yok.';}
 }
-loadAnnouncement();
-
 async function loadProducts(cat){
-  try {
-    const res = await fetch('data/products.json');
-    const data = await res.json();
-    const list = data[cat] || [];
-    grid.innerHTML = '';
+  try{
+    const res=await fetch('data/products.json');
+    const data=await res.json();
+    const list=data[cat]||[];
+    grid.innerHTML='';
+    if(list.length===0){grid.innerHTML='<p style="color:#fff;">Bu kategoride ürün bulunamadı.</p>';}
     list.forEach(p=>{
-      const div = document.createElement('div');
+      const div=document.createElement('div');
       div.className='product';
-      div.innerHTML = `<img src="${p.icon}"><h4>${p.name}</h4><p>${p.price}</p>`;
-      div.onclick = ()=> openProduct(p, cat);
+      div.innerHTML=`<img src="${p.icon}"><h4>${p.name}</h4><p>${p.price}</p>`;
+      div.onclick=()=>openProduct(p,cat);
       grid.appendChild(div);
     });
-  } catch(e){ grid.innerHTML = '<p style="color:#fff;">Ürünler yüklenemedi.</p>'; }
+  }catch(e){grid.innerHTML='<p style="color:#fff;">Ürünler yüklenemedi.</p>';}
 }
 
-function openProduct(p, cat){
-  catalog.style.display='none';
-  home.style.display='none';
-  detail.style.display='block';
-  document.getElementById('detailName').textContent = p.name;
-  document.getElementById('detailDesc').textContent = p.desc;
-  document.getElementById('detailPrice').textContent = p.price;
-  const buyBtn = document.getElementById('buyBtn');
-  buyBtn.onclick = ()=> window.open(`https://t.me/mtowi?text=Satın almak istiyorum:%20${encodeURIComponent(p.name)}%20(${cat})`, '_blank');
+// Ürün detay sayfası
+function openProduct(p,cat){
+  catalog.style.display='none';home.style.display='none';detail.style.display='block';
+  document.getElementById('detailName').textContent=p.name;
+  document.getElementById('detailDesc').textContent=p.desc;
+  document.getElementById('detailPrice').textContent=p.price;
+  document.getElementById('buyBtn').onclick=()=>window.open(`https://t.me/mtowi?text=Satın almak istiyorum:%20${encodeURIComponent(p.name)}%20(${cat})`,'_blank');
 }
 
-document.querySelector('.backBtn').onclick = ()=>{
-  detail.style.display='none';
-  catalog.style.display='block';
+// Geri butonu
+document.querySelector('.backBtn').onclick=()=>{
+  detail.style.display='none';catalog.style.display='block';
 };
 
+// Kategori menüsü
 document.querySelectorAll('.cat-btn').forEach(btn=>{
-  btn.onclick = ()=>{
-    const cat = btn.dataset.category;
-    sideMenu.classList.remove('active');
-    overlay.classList.remove('active');
-    if(cat==='home'){
-      catalog.style.display='none';
-      detail.style.display='none';
-      home.style.display='block';
-    } else {
-      home.style.display='none';
-      detail.style.display='none';
-      catalog.style.display='block';
-      loadProducts(cat);
-    }
+  btn.onclick=()=>{
+    const cat=btn.dataset.category;
+    sideMenu.classList.remove('active');overlay.classList.remove('active');
+    if(cat==='home'){catalog.style.display='none';detail.style.display='none';home.style.display='block';}
+    else{home.style.display='none';detail.style.display='none';catalog.style.display='block';loadProducts(cat);}
   };
 });
+
+// Başlangıç
+loadAnnouncement();
 </script>
 </body>
 </html>
