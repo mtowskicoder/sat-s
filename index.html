@@ -118,9 +118,10 @@ const home = document.getElementById('homeSection');
 const catalog = document.getElementById('catalog');
 const detail = document.getElementById('productDetail');
 
+// JSON dosyalarını data klasöründen al
 async function loadAnnouncement(){
   try {
-    const res = await fetch('announcement.json');
+    const res = await fetch('data/announcement.json');
     const data = await res.json();
     annText.textContent = data.text || 'Henüz duyuru yok.';
   } catch(e){
@@ -131,7 +132,7 @@ loadAnnouncement();
 
 async function loadProducts(cat){
   try {
-    const res = await fetch('products.json');
+    const res = await fetch('data/products.json');
     const data = await res.json();
     const list = data[cat] || [];
     grid.innerHTML = '';
@@ -155,6 +156,7 @@ function openProduct(p, cat){
   const buyBtn = document.getElementById('buyBtn');
   buyBtn.onclick = ()=> window.open(`https://t.me/mtowi?text=Satın almak istiyorum:%20${encodeURIComponent(p.name)}%20(${cat})`, '_blank');
 }
+
 document.querySelector('.backBtn').onclick = ()=>{
   detail.style.display='none';
   catalog.style.display='block';
