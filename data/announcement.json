@@ -1,3 +1,4 @@
-{
-  "text": "Hoşgeldiniz! Yeni ürünler için kategorilere göz atın."
-}
+[
+  { "title": "🎉 Yeni Ürünler Eklendi!", "content": "TikTok ve Instagram kategorilerinde yeni ürünler aktif edildi.", "gif": "https://media3.giphy.com/media/GotXuxqhIZvs4/giphy.gif" },
+  { "title": "⚡ İndirim", "content": "Bu hafta Telegram ürünlerinde %10 indirim." }
+]
