@@ -1,12 +1,6 @@
-{
-  "tiktok": [
-    {"name":"TikTok Hesap 1","desc":"Açıklama burada","price":"50₺","icon":"https://media.giphy.com/media/1xVbC4zB9Yl5wcYbS7/giphy.gif"},
-    {"name":"TikTok Hesap 2","desc":"Açıklama burada","price":"60₺","icon":"https://media.giphy.com/media/1xVbC4zB9Yl5wcYbS7/giphy.gif"}
-  ],
-  "instagram": [
-    {"name":"Instagram Hesap 1","desc":"Açıklama","price":"100₺","icon":"https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"}
-  ],
-  "whatsapp": [],
-  "telegram": [],
-  "other": []
-}
+[
+  { "id": "tg-001", "category": "Telegram", "name": "Telegram Premium", "description": "1 aylık premium hesap", "price": "₺50" },
+  { "id": "wa-001", "category": "Whatsapp", "name": "WhatsApp Numara", "description": "Aktif numara, SMS onaylı", "price": "₺35" },
+  { "id": "ig-001", "category": "Instagram", "name": "Instagram Hesap (Gerçek)", "description": "Doğrulanmış, garanti", "price": "₺120" },
+  { "id": "tt-001", "category": "Tiktok", "name": "TikTok Onay Hesabı", "description": "SMS onaylı, hızlı teslim", "price": "₺40" }
+]
