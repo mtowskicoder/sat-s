@@ -1,4 +1,23 @@
 [
-  { "title": "🎉 Yeni Ürünler Eklendi!", "content": "TikTok ve Instagram kategorilerinde yeni ürünler aktif edildi.", "gif": "https://media3.giphy.com/media/GotXuxqhIZvs4/giphy.gif" },
-  { "title": "⚡ İndirim", "content": "Bu hafta Telegram ürünlerinde %10 indirim." }
+  {
+    "id": 1,
+    "title": "Yeni Ürünler Eklendi 🎉",
+    "text": "Kataloğumuza yeni TikTok ve Instagram hizmetleri eklendi!",
+    "date": "2025-10-26",
+    "active": true
+  },
+  {
+    "id": 2,
+    "title": "Bakım Çalışması Duyurusu ⚙️",
+    "text": "Sistemimiz 29 Ekim’de kısa süreli bakım moduna alınacaktır.",
+    "date": "2025-10-29",
+    "active": true
+  },
+  {
+    "id": 3,
+    "title": "Eski Hizmetler Kaldırıldı ❗",
+    "text": "Artık bazı eski kategoriler desteklenmemektedir.",
+    "date": "2025-09-20",
+    "active": false
+  }
 ]
