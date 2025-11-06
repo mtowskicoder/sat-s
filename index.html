@@ -149,7 +149,7 @@
       <div class="title">MTOW</div>
     </div>
     <div style="display:flex;gap:12px;align-items:center">
-      <div style="font-size:13px;color:var(--muted)">© 2025 MTOW</div>
+      <div style="font-size:13px;color:var(--muted)"></div>
       <button id="themeToggle" class="iconBtn" style="padding:6px 10px">🌙</button>
     </div>
   </header>
@@ -184,14 +184,14 @@
 
       <!-- PRODUCTS -->
       <section class="productsArea" id="productsArea" aria-hidden="true">
-        <button class="backBtn" id="backFromProducts">⬅️ Geri</button>
+        <button class="backBtn" id="backFromProducts">⬅ Geri</button>
         <div id="productsTitle" style="text-align:center;margin-top:6px;font-weight:800;color:var(--accent)"></div>
         <div class="grid" id="grid"></div>
       </section>
 
       <!-- DETAIL -->
       <section class="detailView" id="detailView" aria-hidden="true">
-        <button class="backBtn" id="backFromDetail">⬅️ Geri</button>
+        <button class="backBtn" id="backFromDetail">⬅ Geri</button>
         <div class="detailTop">
           <img id="detailImg" alt="ürün görseli">
           <div class="detailText">
@@ -206,7 +206,7 @@
       </section>
 
       <footer style="margin-top:28px;text-align:center;color:rgba(255,255,255,0.45)">
-        © 2025 MTOW | mtowskicoder
+        © 2025 MTOW | MARKET
       </footer>
     </main>
   </div>
@@ -283,7 +283,7 @@ async function fetchJson(url){
 /* initialize theme from localStorage */
 (function initTheme(){
   const t = localStorage.getItem('mtow_theme') || 'dark';
-  if(t === 'light') document.body.classList.add('light'), themeToggle.textContent='☀️';
+  if(t === 'light') document.body.classList.add('light'), themeToggle.textContent='☀';
   else themeToggle.textContent='🌙';
 })();
 
@@ -292,7 +292,7 @@ themeToggle.addEventListener('click', ()=>{
   document.body.classList.toggle('light');
   const mode = document.body.classList.contains('light') ? 'light' : 'dark';
   localStorage.setItem('mtow_theme', mode);
-  themeToggle.textContent = mode === 'light' ? '☀️' : '🌙';
+  themeToggle.textContent = mode === 'light' ? '☀' : '🌙';
 });
 
 /* sidebar control */
@@ -330,7 +330,7 @@ function renderCategories(){
     const el = document.createElement('div');
     el.className = 'catItem';
     const icon = GIF_MAP[cat.name] || GIF_MAP['default'];
-    el.innerHTML = `<img src="${icon}" alt="${cat.name}"><div><div class="name">${escapeHtml(cat.name)}</div><div class="count" style="font-size:12px;color:rgba(255,255,255,0.6)">${products.filter(p=>p.category===cat.name).length} ürün</div></div>`;
+    el.innerHTML = <img src="${icon}" alt="${cat.name}"><div><div class="name">${escapeHtml(cat.name)}</div><div class="count" style="font-size:12px;color:rgba(255,255,255,0.6)">${products.filter(p=>p.category===cat.name).length} ürün</div></div>;
     el.addEventListener('click', ()=>{
       openCategory(cat.name);
       sidebar.classList.remove('open'); overlay.classList.remove('show');
@@ -350,7 +350,7 @@ async function loadAll(){
   if(a){
     if(Array.isArray(a) && a.length){
       annGif.src = (a[0].gif || annGif.src || GIF_MAP['default']);
-      annText.innerHTML = a.map(x=>`<strong>${escapeHtml(x.title||'')}</strong><div style="margin-top:6px;color:var(--muted)">${escapeHtml(x.content||'')}</div>`).join('<hr style="opacity:.06;margin:10px 0">');
+      annText.innerHTML = a.map(x=><strong>${escapeHtml(x.title||'')}</strong><div style="margin-top:6px;color:var(--muted)">${escapeHtml(x.content||'')}</div>).join('<hr style="opacity:.06;margin:10px 0">');
     } else if(typeof a === 'object' && a.text){
       annText.textContent = a.text;
     } else {
@@ -386,7 +386,7 @@ function openCategory(categoryName){
   grid.innerHTML = '';
   const list = products.filter(p=>p.category === categoryName);
   if(list.length === 0){
-    grid.innerHTML = `<div style="padding:20px;color:var(--muted)">Bu kategoride ürün yok.</div>`;
+    grid.innerHTML = <div style="padding:20px;color:var(--muted)">Bu kategoride ürün yok.</div>;
     // ensure no back button in category view
     backFromProducts.style.display = 'none';
     return;
@@ -456,8 +456,8 @@ function buyFlow(p){
   const price = p.price || '';
   const cat = p.category || currentCategory || '';
   const desc = p.description || p.desc || '';
-  const msg = `Merhaba!\n\nÜrün: ${name}\nKategori: ${cat}\nFiyat: ${price}\nDetay: ${desc}`;
-  const url = `${TG_BASE}?text=${encodeURIComponent(msg)}`;
+  const msg = Merhaba!\n\nÜrün: ${name}\nKategori: ${cat}\nFiyat: ${price}\nDetay: ${desc};
+  const url = ${TG_BASE}?text=${encodeURIComponent(msg)};
   window.open(url,'_blank');
 }
 
