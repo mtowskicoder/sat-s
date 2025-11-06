@@ -1,6 +1,6 @@
 [
-  { "id": "tg-001", "category": "Telegram", "name": "Telegram Premium", "description": "1 aylık premium hesap", "price": "₺50" },
-  { "id": "wa-001", "category": "Whatsapp", "name": "WhatsApp Numara", "description": "Aktif numara, SMS onaylı", "price": "₺35" },
-  { "id": "ig-001", "category": "Instagram", "name": "Instagram Hesap (Gerçek)", "description": "Doğrulanmış, garanti", "price": "₺120" },
-  { "id": "tt-001", "category": "Tiktok", "name": "TikTok Onay Hesabı", "description": "SMS onaylı, hızlı teslim", "price": "₺40" }
+  { "id": "tg-001", "category": "Telegram", "name": "Telegram +90 numara", "description": "Aktif numara, SMS onay ", "price": "₺150" },
+  { "id": "wa-001", "category": "Whatsapp", "name": "WhatsApp +90 Numara", "description": "Aktif numara, SMS onay", "price": "₺250" },
+  { "id": "wa-001", "category": "Whatsapp", "name": "WhatsApp +62 Endonezya Numara", "description": "Aktif numara, SMS onay", "price": "₺50" },
+  { "id": "tg-001", "category": "Telegram", "name": "Telegram +1 numara", "description": "Aktif numara, SMS onay ", "price": "₺100" }
 ]
