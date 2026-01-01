@@ -13,7 +13,6 @@
       --muted: rgba(232,238,255,0.8);
       --accent:#7c4dff;
     }
-    /* Light theme vars */
     body.light {
       --bg: #f6f8fb;
       --panel: #ffffff;
@@ -32,7 +31,6 @@
       -moz-osx-font-smoothing:grayscale;
     }
 
-    /* header */
     header{
       height:64px; display:flex; align-items:center; justify-content:space-between;
       padding:0 16px; position:sticky; top:0; background: linear-gradient(90deg, rgba(5,10,20,0.3), rgba(5,10,20,0.15));
@@ -45,7 +43,6 @@
     }
     .title{font-weight:800;color:var(--accent);letter-spacing:0.4px}
 
-    /* layout */
     #app{
       display:flex;
       min-height:calc(100vh - 64px);
@@ -53,7 +50,6 @@
       overflow-x:hidden;
     }
 
-    /* sidebar */
     aside.sidebar{
       position:fixed; left:-300px; top:64px; bottom:0; width:280px; padding:18px; overflow:auto;
       background: linear-gradient(180deg, rgba(6,12,28,0.96), rgba(8,14,30,0.94));
@@ -72,11 +68,9 @@
     .catItem .name{ font-weight:700 }
     .homeBtn{ margin-top:8px; padding:10px; border-radius:10px; background:linear-gradient(90deg,var(--accent),#5f3cff); color:#021025; font-weight:800; text-align:center; cursor:pointer }
 
-    /* overlay */
     .overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.35); opacity:0; visibility:hidden; transition:all .2s; z-index:65; }
     .overlay.show{ opacity:1; visibility:visible; }
 
-    /* main content container */
     main.container{ margin:28px auto; width: min(1100px, 96%); position:relative; z-index:10; }
     .announcementCard{
       display:flex; gap:16px; align-items:center; padding:18px; border-radius:12px;
@@ -87,8 +81,7 @@
     .annGif{ width:140px; height:140px; border-radius:12px; object-fit:cover }
     .annText{ font-weight:700; color:var(--muted); line-height:1.2 }
 
-    /* products area */
-    .productsArea{ margin-top:22px; display:none; } /* shown when category selected */
+    .productsArea{ margin-top:22px; display:none; } 
     .grid{ margin-top:14px; display:grid; gap:18px; grid-template-columns: repeat(auto-fill, minmax(220px,1fr));}
 
     .card{
@@ -103,7 +96,6 @@
     .price{ margin-top:8px; font-weight:900; color:#2dd4bf }
     .detailBtn{ margin-top:12px; width:100%; padding:10px; border-radius:10px; border:0; background:linear-gradient(90deg,var(--accent),#5f3cff); color:#021025; font-weight:800; cursor:pointer }
 
-    /* detail view */
     .detailView{ display:none; margin-top:22px; padding:18px; border-radius:12px; background: linear-gradient(180deg, rgba(8,14,28,0.45), rgba(6,10,18,0.22)); border:1px solid rgba(124,77,255,0.03); box-shadow:0 18px 60px rgba(2,6,16,0.6) }
     .detailTop{ display:flex; gap:18px; align-items:center; justify-content:center; flex-wrap:wrap }
     .detailTop img{ width:220px; height:220px; object-fit:cover; border-radius:12px }
@@ -111,16 +103,14 @@
     .detailText p{ color:var(--muted) }
     .detailActions{ margin-top:14px; display:flex; gap:12px; justify-content:center; align-items:center; flex-wrap:wrap }
 
-    /* improved back button */
     .backBtn{
       display:none; margin:18px auto 6px; padding:10px 16px; border-radius:10px; border:0; background:transparent; color:var(--text); font-weight:700; cursor:pointer;
       display:flex; align-items:center; gap:8px;
     }
     .backBtn svg{ width:18px; height:18px; display:inline-block; vertical-align:middle; }
 
-    /* buy button styling */
     .buy{
-      display:none; /* shown only in detail view */
+      display:none; 
       padding:12px 18px; border-radius:12px; border:0; cursor:pointer; font-weight:800;
       background: linear-gradient(90deg,#06b6d4,#7c4dff);
       color:#021025;
@@ -129,16 +119,16 @@
     }
     .buy svg{ width:16px; height:16px; }
 
-    /* footer */
     footer{ margin:26px auto; text-align:center; color:rgba(255,255,255,0.5); font-size:13px; padding-bottom:26px }
 
-    /* animated background containers per category */
+    /* Animated Backgrounds */
     .bg-anim{ position:fixed; inset:64px 0 0 0; z-index:0; pointer-events:none; opacity:0; transition:opacity .45s ease; }
     .bg-anim.active{ opacity:1; }
     .bg-tg{ background: radial-gradient(circle at 10% 20%, rgba(37,186,255,0.08), transparent 15%), linear-gradient(135deg, #09203f 0%, #1a9bdc 100%); animation: move1 8s linear infinite; }
     .bg-wa{ background: radial-gradient(circle at 80% 30%, rgba(37,186,118,0.06), transparent 15%), linear-gradient(135deg, #0d3b2e 0%, #25D366 100%); animation: move2 8s linear infinite; }
     .bg-ig{ background: radial-gradient(circle at 30% 10%, rgba(245,133,41,0.06), transparent 15%), linear-gradient(135deg, #2b0b39 0%, #f58529 100%); animation: move3 9s linear infinite; }
     .bg-tt{ background: radial-gradient(circle at 60% 40%, rgba(255,29,85,0.05), transparent 15%), linear-gradient(135deg, #0b0b0b 0%, #69c9d0 100%); animation: move4 10s linear infinite; }
+    .bg-pubg{ background: radial-gradient(circle at 50% 50%, rgba(255,174,0,0.08), transparent 20%), linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%); animation: move1 12s linear infinite; }
     .bg-other{ background: radial-gradient(circle at 50% 50%, rgba(124,77,255,0.05), transparent 15%), linear-gradient(135deg,#06102a,#2b1a5b); animation: move1 11s linear infinite; }
 
     @keyframes move1{ 0%{background-position:0% 0%}50%{background-position:20% 30%}100%{background-position:0% 0%} }
@@ -162,7 +152,6 @@
       <div class="title">MTOW</div>
     </div>
     <div style="display:flex;gap:12px;align-items:center">
-      <div style="font-size:13px;color:var(--muted)"></div>
       <button id="themeToggle" class="iconBtn" style="padding:6px 10px">🌙</button>
     </div>
   </header>
@@ -179,15 +168,14 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <!-- animated backgrounds -->
     <div class="bg-anim bg-tg" id="bg-tg" aria-hidden="true"></div>
     <div class="bg-anim bg-wa" id="bg-wa" aria-hidden="true"></div>
     <div class="bg-anim bg-ig" id="bg-ig" aria-hidden="true"></div>
     <div class="bg-anim bg-tt" id="bg-tt" aria-hidden="true"></div>
+    <div class="bg-anim bg-pubg" id="bg-pubg" aria-hidden="true"></div>
     <div class="bg-anim bg-other" id="bg-other" aria-hidden="true"></div>
 
     <main class="container" role="main">
-      <!-- ANNOUNCEMENT (only on home) -->
       <section id="homeSection">
         <div class="announcementCard" role="region" aria-label="Duyurular">
           <img class="annGif" id="annGif" alt="duyuru gif">
@@ -195,10 +183,8 @@
         </div>
       </section>
 
-      <!-- PRODUCTS -->
       <section class="productsArea" id="productsArea" aria-hidden="true">
         <button class="backBtn" id="backFromProducts" aria-hidden="true">
-          <!-- small left chevron SVG -->
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -208,10 +194,8 @@
         <div class="grid" id="grid"></div>
       </section>
 
-      <!-- DETAIL -->
       <section class="detailView" id="detailView" aria-hidden="true">
         <button class="backBtn" id="backFromDetail" aria-hidden="true">
-          <!-- fancier arrow + "Geri" -->
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -225,7 +209,6 @@
             <div style="font-weight:900;color:#2dd4bf;margin-top:8px" id="detailPrice"></div>
             <div class="detailActions">
               <button class="buy" id="detailBuy" aria-hidden="true">
-                <!-- paper-plane SVG (telegram-like) -->
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -237,7 +220,7 @@
         </div>
       </section>
 
-      <footer style="margin-top:28px;text-align:center;color:rgba(255,255,255,0.45)">
+      <footer>
         © 2025 MTOW | MARKET
       </footer>
     </main>
@@ -250,31 +233,27 @@ const CATEGORIES_JSON = 'data/categories.json';
 const PRODUCTS_JSON = 'data/products.json';
 const TG_BASE = 'https://t.me/mtowi';
 
-/* CATEGORY GIF ICONS (product thumbnail source) */
 const GIF_MAP = {
   "Telegram": "https://media3.giphy.com/media/yUHWI1PV3Y4btfmZBE/giphy.gif",
   "Whatsapp": "https://media1.giphy.com/media/DRinNvjCXc5Iexx0CH/giphy.gif",
   "Instagram": "https://media2.giphy.com/media/YwNCU8P5jGMNKGG5Bq/giphy.gif",
   "Tiktok": "https://media0.giphy.com/media/ujwiCsJtRmXdBzJvmm/giphy.gif",
+  "Pubg": "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMmlkZmZndHhyMDJqZTljNm0wd2pjZ3dqNDJkM3hkYXJxYWZybW1xZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/aVmxtJLqovaeICfH4g/giphy.gif",
   "default": "https://media3.giphy.com/media/GotXuxqhIZvs4/giphy.gif"
 };
 
-/* elements */
 const sidebar = document.getElementById('sidebar');
 const menuToggle = document.getElementById('menuToggle');
 const overlay = document.getElementById('overlay');
 const closeSidebar = document.getElementById('closeSidebar');
 const categoryContainer = document.getElementById('categoryContainer');
 const homeBtn = document.getElementById('homeBtn');
-
 const annGif = document.getElementById('annGif');
 const annText = document.getElementById('annText');
-
 const productsArea = document.getElementById('productsArea');
 const productsTitle = document.getElementById('productsTitle');
 const grid = document.getElementById('grid');
 const backFromProducts = document.getElementById('backFromProducts');
-
 const detailView = document.getElementById('detailView');
 const detailImg = document.getElementById('detailImg');
 const detailName = document.getElementById('detailName');
@@ -282,25 +261,22 @@ const detailDesc = document.getElementById('detailDesc');
 const detailPrice = document.getElementById('detailPrice');
 const detailBuy = document.getElementById('detailBuy');
 const backFromDetail = document.getElementById('backFromDetail');
-
 const themeToggle = document.getElementById('themeToggle');
 
-/* background nodes */
 const bgNodes = {
   telegram: document.getElementById('bg-tg'),
   whatsapp: document.getElementById('bg-wa'),
   instagram: document.getElementById('bg-ig'),
   tiktok: document.getElementById('bg-tt'),
+  pubg: document.getElementById('bg-pubg'),
   other: document.getElementById('bg-other')
 };
 
-/* state */
 let categories = [];
 let products = [];
 let currentCategory = null;
 let currentProduct = null;
 
-/* load helper */
 async function fetchJson(url){
   try{
     const r = await fetch(url, {cache:'no-cache'});
@@ -312,14 +288,12 @@ async function fetchJson(url){
   }
 }
 
-/* initialize theme from localStorage */
 (function initTheme(){
   const t = localStorage.getItem('mtow_theme') || 'dark';
   if(t === 'light') document.body.classList.add('light'), themeToggle.textContent='☀';
   else themeToggle.textContent='🌙';
 })();
 
-/* theme toggle */
 themeToggle.addEventListener('click', ()=>{
   document.body.classList.toggle('light');
   const mode = document.body.classList.contains('light') ? 'light' : 'dark';
@@ -327,7 +301,6 @@ themeToggle.addEventListener('click', ()=>{
   themeToggle.textContent = mode === 'light' ? '☀' : '🌙';
 });
 
-/* sidebar control */
 menuToggle.addEventListener('click', ()=> {
   sidebar.classList.add('open'); overlay.classList.add('show');
   sidebar.setAttribute('aria-hidden','false');
@@ -335,27 +308,23 @@ menuToggle.addEventListener('click', ()=> {
 closeSidebar.addEventListener('click', ()=> { sidebar.classList.remove('open'); overlay.classList.remove('show'); sidebar.setAttribute('aria-hidden','true');});
 overlay.addEventListener('click', ()=> { sidebar.classList.remove('open'); overlay.classList.remove('show'); sidebar.setAttribute('aria-hidden','true');});
 
-/* Home button: her yerden ana sayfaya döner */
 homeBtn.addEventListener('click', ()=> {
   sidebar.classList.remove('open'); overlay.classList.remove('show'); sidebar.setAttribute('aria-hidden','true');
   showHome();
 });
 
-/* show/hide animated background */
 function showBackgroundFor(categoryId){
-  // hide all
   Object.values(bgNodes).forEach(n => n.classList.remove('active'));
   if(!categoryId) return;
-  switch((categoryId||'').toLowerCase()){
-    case 'telegram': bgNodes.telegram.classList.add('active'); break;
-    case 'whatsapp': bgNodes.whatsapp.classList.add('active'); break;
-    case 'instagram': bgNodes.instagram.classList.add('active'); break;
-    case 'tiktok': bgNodes.tiktok.classList.add('active'); break;
-    default: bgNodes.other.classList.add('active'); break;
-  }
+  const key = (categoryId||'').toLowerCase();
+  if(key === 'telegram') bgNodes.telegram.classList.add('active');
+  else if(key === 'whatsapp') bgNodes.whatsapp.classList.add('active');
+  else if(key === 'instagram') bgNodes.instagram.classList.add('active');
+  else if(key === 'tiktok') bgNodes.tiktok.classList.add('active');
+  else if(key === 'pubg') bgNodes.pubg.classList.add('active');
+  else bgNodes.other.classList.add('active');
 }
 
-/* render categories in sidebar */
 function renderCategories(){
   categoryContainer.innerHTML = '';
   categories.forEach(cat=>{
@@ -371,7 +340,6 @@ function renderCategories(){
   });
 }
 
-/* load all data */
 async function loadAll(){
   const [a,c,p] = await Promise.all([
     fetchJson(ANNOUNCE_JSON),
@@ -379,56 +347,33 @@ async function loadAll(){
     fetchJson(PRODUCTS_JSON)
   ]);
 
-  // announcements
   if(a){
     if(Array.isArray(a) && a.length){
       annGif.src = (a[0].gif || annGif.src || GIF_MAP['default']);
       annText.innerHTML = a.map(x=>`<strong>${escapeHtml(x.title||'')}</strong><div style="margin-top:6px;color:var(--muted)">${escapeHtml(x.content||'')}</div>`).join('<hr style="opacity:.06;margin:10px 0">');
-    } else if(typeof a === 'object' && a.text){
-      annText.textContent = a.text;
     } else {
       annText.textContent = 'Henüz duyuru yok.';
     }
-  } else {
-    annText.textContent = 'Duyurular yüklenemedi.';
   }
 
-  categories = Array.isArray(c) ? c : (c ? Object.values(c) : []);
-  products = Array.isArray(p) ? p : (p ? (()=>{
-    // support object keyed by category
-    const arr=[];
-    for(const k in p){
-      if(Array.isArray(p[k])) p[k].forEach(it=>{ it.category = it.category || k; arr.push(it); });
-    }
-    return arr;
-  })() : []);
+  categories = Array.isArray(c) ? c : [];
+  products = Array.isArray(p) ? p : [];
 
-  // render
   renderCategories();
 }
 
-/* open a category: show product grid, animate background */
 function openCategory(categoryName){
   currentCategory = categoryName;
-  // title
   productsTitle.textContent = categoryName;
-  // show area
   document.getElementById('homeSection').style.display = 'none';
-  document.getElementById('homeSection').setAttribute('aria-hidden','true');
   productsArea.style.display = 'block';
-  productsArea.setAttribute('aria-hidden','false');
   detailView.style.display = 'none';
-  detailView.setAttribute('aria-hidden','true');
-  // set animated background
   showBackgroundFor(categoryName);
-  // populate grid
+  
   grid.innerHTML = '';
   const list = products.filter(p=>p.category === categoryName);
   if(list.length === 0){
     grid.innerHTML = `<div style="padding:20px;color:var(--muted)">Bu kategoride ürün yok.</div>`;
-    // ensure no back button in category view
-    backFromProducts.style.display = 'none';
-    backFromProducts.setAttribute('aria-hidden','true');
     return;
   }
   list.forEach(p=>{
@@ -440,105 +385,46 @@ function openCategory(categoryName){
       <h4>${escapeHtml(p.name)}</h4>
       <p>${escapeHtml(p.description || p.desc || '')}</p>
       <div class="price">${escapeHtml(p.price || p.fiyat || '')}</div>
-      <button class="detailBtn" data-id="${escapeHtml(p.id || p.name)}">Detay</button>
+      <button class="detailBtn">Detay</button>
     `;
-    // click on thumbnail or title -> detail
-    const imgEl = card.querySelector('.thumb img');
-    if(imgEl) imgEl.addEventListener('click', ()=> openDetail(p));
-    const titleEl = card.querySelector('h4');
-    if(titleEl) titleEl.addEventListener('click', ()=> openDetail(p));
-    // detail button -> open detail
-    card.querySelector('button.detailBtn').addEventListener('click', (e)=>{
-      e.stopPropagation();
-      openDetail(p);
-    });
+    card.querySelector('button.detailBtn').addEventListener('click', () => openDetail(p));
     grid.appendChild(card);
   });
-  // ensure no back button in category view
-  backFromProducts.style.display = 'none';
-  backFromProducts.setAttribute('aria-hidden','true');
 }
 
-/* open product detail */
 function openDetail(p){
   currentProduct = p;
   detailImg.src = GIF_MAP[p.category] || GIF_MAP['default'];
   detailName.textContent = p.name || '';
   detailDesc.textContent = (p.description || p.desc || '').trim() || 'Açıklama yok.';
   detailPrice.textContent = p.price || p.fiyat || '';
-  // show/hide
   productsArea.style.display = 'none';
-  productsArea.setAttribute('aria-hidden','true');
-  document.getElementById('homeSection').style.display = 'none';
-  document.getElementById('homeSection').setAttribute('aria-hidden','true');
   detailView.style.display = 'block';
-  detailView.setAttribute('aria-hidden','false');
-  // show back button in detail and buy button
   backFromDetail.style.display = 'flex';
-  backFromDetail.setAttribute('aria-hidden','false');
   detailBuy.style.display = 'inline-flex';
-  detailBuy.setAttribute('aria-hidden','false');
 
-  backFromDetail.onclick = ()=> {
-    // go back to product list (same category) if category exists, else home
-    if(currentCategory){
-      openCategory(currentCategory);
-    } else {
-      showHome();
-    }
-  };
-  detailBuy.onclick = ()=> buyFlow(p);
+  backFromDetail.onclick = () => currentCategory ? openCategory(currentCategory) : showHome();
+  detailBuy.onclick = () => buyFlow(p);
 }
 
-/* buy: open telegram with pre-filled message */
 function buyFlow(p){
-  const name = p.name || '';
-  const price = p.price || '';
-  const cat = p.category || currentCategory || '';
-  const desc = p.description || p.desc || '';
-  const msg = `Merhaba!\n\nÜrün: ${name}\nKategori: ${cat}\nFiyat: ${price}\nDetay: ${desc}`;
-  const url = `${TG_BASE}?text=${encodeURIComponent(msg)}`;
-  window.open(url,'_blank');
+  const msg = `Merhaba!\n\nÜrün: ${p.name}\nFiyat: ${p.price}`;
+  window.open(`${TG_BASE}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-/* show home */
 function showHome(){
   currentCategory = null;
-  currentProduct = null;
   productsArea.style.display = 'none';
-  productsArea.setAttribute('aria-hidden','true');
   detailView.style.display = 'none';
-  detailView.setAttribute('aria-hidden','true');
   document.getElementById('homeSection').style.display = 'block';
-  document.getElementById('homeSection').setAttribute('aria-hidden','false');
-  backFromProducts.style.display = 'none';
-  backFromProducts.setAttribute('aria-hidden','true');
-  backFromDetail.style.display = 'none';
-  backFromDetail.setAttribute('aria-hidden','true');
-  detailBuy.style.display = 'none';
-  detailBuy.setAttribute('aria-hidden','true');
   showBackgroundFor(null);
 }
 
-/* utilities */
-function escapeHtml(s){ if(s===null||s===undefined) return ''; return String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
+function escapeHtml(s){ return s ? String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) : ''; }
 
-/* keyboard accessibility: Esc closes panels / goes home from detail */
-document.addEventListener('keydown',(e)=>{
-  if(e.key==='Escape'){
-    if(sidebar.classList.contains('open')){ sidebar.classList.remove('open'); overlay.classList.remove('show'); }
-    else if(detailView.style.display === 'block'){ showHome(); }
-    else { showHome(); }
-  }
-});
-
-/* initial load */
 (async function init(){
-  // set announcement gif default (provided)
   annGif.src = GIF_MAP['default'];
-  // load data
   await loadAll();
-  // default show home
   showHome();
 })();
 </script>
