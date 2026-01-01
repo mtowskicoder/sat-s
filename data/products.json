@@ -2,5 +2,6 @@
   { "id": "tg-001", "category": "Telegram", "name": "Telegram +90 numara", "description": "Aktif numara, SMS onay ", "price": "₺150" },
   { "id": "wa-001", "category": "Whatsapp", "name": "WhatsApp +90 Numara", "description": "Aktif numara, SMS onay", "price": "₺250" },
   { "id": "wa-001", "category": "Whatsapp", "name": "WhatsApp +62 Endonezya Numara", "description": "Aktif numara, SMS onay", "price": "₺50" },
-  { "id": "tg-001", "category": "Telegram", "name": "Telegram +1 numara", "description": "Aktif numara, SMS onay ", "price": "₺100" }
+  { "id": "tg-001", "category": "Telegram", "name": "Telegram +1 numara", "description": "Aktif numara, SMS onay ", "price": "₺100" }, 
+  { "id": "pm-001", "category": "Pubg", "name": "Pubg 320 uc", "description": "1 ila 7 gün içerisinde yüklenir ucuz ama gecikmeli ", "price": "₺250" }
 ]
