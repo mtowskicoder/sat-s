@@ -1,26 +1,21 @@
 {
-  "telegram": [
+  "pubg": [
     {
-      "id": "tg1",
-      "name": "Telegram Premium",
-      "description": "1 Aylık Telegram Premium",
-      "price": "120₺"
+      "name": "PUBG UC 60",
+      "price": "50₺",
+      "gif": "https://media3.giphy.com/media/aVmxtJLqovaeICfH4g/giphy.gif"
+    },
+    {
+      "name": "PUBG UC 325",
+      "price": "250₺",
+      "gif": "https://media3.giphy.com/media/aVmxtJLqovaeICfH4g/giphy.gif"
     }
   ],
   "whatsapp": [
     {
-      "id": "wa1",
-      "name": "WhatsApp Kanal Hizmeti",
-      "description": "Kanal büyütme paketi",
-      "price": "150₺"
-    }
-  ],
-  "pubg": [
-    {
-      "id": "pg1",
-      "name": "PUBG Mobile UC",
-      "description": "600 UC",
-      "price": "200₺"
+      "name": "WhatsApp Kanal Kurulum",
+      "price": "100₺",
+      "gif": "https://media1.giphy.com/media/DRinNvjCXc5Iexx0CH/giphy.gif"
     }
   ]
 }
