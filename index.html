@@ -2,90 +2,117 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MTOW Market</title>
 
 <style>
+/* ================= ROOT ================= */
 :root{
   --accent:#7c4dff;
-  --bg1:#050b18;
-  --bg2:#0b1224;
   --text:#eaf0ff;
   --muted:#9aa4c7;
   --wa:#25D366;
 }
 
-/* 🎨 KATEGORİ RENKLERİ */
+/* KATEGORİ RENKLERİ */
 body.pubg{--accent:#facc15;}
-body.whatsapp{--accent:#25D366;}
-body.telegram{--accent:#38bdf8;}
+body.whatsapp{--accent:#22c55e;}
+body.default{--accent:#7c4dff;}
 
 *{box-sizing:border-box}
-html,body{margin:0;font-family:Inter,system-ui,Arial;color:var(--text);}
-
-/* 🌌 ANİMASYONLU ARKA PLAN */
-body{
-  background:linear-gradient(-45deg,var(--bg1),var(--bg2),var(--accent),var(--bg1));
-  background-size:400% 400%;
-  animation:bgAnim 14s ease infinite;
+html,body{
+  margin:0;
+  font-family:Inter,system-ui,Arial;
+  color:var(--text);
 }
-@keyframes bgAnim{
+
+/* ================= ARKA PLAN ================= */
+body{
+  background:linear-gradient(-45deg,#050b18,#0b1224,#1a1440,#050b18);
+  background-size:400% 400%;
+  animation:bg 14s ease infinite;
+}
+@keyframes bg{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 header{
-  position:sticky;top:0;z-index:100;
+  position:fixed;
+  top:0;left:0;right:0;
   height:60px;
   background:rgba(5,11,24,.85);
   backdrop-filter:blur(10px);
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   padding:0 14px;
+  z-index:100;
 }
 header h1{color:var(--accent);font-size:18px}
-header button{
-  background:var(--accent);border:0;color:#000;
-  padding:8px 14px;border-radius:10px;font-weight:900;
-}
 
-/* PAGE SYSTEM */
-.page{display:none;padding:16px;max-width:1200px;margin:auto;}
+/* ================= PAGE SYSTEM ================= */
+main{padding-top:70px;padding-bottom:80px}
+.page{
+  display:none;
+  max-width:1100px;
+  margin:auto;
+  padding:16px;
+}
 .page.active{display:block}
 
-/* ANNOUNCEMENT */
+/* ================= HOME ================= */
 .announce{
   background:rgba(15,24,51,.85);
-  backdrop-filter:blur(8px);
   border-radius:18px;
   padding:16px;
-  display:flex;gap:14px;align-items:center;
+  display:flex;
+  gap:16px;
+  align-items:center;
 }
-.announce img{width:120px;height:120px;border-radius:16px;object-fit:cover;}
-.announceText{color:var(--muted);font-weight:600}
+.announce img{
+  width:120px;
+  height:120px;
+  border-radius:14px;
+  object-fit:cover;
+}
+.announce p{
+  color:var(--muted);
+  font-weight:600;
+}
 
-/* CATEGORIES */
+/* ================= CATEGORIES ================= */
 .catGrid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
   gap:16px;
 }
 .catBtn{
   background:rgba(15,24,51,.9);
   border-radius:18px;
-  padding:18px;
+  padding:22px;
   text-align:center;
   font-weight:900;
   cursor:pointer;
   transition:.25s;
 }
 .catBtn:hover{
-  transform:translateY(-6px) scale(1.03);
+  transform:translateY(-6px);
   box-shadow:0 20px 40px rgba(0,0,0,.4);
 }
 
-/* PRODUCTS */
+/* ================= PRODUCTS ================= */
+.backBtn{
+  background:none;
+  border:0;
+  color:var(--accent);
+  font-weight:900;
+  margin-bottom:12px;
+  cursor:pointer;
+}
+
 .prodGrid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -96,32 +123,29 @@ header button{
   border-radius:18px;
   padding:14px;
 }
-.card img{width:100%;height:140px;object-fit:contain;}
-.price{color:#2dd4bf;font-weight:900}
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:contain;
+}
+.price{
+  color:#2dd4bf;
+  font-weight:900;
+}
 .card button{
   width:100%;
   margin-top:12px;
   background:var(--accent);
-  border:0;color:#000;
-  padding:12px;border-radius:12px;font-weight:900;
-}
-
-/* 🔙 BACK BUTTON */
-.backBtn{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:none;
   border:0;
-  color:var(--accent);
+  padding:12px;
+  border-radius:12px;
   font-weight:900;
-  cursor:pointer;
-  margin-bottom:10px;
 }
 
-/* POPUP */
+/* ================= POPUP ================= */
 .popup{
-  position:fixed;inset:0;
+  position:fixed;
+  inset:0;
   background:rgba(0,0,0,.65);
   display:none;
   align-items:center;
@@ -130,22 +154,22 @@ header button{
 }
 .popupBox{
   background:#0b1224;
-  padding:20px;
   border-radius:18px;
+  padding:20px;
   width:90%;
   max-width:360px;
 }
 .popupBox button{
   width:100%;
   padding:12px;
-  margin-top:12px;
   border-radius:12px;
   border:0;
+  margin-top:10px;
   font-weight:900;
 }
 .waBtn{background:var(--wa);color:#002b12}
 
-/* 🧭 MOBILE BOTTOM NAV */
+/* ================= BOTTOM NAV ================= */
 .bottomNav{
   position:fixed;
   bottom:0;left:0;right:0;
@@ -155,10 +179,11 @@ header button{
   display:flex;
   justify-content:space-around;
   align-items:center;
-  z-index:300;
+  z-index:150;
 }
 .bottomNav button{
-  background:none;border:0;
+  background:none;
+  border:0;
   color:var(--muted);
   font-weight:800;
 }
@@ -170,33 +195,36 @@ header button{
 </style>
 </head>
 
-<body>
+<body class="default">
 
 <header>
-  <h1>MTOW</h1>
-  <button onclick="showPage('categories')">Kategoriler</button>
+  <h1>MTOW Market</h1>
 </header>
 
-<!-- ANA SAYFA -->
-<section class="page active" id="home">
+<main>
+
+<!-- ANA SAYFA (SADECE DUYURU) -->
+<section id="home" class="page active">
   <div class="announce">
     <img id="annGif">
-    <div class="announceText" id="annText">Yükleniyor...</div>
+    <p id="annText">Yükleniyor...</p>
   </div>
 </section>
 
-<!-- KATEGORİLER -->
-<section class="page" id="categories">
+<!-- KATEGORİLER (AYRI SAYFA) -->
+<section id="categories" class="page">
   <h2>🛍️ Kategoriler</h2>
   <div class="catGrid" id="catGrid"></div>
 </section>
 
-<!-- ÜRÜNLER -->
-<section class="page" id="products">
-  <button class="backBtn" onclick="showPage('categories')">← Geri</button>
+<!-- ÜRÜNLER (AYRI SAYFA) -->
+<section id="products" class="page">
+  <button class="backBtn" onclick="goCategories()">← Kategorilere dön</button>
   <h2 id="prodTitle"></h2>
   <div class="prodGrid" id="prodGrid"></div>
 </section>
+
+</main>
 
 <!-- POPUP -->
 <div class="popup" id="popup">
@@ -208,32 +236,45 @@ header button{
   </div>
 </div>
 
-<!-- 🧭 BOTTOM NAV -->
+<!-- ALT NAV -->
 <div class="bottomNav">
   <button onclick="showPage('home')">Ana Sayfa</button>
   <button onclick="showPage('categories')">Kategoriler</button>
-  <button onclick="showPage('products')">Geri</button>
+  <button onclick="goBack()">Geri</button>
 </div>
 
 <script>
 const ANN_JSON="data/announcements.json";
 const PRODUCTS_JSON="data/products.json";
 const WA_LINK="https://wa.me/6282261958495";
-let products={};
 
-/* PAGE CONTROL */
+let products={};
+let lastPage="home";
+
+/* SAYFA GEÇİŞ */
 function showPage(id){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+  lastPage=id;
 }
 
-/* LOAD ANNOUNCE */
+function goBack(){
+  if(lastPage==="products") showPage("categories");
+  else showPage("home");
+}
+
+function goCategories(){
+  document.body.className="default";
+  showPage("categories");
+}
+
+/* ANNOUNCEMENT */
 fetch(ANN_JSON).then(r=>r.json()).then(a=>{
   annGif.src=a[0].gif;
   annText.innerText=a[0].content;
 });
 
-/* LOAD PRODUCTS */
+/* PRODUCTS */
 fetch(PRODUCTS_JSON).then(r=>r.json()).then(p=>{
   products=p;
   renderCategories();
@@ -242,11 +283,11 @@ fetch(PRODUCTS_JSON).then(r=>r.json()).then(p=>{
 function renderCategories(){
   catGrid.innerHTML="";
   Object.keys(products).forEach(cat=>{
-    const b=document.createElement("div");
-    b.className="catBtn";
-    b.innerText=cat.toUpperCase();
-    b.onclick=()=>openCategory(cat);
-    catGrid.appendChild(b);
+    const d=document.createElement("div");
+    d.className="catBtn";
+    d.innerText=cat.toUpperCase();
+    d.onclick=()=>openCategory(cat);
+    catGrid.appendChild(d);
   });
 }
 
