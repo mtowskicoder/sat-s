@@ -7,266 +7,288 @@
 
 <style>
 :root{
-  --bg:#0f1115;
-  --panel:#181b22;
-  --text:#eaeaf0;
-  --muted:#9aa0aa;
-  --accent:#3b82f6;
+--bg:#050b1e;
+--text:#e8eeff;
+--card:rgba(255,255,255,.06);
+--accent:#7c4dff;
+--tg:#1d9bf0;
+--wa:#25D366;
 }
 
-*{box-sizing:border-box;font-family:system-ui,-apple-system}
-
+*{box-sizing:border-box}
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
+margin:0;
+font-family:Inter,system-ui,Arial;
+background:var(--bg);
+color:var(--text);
 }
 
+/* HEADER */
 header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px 16px;
-  background:var(--panel);
-  position:sticky;
-  top:0;
-  z-index:10;
+height:64px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 16px;
+background:#060f2c;
+position:sticky;
+top:0;
+z-index:50;
 }
-
-button{
-  background:var(--accent);
-  color:white;
-  border:none;
-  padding:10px 14px;
-  border-radius:10px;
-  cursor:pointer;
+.btn{
+border:0;
+padding:8px 14px;
+border-radius:10px;
+font-weight:800;
+cursor:pointer;
+background:linear-gradient(90deg,var(--accent),#5f3cff);
+color:#021025;
 }
+.title{font-weight:900;color:var(--accent)}
 
-section{display:none;padding:16px}
-section.active{display:block}
+/* SIDEBAR */
+aside{
+position:fixed;
+left:-280px;
+top:64px;
+bottom:0;
+width:260px;
+background:#050c25;
+padding:16px;
+transition:.3s;
+z-index:60;
+}
+aside.open{left:0}
+.cat{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+margin-bottom:10px;
+background:var(--card);
+border-radius:10px;
+cursor:pointer;
+}
+.cat img{width:42px;height:42px;border-radius:8px}
 
+/* OVERLAY */
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+display:none;
+z-index:55;
+}
+.overlay.show{display:block}
+
+/* BACKGROUNDS */
+.bg{
+position:fixed;
+inset:64px 0 0 0;
+z-index:0;
+opacity:0;
+transition:.4s;
+pointer-events:none;
+}
+.bg.show{opacity:1}
+.bg.tg{background:linear-gradient(135deg,#0b2b55,#1d9bf0)}
+.bg.wa{background:linear-gradient(135deg,#064e3b,#25D366)}
+.bg.pubg{background:linear-gradient(135deg,#2b1a05,#ff9800)}
+
+/* MAIN */
+main{
+max-width:1100px;
+margin:20px auto;
+padding:10px;
+position:relative;
+z-index:10;
+}
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:12px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:16px;
 }
-
 .card{
-  background:var(--panel);
-  padding:12px;
-  border-radius:14px;
-  text-align:center;
+background:var(--card);
+padding:12px;
+border-radius:12px;
+}
+.thumb{
+height:130px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+.thumb img{max-height:100%}
+.price{color:#2dd4bf;font-weight:900}
+.detailBtn{
+width:100%;
+margin-top:10px;
+padding:12px;
+border-radius:10px;
+border:0;
+font-weight:800;
+cursor:pointer;
+background:linear-gradient(90deg,var(--accent),#5f3cff);
+color:#021025;
 }
 
-.card img{
-  width:100%;
-  border-radius:12px;
+/* DETAIL */
+#detail{display:none;text-align:center}
+#detail img{width:220px;border-radius:12px}
+
+/* BUY FULLSCREEN */
+.buyPop{
+position:fixed;
+inset:0;
+background:#050b1e;
+display:none;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:100;
+padding:20px;
+text-align:center;
 }
-
-.card h3{margin:10px 0 4px}
-.card p{color:var(--muted);font-size:14px}
-
-.detail img{
-  width:100%;
-  border-radius:16px;
+.buyBox{
+width:100%;
+max-width:420px;
 }
-
-.detail-buttons{
-  display:flex;
-  gap:10px;
-  margin-top:20px;
+.buyBox h2{margin:0}
+.buyInfo{margin:16px 0;color:#aab}
+.buyBtn{
+padding:16px;
+margin:12px 0;
+border-radius:14px;
+font-weight:900;
+cursor:pointer;
+color:#021025;
+font-size:18px;
 }
-
-/* CONTACT */
-.contact-buttons a{
-  display:block;
-  margin-bottom:10px;
-  text-align:center;
-  padding:12px;
-  border-radius:12px;
-  background:var(--panel);
-  color:white;
-  text-decoration:none;
-}
-
-/* MODAL */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:100;
-}
-
-.modal.active{display:flex}
-
-.modal-box{
-  background:var(--panel);
-  padding:20px;
-  border-radius:16px;
-  width:90%;
-  max-width:320px;
-  text-align:center;
-}
-
-.modal-box h3{margin-top:0}
-
-.modal-box a{
-  display:block;
-  margin-top:12px;
-  padding:12px;
-  border-radius:12px;
-  color:white;
-  text-decoration:none;
-}
-
-.tg{background:#229ED9}
-.wa{background:#25D366}
+.buyWa{background:var(--wa)}
+.buyTg{background:var(--tg)}
 </style>
 </head>
 
 <body>
 
 <header>
-  <strong>MTOW Market</strong>
-  <button id="homeBtn">Ana Menü</button>
+<button class="btn" id="menuBtn">KATEGORİ</button>
+<div class="title">MTOW</div>
 </header>
 
-<!-- KATEGORİLER -->
-<section id="categories" class="active">
-  <h2>Kategoriler</h2>
-  <div class="grid" id="categoryGrid"></div>
-</section>
+<aside id="sidebar">
+<div class="cat" onclick="openCat('telegram')">
+<img src="https://media3.giphy.com/media/yUHWI1PV3Y4btfmZBE/giphy.gif">Telegram
+</div>
+<div class="cat" onclick="openCat('whatsapp')">
+<img src="https://media1.giphy.com/media/DRinNvjCXc5Iexx0CH/giphy.gif">WhatsApp
+</div>
+<div class="cat" onclick="openCat('pubg')">
+<img src="https://media3.giphy.com/media/aVmxtJLqovaeICfH4g/giphy.gif">PUBG
+</div>
+</aside>
 
-<!-- ÜRÜNLER -->
-<section id="products">
-  <h2 id="productTitle"></h2>
-  <div class="grid" id="productGrid"></div>
-</section>
+<div class="overlay" id="overlay"></div>
 
-<!-- DETAY -->
-<section id="detail">
-  <div class="detail" id="detailContent"></div>
-</section>
+<div class="bg tg" id="bg-telegram"></div>
+<div class="bg wa" id="bg-whatsapp"></div>
+<div class="bg pubg" id="bg-pubg"></div>
 
-<!-- İLETİŞİM -->
-<section id="contact">
-  <h2>İletişim</h2>
-  <div class="contact-buttons">
-    <a href="https://t.me/mtow1" target="_blank">Telegram</a>
-    <a href="https://wa.me/6282261958495" target="_blank">WhatsApp</a>
-  </div>
-</section>
+<main>
+<div id="products" class="grid"></div>
 
-<!-- POPUP -->
-<div class="modal" id="buyModal">
-  <div class="modal-box">
-    <h3>Satın Al</h3>
-    <a id="tgLink" class="tg" target="_blank">Telegram</a>
-    <a class="wa" href="https://wa.me/6282261958495" target="_blank">WhatsApp</a>
-    <button style="margin-top:14px" onclick="closeModal()">Kapat</button>
-  </div>
+<div id="detail">
+<img id="dImg">
+<h2 id="dName"></h2>
+<p id="dDesc"></p>
+<div class="price" id="dPrice"></div>
+<button class="detailBtn" onclick="openBuy()">Satın Al</button>
+</div>
+</main>
+
+<div class="buyPop" id="buyPop">
+<div class="buyBox">
+<h2 id="bName"></h2>
+<div class="buyInfo" id="bInfo"></div>
+
+<div class="buyBtn buyWa" onclick="goWA()">WhatsApp ile Satın Al</div>
+<div class="buyBtn buyTg" onclick="goTG()">Telegram ile Satın Al</div>
+<button class="btn" onclick="closeBuy()">Kapat</button>
+</div>
 </div>
 
 <script>
-/* DATA */
+const PRODUCTS_JSON="data/products.json";
+let PRODUCTS={},currentCat="",currentProduct=null;
 
-const categories = [
-  {id:"pubg", name:"PUBG UC", icon:"🎮"},
-  {id:"contact", name:"İletişim", icon:"📞"}
-];
+const sidebar=document.getElementById("sidebar");
+const overlay=document.getElementById("overlay");
 
-const products = [
-  {
-    id:1,
-    category:"PUBG UC",
-    name:"PUBG UC Yükleme",
-    price:"Fiyat Sorunuz",
-    description:"PUBG Mobile için hızlı ve güvenli UC yükleme hizmeti.",
-    gif:"https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyMmlkZmZndHhyMDJqZTljNm0wd2pjZ3dqNDJkM3hkYXJxYWZybW1xZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/aVmxtJLqovaeICfH4g/giphy.gif"
-  }
-];
+menuBtn.onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")}
+overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")}
 
-/* HELPERS */
+fetch(PRODUCTS_JSON)
+.then(r=>r.json())
+.then(d=>PRODUCTS=d);
 
-function show(id){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+function bgShow(id){
+document.querySelectorAll(".bg").forEach(b=>b.classList.remove("show"));
+document.getElementById("bg-"+id).classList.add("show");
 }
 
-/* CATEGORIES */
+function openCat(cat){
+currentCat=cat;
+sidebar.classList.remove("open");
+overlay.classList.remove("show");
+bgShow(cat);
 
-const categoryGrid=document.getElementById("categoryGrid");
+const box=document.getElementById("products");
+box.innerHTML="";
+document.getElementById("detail").style.display="none";
+box.style.display="grid";
 
-function loadCategories(){
-  categoryGrid.innerHTML="";
-  categories.forEach(c=>{
-    const div=document.createElement("div");
-    div.className="card";
-    div.innerHTML=`<h3>${c.icon} ${c.name}</h3>`;
-    div.onclick=()=>{
-      if(c.id==="contact") show("contact");
-      else loadProducts(c.name);
-    };
-    categoryGrid.appendChild(div);
-  });
-}
-loadCategories();
-
-/* PRODUCTS */
-
-function loadProducts(category){
-  show("products");
-  productTitle.textContent=category;
-  productGrid.innerHTML="";
-
-  products.filter(p=>p.category===category).forEach(p=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
-      <img src="${p.gif}">
-      <h3>${p.name}</h3>
-      <p>${p.price}</p>
-      <button>Detay</button>
-    `;
-    card.querySelector("button").onclick=()=>openDetail(p);
-    productGrid.appendChild(card);
-  });
+(PRODUCTS[cat]||[]).forEach(p=>{
+const c=document.createElement("div");
+c.className="card";
+c.innerHTML=`
+<div class="thumb"><img src="${cat==="pubg"?"https://media3.giphy.com/media/aVmxtJLqovaeICfH4g/giphy.gif":""}"></div>
+<h4>${p.name}</h4>
+<p>${p.description}</p>
+<div class="price">${p.price}</div>
+<button class="detailBtn">Detay</button>
+`;
+c.querySelector("button").onclick=()=>showDetail(p);
+box.appendChild(c);
+});
 }
 
-/* DETAIL */
-
-function openDetail(p){
-  show("detail");
-  detailContent.innerHTML=`
-    <img src="${p.gif}">
-    <h2>${p.name}</h2>
-    <p>${p.description}</p>
-    <div class="detail-buttons">
-      <button onclick="show('categories')">Geri</button>
-      <button onclick="openModal('${p.name}','${p.price}')">Satın Al</button>
-    </div>
-  `;
+function showDetail(p){
+currentProduct=p;
+products.style.display="none";
+detail.style.display="block";
+dName.innerText=p.name;
+dDesc.innerText=p.description;
+dPrice.innerText=p.price;
 }
 
-/* MODAL */
-
-function openModal(name,price){
-  const msg=`Merhaba!\n\nÜrün: ${name}\nFiyat: ${price}`;
-  document.getElementById("tgLink").href =
-    "https://t.me/mtow1?text="+encodeURIComponent(msg);
-  document.getElementById("buyModal").classList.add("active");
+function openBuy(){
+buyPop.style.display="flex";
+bName.innerText=currentProduct.name;
+bInfo.innerText=`${currentProduct.description} • ${currentProduct.price}`;
 }
 
-function closeModal(){
-  document.getElementById("buyModal").classList.remove("active");
+function closeBuy(){buyPop.style.display="none"}
+
+function goWA(){
+const msg=`Ürün: ${currentProduct.name}\nKategori: ${currentCat}\nFiyat: ${currentProduct.price}`;
+window.open("https://wa.me/6282261958495?text="+encodeURIComponent(msg),"_blank");
 }
 
-/* HEADER */
-
-homeBtn.onclick=()=>show("categories");
+function goTG(){
+const msg=`Ürün: ${currentProduct.name}\nKategori: ${currentCat}\nFiyat: ${currentProduct.price}`;
+window.open("https://t.me/mtow1?text="+encodeURIComponent(msg),"_blank");
+}
 </script>
 
 </body>
