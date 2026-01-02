@@ -6,17 +6,18 @@
 <title>MTOW Market</title>
 
 <style>
-/* ================= ROOT ================= */
 :root{
   --accent:#7c4dff;
   --text:#eaf0ff;
   --muted:#9aa4c7;
   --wa:#25D366;
+  --tg:#229ED9;
 }
 
 /* KATEGORİ RENKLERİ */
 body.pubg{--accent:#facc15;}
 body.whatsapp{--accent:#22c55e;}
+body.telegram{--accent:#38bdf8;}
 body.default{--accent:#7c4dff;}
 
 *{box-sizing:border-box}
@@ -26,7 +27,7 @@ html,body{
   color:var(--text);
 }
 
-/* ================= ARKA PLAN ================= */
+/* 🌌 ARKA PLAN */
 body{
   background:linear-gradient(-45deg,#050b18,#0b1224,#1a1440,#050b18);
   background-size:400% 400%;
@@ -38,32 +39,66 @@ body{
   100%{background-position:0% 50%}
 }
 
-/* ================= HEADER ================= */
+/* HEADER */
 header{
   position:fixed;
   top:0;left:0;right:0;
   height:60px;
-  background:rgba(5,11,24,.85);
+  background:rgba(5,11,24,.9);
   backdrop-filter:blur(10px);
   display:flex;
   align-items:center;
-  justify-content:space-between;
   padding:0 14px;
   z-index:100;
 }
-header h1{color:var(--accent);font-size:18px}
+.menuBtn{
+  font-size:26px;
+  cursor:pointer;
+  margin-right:12px;
+}
+header h1{font-size:18px;color:var(--accent)}
 
-/* ================= PAGE SYSTEM ================= */
-main{padding-top:70px;padding-bottom:80px}
-.page{
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  top:0;left:-260px;
+  width:260px;
+  height:100%;
+  background:#0b1224;
+  transition:.3s;
+  z-index:200;
+  padding:20px;
+}
+.sidebar.open{left:0}
+.sidebar h2{color:var(--accent)}
+.sidebar button{
+  width:100%;
+  background:none;
+  border:0;
+  color:var(--text);
+  padding:12px 0;
+  text-align:left;
+  font-weight:800;
+  cursor:pointer;
+}
+.subCats{
+  padding-left:12px;
   display:none;
+}
+.subCats button{color:var(--muted)}
+.subCats.show{display:block}
+
+/* MAIN */
+main{
+  padding-top:70px;
+  padding-bottom:20px;
   max-width:1100px;
   margin:auto;
-  padding:16px;
 }
+.page{display:none;padding:16px}
 .page.active{display:block}
 
-/* ================= HOME ================= */
+/* ANNOUNCE */
 .announce{
   background:rgba(15,24,51,.85);
   border-radius:18px;
@@ -73,46 +108,13 @@ main{padding-top:70px;padding-bottom:80px}
   align-items:center;
 }
 .announce img{
-  width:120px;
-  height:120px;
+  width:120px;height:120px;
   border-radius:14px;
   object-fit:cover;
 }
-.announce p{
-  color:var(--muted);
-  font-weight:600;
-}
+.announce p{color:var(--muted);font-weight:600}
 
-/* ================= CATEGORIES ================= */
-.catGrid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:16px;
-}
-.catBtn{
-  background:rgba(15,24,51,.9);
-  border-radius:18px;
-  padding:22px;
-  text-align:center;
-  font-weight:900;
-  cursor:pointer;
-  transition:.25s;
-}
-.catBtn:hover{
-  transform:translateY(-6px);
-  box-shadow:0 20px 40px rgba(0,0,0,.4);
-}
-
-/* ================= PRODUCTS ================= */
-.backBtn{
-  background:none;
-  border:0;
-  color:var(--accent);
-  font-weight:900;
-  margin-bottom:12px;
-  cursor:pointer;
-}
-
+/* PRODUCTS */
 .prodGrid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -128,10 +130,7 @@ main{padding-top:70px;padding-bottom:80px}
   height:140px;
   object-fit:contain;
 }
-.price{
-  color:#2dd4bf;
-  font-weight:900;
-}
+.price{color:#2dd4bf;font-weight:900}
 .card button{
   width:100%;
   margin-top:12px;
@@ -142,7 +141,7 @@ main{padding-top:70px;padding-bottom:80px}
   font-weight:900;
 }
 
-/* ================= POPUP ================= */
+/* POPUP */
 .popup{
   position:fixed;
   inset:0;
@@ -150,7 +149,7 @@ main{padding-top:70px;padding-bottom:80px}
   display:none;
   align-items:center;
   justify-content:center;
-  z-index:200;
+  z-index:300;
 }
 .popupBox{
   background:#0b1224;
@@ -168,62 +167,39 @@ main{padding-top:70px;padding-bottom:80px}
   font-weight:900;
 }
 .waBtn{background:var(--wa);color:#002b12}
-
-/* ================= BOTTOM NAV ================= */
-.bottomNav{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  height:60px;
-  background:rgba(5,11,24,.9);
-  backdrop-filter:blur(10px);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  z-index:150;
-}
-.bottomNav button{
-  background:none;
-  border:0;
-  color:var(--muted);
-  font-weight:800;
-}
-.bottomNav button.active{color:var(--accent)}
-
-@media(min-width:800px){
-  .bottomNav{display:none}
-}
+.tgBtn{background:var(--tg);color:#00233a}
 </style>
 </head>
 
 <body class="default">
 
 <header>
+  <div class="menuBtn" onclick="toggleMenu()">☰</div>
   <h1>MTOW Market</h1>
 </header>
 
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <h2>Menü</h2>
+  <button onclick="showHome()">🏠 Ana Sayfa</button>
+  <button onclick="toggleCats()">🛍️ Kategoriler</button>
+  <div class="subCats" id="catList"></div>
+</div>
+
 <main>
+  <!-- HOME -->
+  <section id="home" class="page active">
+    <div class="announce">
+      <img id="annGif">
+      <p id="annText">Yükleniyor...</p>
+    </div>
+  </section>
 
-<!-- ANA SAYFA (SADECE DUYURU) -->
-<section id="home" class="page active">
-  <div class="announce">
-    <img id="annGif">
-    <p id="annText">Yükleniyor...</p>
-  </div>
-</section>
-
-<!-- KATEGORİLER (AYRI SAYFA) -->
-<section id="categories" class="page">
-  <h2>🛍️ Kategoriler</h2>
-  <div class="catGrid" id="catGrid"></div>
-</section>
-
-<!-- ÜRÜNLER (AYRI SAYFA) -->
-<section id="products" class="page">
-  <button class="backBtn" onclick="goCategories()">← Kategorilere dön</button>
-  <h2 id="prodTitle"></h2>
-  <div class="prodGrid" id="prodGrid"></div>
-</section>
-
+  <!-- PRODUCTS -->
+  <section id="products" class="page">
+    <h2 id="prodTitle"></h2>
+    <div class="prodGrid" id="prodGrid"></div>
+  </section>
 </main>
 
 <!-- POPUP -->
@@ -231,44 +207,45 @@ main{padding-top:70px;padding-bottom:80px}
   <div class="popupBox">
     <h3 id="popName"></h3>
     <p id="popInfo"></p>
-    <button class="waBtn" id="waBtn">WhatsApp ile Satın Al</button>
+    <button class="waBtn" id="waBtn">WhatsApp</button>
+    <button class="tgBtn" id="tgBtn">Telegram</button>
     <button onclick="closePopup()">Kapat</button>
   </div>
-</div>
-
-<!-- ALT NAV -->
-<div class="bottomNav">
-  <button onclick="showPage('home')">Ana Sayfa</button>
-  <button onclick="showPage('categories')">Kategoriler</button>
-  <button onclick="goBack()">Geri</button>
 </div>
 
 <script>
 const ANN_JSON="data/announcements.json";
 const PRODUCTS_JSON="data/products.json";
+
 const WA_LINK="https://wa.me/6282261958495";
+const TG_LINK="https://t.me/mtow_support"; // değiştir
 
 let products={};
-let lastPage="home";
 
-/* SAYFA GEÇİŞ */
-function showPage(id){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  lastPage=id;
+/* MENU */
+function toggleMenu(){
+  sidebar.classList.toggle("open");
+}
+function toggleCats(){
+  catList.classList.toggle("show");
 }
 
-function goBack(){
-  if(lastPage==="products") showPage("categories");
-  else showPage("home");
-}
-
-function goCategories(){
+/* PAGE */
+function showHome(){
+  closeMenu();
   document.body.className="default";
-  showPage("categories");
+  home.classList.add("active");
+  productsPage(false);
+}
+function productsPage(show){
+  home.classList.remove("active");
+  products.classList.toggle("active",show);
+}
+function closeMenu(){
+  sidebar.classList.remove("open");
 }
 
-/* ANNOUNCEMENT */
+/* ANNOUNCE */
 fetch(ANN_JSON).then(r=>r.json()).then(a=>{
   annGif.src=a[0].gif;
   annText.innerText=a[0].content;
@@ -277,23 +254,23 @@ fetch(ANN_JSON).then(r=>r.json()).then(a=>{
 /* PRODUCTS */
 fetch(PRODUCTS_JSON).then(r=>r.json()).then(p=>{
   products=p;
-  renderCategories();
+  renderCats();
 });
 
-function renderCategories(){
-  catGrid.innerHTML="";
+function renderCats(){
+  catList.innerHTML="";
   Object.keys(products).forEach(cat=>{
-    const d=document.createElement("div");
-    d.className="catBtn";
-    d.innerText=cat.toUpperCase();
-    d.onclick=()=>openCategory(cat);
-    catGrid.appendChild(d);
+    const b=document.createElement("button");
+    b.innerText=cat.toUpperCase();
+    b.onclick=()=>openCategory(cat);
+    catList.appendChild(b);
   });
 }
 
 function openCategory(cat){
+  closeMenu();
   document.body.className=cat;
-  showPage("products");
+  productsPage(true);
   prodTitle.innerText=cat.toUpperCase();
   prodGrid.innerHTML="";
   products[cat].forEach(p=>{
@@ -310,17 +287,22 @@ function openCategory(cat){
   });
 }
 
+/* POPUP */
 function buyPopup(p,cat){
   popName.innerText=p.name;
   popInfo.innerText=`Kategori: ${cat}\nFiyat: ${p.price}`;
   popup.style.display="flex";
-  waBtn.onclick=()=>{
-    const msg=`Merhaba, ${p.name} satın almak istiyorum (${p.price})`;
-    window.open(WA_LINK+"?text="+encodeURIComponent(msg));
-  };
+
+  const msg=encodeURIComponent(
+    `Merhaba, ${p.name} satın almak istiyorum (${p.price})`
+  );
+  waBtn.onclick=()=>window.open(WA_LINK+"?text="+msg);
+  tgBtn.onclick=()=>window.open(TG_LINK+"?text="+msg);
 }
 
-function closePopup(){popup.style.display="none";}
+function closePopup(){
+  popup.style.display="none";
+}
 </script>
 
 </body>
