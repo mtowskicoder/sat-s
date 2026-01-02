@@ -2,292 +2,114 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MTOW Market</title>
 
+<link rel="manifest" href="manifest.json">
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
 <style>
-:root{
---bg:#050b1e;
---text:#e8eeff;
---card:rgba(255,255,255,.06);
---accent:#7c4dff;
---tg:#1d9bf0;
---wa:#25D366;
-}
-
-*{box-sizing:border-box}
-body{
-margin:0;
-font-family:Inter,system-ui,Arial;
-background:var(--bg);
-color:var(--text);
-}
-
-/* HEADER */
-header{
-height:64px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 16px;
-background:#060f2c;
-position:sticky;
-top:0;
-z-index:50;
-}
-.btn{
-border:0;
-padding:8px 14px;
-border-radius:10px;
-font-weight:800;
-cursor:pointer;
-background:linear-gradient(90deg,var(--accent),#5f3cff);
-color:#021025;
-}
-.title{font-weight:900;color:var(--accent)}
-
-/* SIDEBAR */
-aside{
-position:fixed;
-left:-280px;
-top:64px;
-bottom:0;
-width:260px;
-background:#050c25;
-padding:16px;
-transition:.3s;
-z-index:60;
-}
-aside.open{left:0}
-.cat{
-display:flex;
-align-items:center;
-gap:10px;
-padding:10px;
-margin-bottom:10px;
-background:var(--card);
-border-radius:10px;
-cursor:pointer;
-}
-.cat img{width:42px;height:42px;border-radius:8px}
-
-/* OVERLAY */
-.overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.45);
-display:none;
-z-index:55;
-}
-.overlay.show{display:block}
-
-/* BACKGROUNDS */
-.bg{
-position:fixed;
-inset:64px 0 0 0;
-z-index:0;
-opacity:0;
-transition:.4s;
-pointer-events:none;
-}
-.bg.show{opacity:1}
-.bg.tg{background:linear-gradient(135deg,#0b2b55,#1d9bf0)}
-.bg.wa{background:linear-gradient(135deg,#064e3b,#25D366)}
-.bg.pubg{background:linear-gradient(135deg,#2b1a05,#ff9800)}
-
-/* MAIN */
-main{
-max-width:1100px;
-margin:20px auto;
-padding:10px;
-position:relative;
-z-index:10;
-}
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:16px;
-}
-.card{
-background:var(--card);
-padding:12px;
-border-radius:12px;
-}
-.thumb{
-height:130px;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-.thumb img{max-height:100%}
+body{margin:0;font-family:Inter,Arial;background:#050b1e;color:#e8eeff}
+header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:#060f2c}
+.btn{padding:8px 14px;border-radius:10px;border:0;font-weight:800;background:#7c4dff;color:#021025}
+main{max-width:1100px;margin:auto;padding:12px}
+.card{background:rgba(255,255,255,.06);padding:14px;border-radius:12px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .price{color:#2dd4bf;font-weight:900}
-.detailBtn{
-width:100%;
-margin-top:10px;
-padding:12px;
-border-radius:10px;
-border:0;
-font-weight:800;
-cursor:pointer;
-background:linear-gradient(90deg,var(--accent),#5f3cff);
-color:#021025;
-}
-
-/* DETAIL */
-#detail{display:none;text-align:center}
-#detail img{width:220px;border-radius:12px}
-
-/* BUY FULLSCREEN */
-.buyPop{
-position:fixed;
-inset:0;
-background:#050b1e;
-display:none;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:100;
-padding:20px;
-text-align:center;
-}
-.buyBox{
-width:100%;
-max-width:420px;
-}
-.buyBox h2{margin:0}
-.buyInfo{margin:16px 0;color:#aab}
-.buyBtn{
-padding:16px;
-margin:12px 0;
-border-radius:14px;
-font-weight:900;
-cursor:pointer;
-color:#021025;
-font-size:18px;
-}
-.buyWa{background:var(--wa)}
-.buyTg{background:var(--tg)}
+.buy{background:#7c4dff;color:#021025;border:0;padding:12px;border-radius:10px;font-weight:900;width:100%}
+.popup{position:fixed;inset:0;background:#050b1e;display:none;align-items:center;justify-content:center}
+.popup div{max-width:400px;width:100%;padding:20px}
 </style>
 </head>
 
 <body>
 
 <header>
-<button class="btn" id="menuBtn">KATEGORİ</button>
-<div class="title">MTOW</div>
+<button class="btn" onclick="showHome()">🏠 Ana Sayfa</button>
+<div><b>MTOW</b></div>
 </header>
 
-<aside id="sidebar">
-<div class="cat" onclick="openCat('telegram')">
-<img src="https://media3.giphy.com/media/yUHWI1PV3Y4btfmZBE/giphy.gif">Telegram
-</div>
-<div class="cat" onclick="openCat('whatsapp')">
-<img src="https://media1.giphy.com/media/DRinNvjCXc5Iexx0CH/giphy.gif">WhatsApp
-</div>
-<div class="cat" onclick="openCat('pubg')">
-<img src="https://media3.giphy.com/media/aVmxtJLqovaeICfH4g/giphy.gif">PUBG
-</div>
-</aside>
-
-<div class="overlay" id="overlay"></div>
-
-<div class="bg tg" id="bg-telegram"></div>
-<div class="bg wa" id="bg-whatsapp"></div>
-<div class="bg pubg" id="bg-pubg"></div>
-
 <main>
-<div id="products" class="grid"></div>
 
-<div id="detail">
-<img id="dImg">
-<h2 id="dName"></h2>
-<p id="dDesc"></p>
-<div class="price" id="dPrice"></div>
-<button class="detailBtn" onclick="openBuy()">Satın Al</button>
-</div>
+<!-- HOME -->
+<section id="home">
+<h2>Duyurular</h2>
+<div id="announcements"></div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products" style="display:none">
+<div class="grid" id="productGrid"></div>
+</section>
+
 </main>
 
-<div class="buyPop" id="buyPop">
-<div class="buyBox">
-<h2 id="bName"></h2>
-<div class="buyInfo" id="bInfo"></div>
-
-<div class="buyBtn buyWa" onclick="goWA()">WhatsApp ile Satın Al</div>
-<div class="buyBtn buyTg" onclick="goTG()">Telegram ile Satın Al</div>
+<!-- BUY POPUP -->
+<div class="popup" id="buyPop">
+<div class="card">
+<h3 id="bName"></h3>
+<p id="bDesc"></p>
+<p class="price" id="bPrice"></p>
+<button class="buy" onclick="goWA()">WhatsApp</button><br><br>
+<button class="buy" onclick="goTG()">Telegram</button><br><br>
 <button class="btn" onclick="closeBuy()">Kapat</button>
 </div>
 </div>
 
 <script>
-const PRODUCTS_JSON="data/products.json";
-let PRODUCTS={},currentCat="",currentProduct=null;
+let PRODUCTS={},current=null,cat="";
 
-const sidebar=document.getElementById("sidebar");
-const overlay=document.getElementById("overlay");
-
-menuBtn.onclick=()=>{sidebar.classList.add("open");overlay.classList.add("show")}
-overlay.onclick=()=>{sidebar.classList.remove("open");overlay.classList.remove("show")}
-
-fetch(PRODUCTS_JSON)
+fetch("data/announcements.json")
 .then(r=>r.json())
-.then(d=>PRODUCTS=d);
+.then(d=>{
+  const box=document.getElementById("announcements");
+  d.forEach(a=>{
+    box.innerHTML+=`<div class="card"><b>${a.title}</b><p>${a.content}</p></div>`;
+  });
+});
 
-function bgShow(id){
-document.querySelectorAll(".bg").forEach(b=>b.classList.remove("show"));
-document.getElementById("bg-"+id).classList.add("show");
+fetch("data/products.json").then(r=>r.json()).then(d=>PRODUCTS=d);
+
+function showHome(){
+document.getElementById("home").style.display="block";
+document.getElementById("products").style.display="none";
 }
 
-function openCat(cat){
-currentCat=cat;
-sidebar.classList.remove("open");
-overlay.classList.remove("show");
-bgShow(cat);
-
-const box=document.getElementById("products");
-box.innerHTML="";
-document.getElementById("detail").style.display="none";
-box.style.display="grid";
-
-(PRODUCTS[cat]||[]).forEach(p=>{
-const c=document.createElement("div");
-c.className="card";
-c.innerHTML=`
-<div class="thumb"><img src="${cat==="pubg"?"https://media3.giphy.com/media/aVmxtJLqovaeICfH4g/giphy.gif":""}"></div>
-<h4>${p.name}</h4>
+function openCat(c){
+cat=c;
+home.style.display="none";
+products.style.display="block";
+productGrid.innerHTML="";
+PRODUCTS[c].forEach(p=>{
+productGrid.innerHTML+=`
+<div class="card">
+<b>${p.name}</b>
 <p>${p.description}</p>
 <div class="price">${p.price}</div>
-<button class="detailBtn">Detay</button>
-`;
-c.querySelector("button").onclick=()=>showDetail(p);
-box.appendChild(c);
+<button class="buy" onclick='openBuy(${JSON.stringify(p)})'>Satın Al</button>
+</div>`;
 });
 }
 
-function showDetail(p){
-currentProduct=p;
-products.style.display="none";
-detail.style.display="block";
-dName.innerText=p.name;
-dDesc.innerText=p.description;
-dPrice.innerText=p.price;
-}
-
-function openBuy(){
+function openBuy(p){
+current=p;
 buyPop.style.display="flex";
-bName.innerText=currentProduct.name;
-bInfo.innerText=`${currentProduct.description} • ${currentProduct.price}`;
+bName.innerText=p.name;
+bDesc.innerText=p.description;
+bPrice.innerText=p.price;
 }
 
 function closeBuy(){buyPop.style.display="none"}
-
 function goWA(){
-const msg=`Ürün: ${currentProduct.name}\nKategori: ${currentCat}\nFiyat: ${currentProduct.price}`;
-window.open("https://wa.me/6282261958495?text="+encodeURIComponent(msg),"_blank");
+window.open("https://wa.me/6282261958495?text="+encodeURIComponent(current.name),"blank");
 }
-
 function goTG(){
-const msg=`Ürün: ${currentProduct.name}\nKategori: ${currentCat}\nFiyat: ${currentProduct.price}`;
-window.open("https://t.me/mtow1?text="+encodeURIComponent(msg),"_blank");
+window.open("https://t.me/mtow1?text="+encodeURIComponent(current.name),"blank");
 }
 </script>
 
