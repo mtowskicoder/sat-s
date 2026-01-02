@@ -8,7 +8,7 @@
 <style>
 :root{
   --bg:#050b1e;
-  --panel:rgba(255,255,255,.06);
+  --panel:rgba(255,255,255,.07);
   --text:#e8eeff;
   --muted:#9aa3c7;
   --accent:#7c4dff;
@@ -16,6 +16,7 @@
 }
 
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Inter,Arial,sans-serif;
@@ -25,28 +26,29 @@ body{
 
 /* HEADER */
 header{
+  position:sticky;
+  top:0;
   height:60px;
+  background:#060f2c;
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:0 14px;
-  background:#060f2c;
-  position:sticky;
-  top:0;
   z-index:5;
 }
 
 header b{font-size:18px}
+
 header button{
   background:var(--accent);
   border:0;
   padding:8px 12px;
   border-radius:10px;
-  font-weight:800;
+  font-weight:900;
   color:#021025;
 }
 
-/* LAYOUT */
+/* MAIN */
 main{
   max-width:1100px;
   margin:auto;
@@ -55,10 +57,11 @@ main{
 
 section{margin-bottom:20px}
 
+/* CARD */
 .card{
   background:var(--panel);
-  border-radius:14px;
   padding:14px;
+  border-radius:14px;
   margin-bottom:12px;
 }
 
@@ -73,6 +76,7 @@ section{margin-bottom:20px}
   display:flex;
   gap:10px;
   overflow-x:auto;
+  padding-bottom:4px;
 }
 
 .cat-btn{
@@ -82,7 +86,7 @@ section{margin-bottom:20px}
   background:var(--panel);
   border:0;
   color:var(--text);
-  font-weight:800;
+  font-weight:900;
 }
 
 /* PRODUCTS */
@@ -108,30 +112,30 @@ section{margin-bottom:20px}
   color:#021025;
 }
 
-/* FULLSCREEN POPUP */
+/* FULL SCREEN POPUP */
 .popup{
   position:fixed;
   inset:0;
   background:var(--bg);
   display:none;
   flex-direction:column;
-  z-index:10;
+  z-index:20;
 }
 
 .popup-header{
   height:60px;
+  background:#060f2c;
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:0 14px;
-  background:#060f2c;
 }
 
 .popup-content{
   padding:16px;
 }
 
-.popup button{
+.popup-content button{
   margin-top:12px;
 }
 </style>
@@ -140,29 +144,25 @@ section{margin-bottom:20px}
 <body>
 
 <header>
-<button onclick="showHome()">🏠 Ana Sayfa</button>
-<b>MTOW Market</b>
+  <button onclick="showHome()">🏠 Ana Sayfa</button>
+  <b>MTOW Market</b>
 </header>
 
 <main>
 
 <!-- HOME -->
 <section id="home">
-<h2 class="announce-title">📢 Duyurular</h2>
-<div id="announcements"></div>
+  <h2 class="announce-title">📢 Duyurular</h2>
+  <div id="announcements"></div>
 
-<h2>🛍️ Kategoriler</h2>
-<div class="categories">
-<button class="cat-btn" onclick="openCategory('telegram')">Telegram</button>
-<button class="cat-btn" onclick="openCategory('whatsapp')">WhatsApp</button>
-<button class="cat-btn" onclick="openCategory('pubg')">PUBG</button>
-</div>
+  <h2>🛍️ Kategoriler</h2>
+  <div class="categories" id="categories"></div>
 </section>
 
 <!-- PRODUCTS -->
 <section id="products" style="display:none">
-<h2 id="catTitle"></h2>
-<div class="grid" id="productGrid"></div>
+  <h2 id="categoryTitle"></h2>
+  <div class="grid" id="productGrid"></div>
 </section>
 
 </main>
@@ -186,14 +186,14 @@ section{margin-bottom:20px}
 
 <script>
 let PRODUCTS = {};
-let currentProduct = null;
+let CURRENT_PRODUCT = null;
 
 /* LOAD ANNOUNCEMENTS */
 fetch("data/announcements.json")
 .then(r => r.json())
-.then(list => {
+.then(data => {
   const box = document.getElementById("announcements");
-  list.forEach(a => {
+  data.forEach(a => {
     box.innerHTML += `
       <div class="card">
         <b>${a.title}</b>
@@ -203,10 +203,21 @@ fetch("data/announcements.json")
   });
 });
 
-/* LOAD PRODUCTS */
+/* LOAD PRODUCTS + CATEGORIES */
 fetch("data/products.json")
 .then(r => r.json())
-.then(data => PRODUCTS = data);
+.then(data => {
+  PRODUCTS = data;
+  const catBox = document.getElementById("categories");
+
+  Object.keys(PRODUCTS).forEach(cat => {
+    catBox.innerHTML += `
+      <button class="cat-btn" onclick="openCategory('${cat}')">
+        ${cat.toUpperCase()}
+      </button>
+    `;
+  });
+});
 
 /* NAV */
 function showHome(){
@@ -214,11 +225,11 @@ function showHome(){
   products.style.display = "none";
 }
 
-/* CATEGORY */
+/* CATEGORY OPEN */
 function openCategory(cat){
   home.style.display = "none";
   products.style.display = "block";
-  catTitle.innerText = cat.toUpperCase();
+  categoryTitle.innerText = cat.toUpperCase();
   productGrid.innerHTML = "";
 
   PRODUCTS[cat].forEach(p => {
@@ -227,15 +238,17 @@ function openCategory(cat){
         <b>${p.name}</b>
         <p>${p.description}</p>
         <div class="price">${p.price}</div>
-        <button class="buy" onclick='openBuy(${JSON.stringify(p)})'>Satın Al</button>
+        <button class="buy" onclick='openBuy(${JSON.stringify(p)})'>
+          Satın Al
+        </button>
       </div>
     `;
   });
 }
 
-/* BUY */
+/* BUY POPUP */
 function openBuy(p){
-  currentProduct = p;
+  CURRENT_PRODUCT = p;
   buyPopup.style.display = "flex";
   bName.innerText = p.name;
   bDesc.innerText = p.description;
@@ -250,7 +263,7 @@ function closeBuy(){
 function goWhatsApp(){
   window.open(
     "https://wa.me/6282261958495?text=" +
-    encodeURIComponent(currentProduct.name),
+    encodeURIComponent(CURRENT_PRODUCT.name),
     "_blank"
   );
 }
@@ -258,7 +271,7 @@ function goWhatsApp(){
 function goTelegram(){
   window.open(
     "https://t.me/mtow1?text=" +
-    encodeURIComponent(currentProduct.name),
+    encodeURIComponent(CURRENT_PRODUCT.name),
     "_blank"
   );
 }
