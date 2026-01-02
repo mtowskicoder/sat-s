@@ -14,7 +14,7 @@
   --accent:#3b82f6;
 }
 
-*{box-sizing:border-box;font-family:system-ui,-apple-system,BlinkMacSystemFont}
+*{box-sizing:border-box;font-family:system-ui,-apple-system}
 
 body{
   margin:0;
@@ -77,6 +77,7 @@ section.active{display:block}
   margin-top:20px;
 }
 
+/* CONTACT */
 .contact-buttons a{
   display:block;
   margin-bottom:10px;
@@ -87,6 +88,42 @@ section.active{display:block}
   color:white;
   text-decoration:none;
 }
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+}
+
+.modal.active{display:flex}
+
+.modal-box{
+  background:var(--panel);
+  padding:20px;
+  border-radius:16px;
+  width:90%;
+  max-width:320px;
+  text-align:center;
+}
+
+.modal-box h3{margin-top:0}
+
+.modal-box a{
+  display:block;
+  margin-top:12px;
+  padding:12px;
+  border-radius:12px;
+  color:white;
+  text-decoration:none;
+}
+
+.tg{background:#229ED9}
+.wa{background:#25D366}
 </style>
 </head>
 
@@ -123,8 +160,18 @@ section.active{display:block}
   </div>
 </section>
 
+<!-- POPUP -->
+<div class="modal" id="buyModal">
+  <div class="modal-box">
+    <h3>Satın Al</h3>
+    <a id="tgLink" class="tg" target="_blank">Telegram</a>
+    <a class="wa" href="https://wa.me/6282261958495" target="_blank">WhatsApp</a>
+    <button style="margin-top:14px" onclick="closeModal()">Kapat</button>
+  </div>
+</div>
+
 <script>
-/* ================== DATA ================== */
+/* DATA */
 
 const categories = [
   {id:"pubg", name:"PUBG UC", icon:"🎮"},
@@ -142,16 +189,16 @@ const products = [
   }
 ];
 
-/* ================== HELPERS ================== */
+/* HELPERS */
 
 function show(id){
   document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-/* ================== CATEGORIES ================== */
+/* CATEGORIES */
 
-const categoryGrid = document.getElementById("categoryGrid");
+const categoryGrid=document.getElementById("categoryGrid");
 
 function loadCategories(){
   categoryGrid.innerHTML="";
@@ -160,22 +207,20 @@ function loadCategories(){
     div.className="card";
     div.innerHTML=`<h3>${c.icon} ${c.name}</h3>`;
     div.onclick=()=>{
-      if(c.id==="contact"){show("contact");}
+      if(c.id==="contact") show("contact");
       else loadProducts(c.name);
     };
     categoryGrid.appendChild(div);
   });
 }
-
 loadCategories();
 
-/* ================== PRODUCTS ================== */
+/* PRODUCTS */
 
 function loadProducts(category){
   show("products");
-  document.getElementById("productTitle").textContent=category;
-  const grid=document.getElementById("productGrid");
-  grid.innerHTML="";
+  productTitle.textContent=category;
+  productGrid.innerHTML="";
 
   products.filter(p=>p.category===category).forEach(p=>{
     const card=document.createElement("div");
@@ -187,33 +232,41 @@ function loadProducts(category){
       <button>Detay</button>
     `;
     card.querySelector("button").onclick=()=>openDetail(p);
-    grid.appendChild(card);
+    productGrid.appendChild(card);
   });
 }
 
-/* ================== DETAIL ================== */
+/* DETAIL */
 
 function openDetail(p){
   show("detail");
-  const msg=`Merhaba!\n\nÜrün: ${p.name}\nKategori: ${p.category}\nFiyat: ${p.price}`;
-  const tg=`https://t.me/mtow1?text=${encodeURIComponent(msg)}`;
-
-  document.getElementById("detailContent").innerHTML=`
+  detailContent.innerHTML=`
     <img src="${p.gif}">
     <h2>${p.name}</h2>
     <p>${p.description}</p>
     <div class="detail-buttons">
       <button onclick="show('categories')">Geri</button>
-      <button onclick="window.open('${tg}','_blank')">Satın Al</button>
+      <button onclick="openModal('${p.name}','${p.price}')">Satın Al</button>
     </div>
   `;
 }
 
-/* ================== HEADER ================== */
+/* MODAL */
 
-document.getElementById("homeBtn").onclick=()=>{
-  show("categories");
-};
+function openModal(name,price){
+  const msg=`Merhaba!\n\nÜrün: ${name}\nFiyat: ${price}`;
+  document.getElementById("tgLink").href =
+    "https://t.me/mtow1?text="+encodeURIComponent(msg);
+  document.getElementById("buyModal").classList.add("active");
+}
+
+function closeModal(){
+  document.getElementById("buyModal").classList.remove("active");
+}
+
+/* HEADER */
+
+homeBtn.onclick=()=>show("categories");
 </script>
 
 </body>
