@@ -7,21 +7,31 @@
 
 <style>
 :root{
-  --bg:#050b18;
-  --panel:#0b1224;
-  --card:#0f1833;
   --accent:#7c4dff;
+  --wa:#25D366;
   --text:#eaf0ff;
   --muted:#9aa4c7;
-  --wa:#25D366;
 }
 
 *{box-sizing:border-box}
 html,body{
   margin:0;
   font-family:Inter,system-ui,Arial;
-  background:var(--bg);
   color:var(--text);
+  overflow-x:hidden;
+}
+
+/* 🌌 ANİMASYONLU ARKA PLAN */
+body{
+  background:linear-gradient(-45deg,#050b18,#0b1224,#1b1244,#050b18);
+  background-size:400% 400%;
+  animation:bgAnim 15s ease infinite;
+}
+
+@keyframes bgAnim{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 
 /* HEADER */
@@ -30,7 +40,8 @@ header{
   top:0;
   z-index:100;
   height:60px;
-  background:linear-gradient(90deg,#0b1224,#050b18);
+  background:rgba(5,11,24,.8);
+  backdrop-filter:blur(10px);
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -59,9 +70,10 @@ main{
 
 /* ANNOUNCEMENT */
 .announce{
-  background:linear-gradient(180deg,#101a3a,#0b1224);
-  border-radius:14px;
-  padding:14px;
+  background:rgba(15,24,51,.85);
+  backdrop-filter:blur(6px);
+  border-radius:16px;
+  padding:16px;
   display:flex;
   gap:14px;
   align-items:center;
@@ -69,7 +81,7 @@ main{
 .announce img{
   width:120px;
   height:120px;
-  border-radius:12px;
+  border-radius:14px;
   object-fit:cover;
 }
 .announceText{
@@ -79,44 +91,43 @@ main{
 
 /* CATEGORIES */
 #categories{
-  margin-top:26px;
-}
-#categories h2{
-  margin-bottom:12px;
+  margin-top:28px;
 }
 .catGrid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-  gap:12px;
+  gap:14px;
 }
 .catBtn{
-  background:var(--card);
-  border-radius:14px;
-  padding:14px;
+  background:rgba(15,24,51,.85);
+  backdrop-filter:blur(6px);
+  border-radius:16px;
+  padding:16px;
   text-align:center;
   cursor:pointer;
-  font-weight:800;
-  transition:.2s;
+  font-weight:900;
+  transition:.25s;
 }
 .catBtn:hover{
-  transform:translateY(-4px);
-  box-shadow:0 10px 30px rgba(124,77,255,.25);
+  transform:translateY(-6px) scale(1.03);
+  box-shadow:0 20px 40px rgba(124,77,255,.35);
 }
 
 /* PRODUCTS */
 #products{
   display:none;
-  margin-top:30px;
+  margin-top:32px;
 }
 .prodGrid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:14px;
+  gap:16px;
 }
 .card{
-  background:var(--card);
-  border-radius:14px;
-  padding:12px;
+  background:rgba(15,24,51,.85);
+  backdrop-filter:blur(6px);
+  border-radius:18px;
+  padding:14px;
 }
 .card img{
   width:100%;
@@ -132,12 +143,12 @@ main{
 }
 .card button{
   width:100%;
-  margin-top:10px;
+  margin-top:12px;
   background:var(--accent);
   color:#fff;
   border:0;
-  padding:10px;
-  border-radius:10px;
+  padding:12px;
+  border-radius:12px;
   font-weight:800;
 }
 
@@ -145,21 +156,18 @@ main{
 .popup{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.65);
   display:none;
   align-items:center;
   justify-content:center;
   z-index:200;
 }
 .popupBox{
-  background:var(--panel);
+  background:#0b1224;
   padding:20px;
-  border-radius:16px;
+  border-radius:18px;
   width:90%;
   max-width:360px;
-}
-.popupBox h3{
-  margin-top:0;
 }
 .popupBox button{
   width:100%;
@@ -171,7 +179,7 @@ main{
 }
 .waBtn{
   background:var(--wa);
-  color:#002b12;
+  color:#003b1a;
 }
 
 /* MOBILE */
@@ -193,19 +201,16 @@ main{
 
 <main>
 
-<!-- ANNOUNCEMENT -->
 <section class="announce">
-  <img id="annGif" src="">
+  <img id="annGif">
   <div class="announceText" id="annText">Yükleniyor...</div>
 </section>
 
-<!-- CATEGORIES -->
 <section id="categories">
   <h2>🛍️ Kategoriler</h2>
   <div class="catGrid" id="catGrid"></div>
 </section>
 
-<!-- PRODUCTS -->
 <section id="products">
   <h2 id="prodTitle"></h2>
   <div class="prodGrid" id="prodGrid"></div>
@@ -213,7 +218,6 @@ main{
 
 </main>
 
-<!-- POPUP -->
 <div class="popup" id="popup">
   <div class="popupBox">
     <h3 id="popName"></h3>
@@ -224,41 +228,37 @@ main{
 </div>
 
 <script>
-const PRODUCTS_JSON = "data/products.json";
-const ANN_JSON = "data/announcements.json";
-const WA_LINK = "https://wa.me/6282261958495";
+const PRODUCTS_JSON="data/products.json";
+const ANN_JSON="data/announcements.json";
+const WA_LINK="https://wa.me/6282261958495";
 
-let products = {};
-let currentProduct = null;
+let products={};
 
-/* LOAD ANNOUNCEMENTS */
-fetch(ANN_JSON).then(r=>r.json()).then(d=>{
-  document.getElementById("annGif").src = d[0].gif;
-  document.getElementById("annText").innerText = d[0].content;
+fetch(ANN_JSON).then(r=>r.json()).then(a=>{
+  document.getElementById("annGif").src=a[0].gif;
+  document.getElementById("annText").innerText=a[0].content;
 });
 
-/* LOAD PRODUCTS */
-fetch(PRODUCTS_JSON).then(r=>r.json()).then(data=>{
-  products = data;
+fetch(PRODUCTS_JSON).then(r=>r.json()).then(p=>{
+  products=p;
   renderCategories();
 });
 
 function renderCategories(){
-  const grid = document.getElementById("catGrid");
-  grid.innerHTML="";
+  const g=document.getElementById("catGrid");
   Object.keys(products).forEach(cat=>{
-    const b = document.createElement("div");
+    const b=document.createElement("div");
     b.className="catBtn";
-    b.innerText = cat.toUpperCase();
+    b.innerText=cat.toUpperCase();
     b.onclick=()=>openCategory(cat);
-    grid.appendChild(b);
+    g.appendChild(b);
   });
 }
 
 function openCategory(cat){
   document.getElementById("products").style.display="block";
-  document.getElementById("prodTitle").innerText = cat.toUpperCase();
-  const g = document.getElementById("prodGrid");
+  document.getElementById("prodTitle").innerText=cat.toUpperCase();
+  const g=document.getElementById("prodGrid");
   g.innerHTML="";
   products[cat].forEach(p=>{
     const c=document.createElement("div");
@@ -275,10 +275,8 @@ function openCategory(cat){
 }
 
 function buyPopup(p,cat){
-  currentProduct = p;
   document.getElementById("popName").innerText=p.name;
-  document.getElementById("popInfo").innerText=
-    `Kategori: ${cat}\nFiyat: ${p.price}`;
+  document.getElementById("popInfo").innerText=`Kategori: ${cat}\nFiyat: ${p.price}`;
   document.getElementById("popup").style.display="flex";
   document.getElementById("waBtn").onclick=()=>{
     const msg=`Merhaba, ${p.name} satın almak istiyorum. (${p.price})`;
