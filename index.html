@@ -2,114 +2,265 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MTOW Market</title>
 
-<link rel="manifest" href="manifest.json">
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
-
 <style>
-body{margin:0;font-family:Inter,Arial;background:#050b1e;color:#e8eeff}
-header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:#060f2c}
-.btn{padding:8px 14px;border-radius:10px;border:0;font-weight:800;background:#7c4dff;color:#021025}
-main{max-width:1100px;margin:auto;padding:12px}
-.card{background:rgba(255,255,255,.06);padding:14px;border-radius:12px;margin-bottom:14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.price{color:#2dd4bf;font-weight:900}
-.buy{background:#7c4dff;color:#021025;border:0;padding:12px;border-radius:10px;font-weight:900;width:100%}
-.popup{position:fixed;inset:0;background:#050b1e;display:none;align-items:center;justify-content:center}
-.popup div{max-width:400px;width:100%;padding:20px}
+:root{
+  --bg:#050b1e;
+  --panel:rgba(255,255,255,.06);
+  --text:#e8eeff;
+  --muted:#9aa3c7;
+  --accent:#7c4dff;
+  --green:#2dd4bf;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* HEADER */
+header{
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:#060f2c;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+header b{font-size:18px}
+header button{
+  background:var(--accent);
+  border:0;
+  padding:8px 12px;
+  border-radius:10px;
+  font-weight:800;
+  color:#021025;
+}
+
+/* LAYOUT */
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:12px;
+}
+
+section{margin-bottom:20px}
+
+.card{
+  background:var(--panel);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+/* ANNOUNCEMENTS */
+.announce-title{
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+/* CATEGORIES */
+.categories{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+}
+
+.cat-btn{
+  flex:0 0 auto;
+  padding:10px 14px;
+  border-radius:12px;
+  background:var(--panel);
+  border:0;
+  color:var(--text);
+  font-weight:800;
+}
+
+/* PRODUCTS */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:14px;
+}
+
+.price{
+  color:var(--green);
+  font-weight:900;
+  margin:6px 0;
+}
+
+.buy{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:0;
+  background:var(--accent);
+  font-weight:900;
+  color:#021025;
+}
+
+/* FULLSCREEN POPUP */
+.popup{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  display:none;
+  flex-direction:column;
+  z-index:10;
+}
+
+.popup-header{
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  background:#060f2c;
+}
+
+.popup-content{
+  padding:16px;
+}
+
+.popup button{
+  margin-top:12px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<button class="btn" onclick="showHome()">🏠 Ana Sayfa</button>
-<div><b>MTOW</b></div>
+<button onclick="showHome()">🏠 Ana Sayfa</button>
+<b>MTOW Market</b>
 </header>
 
 <main>
 
 <!-- HOME -->
 <section id="home">
-<h2>Duyurular</h2>
+<h2 class="announce-title">📢 Duyurular</h2>
 <div id="announcements"></div>
+
+<h2>🛍️ Kategoriler</h2>
+<div class="categories">
+<button class="cat-btn" onclick="openCategory('telegram')">Telegram</button>
+<button class="cat-btn" onclick="openCategory('whatsapp')">WhatsApp</button>
+<button class="cat-btn" onclick="openCategory('pubg')">PUBG</button>
+</div>
 </section>
 
 <!-- PRODUCTS -->
 <section id="products" style="display:none">
+<h2 id="catTitle"></h2>
 <div class="grid" id="productGrid"></div>
 </section>
 
 </main>
 
 <!-- BUY POPUP -->
-<div class="popup" id="buyPop">
-<div class="card">
-<h3 id="bName"></h3>
-<p id="bDesc"></p>
-<p class="price" id="bPrice"></p>
-<button class="buy" onclick="goWA()">WhatsApp</button><br><br>
-<button class="buy" onclick="goTG()">Telegram</button><br><br>
-<button class="btn" onclick="closeBuy()">Kapat</button>
-</div>
+<div class="popup" id="buyPopup">
+  <div class="popup-header">
+    <b>Satın Al</b>
+    <button onclick="closeBuy()">✖</button>
+  </div>
+
+  <div class="popup-content">
+    <h3 id="bName"></h3>
+    <p id="bDesc"></p>
+    <div class="price" id="bPrice"></div>
+
+    <button class="buy" onclick="goWhatsApp()">WhatsApp ile İletişim</button>
+    <button class="buy" onclick="goTelegram()">Telegram ile İletişim</button>
+  </div>
 </div>
 
 <script>
-let PRODUCTS={},current=null,cat="";
+let PRODUCTS = {};
+let currentProduct = null;
 
+/* LOAD ANNOUNCEMENTS */
 fetch("data/announcements.json")
-.then(r=>r.json())
-.then(d=>{
-  const box=document.getElementById("announcements");
-  d.forEach(a=>{
-    box.innerHTML+=`<div class="card"><b>${a.title}</b><p>${a.content}</p></div>`;
+.then(r => r.json())
+.then(list => {
+  const box = document.getElementById("announcements");
+  list.forEach(a => {
+    box.innerHTML += `
+      <div class="card">
+        <b>${a.title}</b>
+        <p>${a.content}</p>
+      </div>
+    `;
   });
 });
 
-fetch("data/products.json").then(r=>r.json()).then(d=>PRODUCTS=d);
+/* LOAD PRODUCTS */
+fetch("data/products.json")
+.then(r => r.json())
+.then(data => PRODUCTS = data);
 
+/* NAV */
 function showHome(){
-document.getElementById("home").style.display="block";
-document.getElementById("products").style.display="none";
+  home.style.display = "block";
+  products.style.display = "none";
 }
 
-function openCat(c){
-cat=c;
-home.style.display="none";
-products.style.display="block";
-productGrid.innerHTML="";
-PRODUCTS[c].forEach(p=>{
-productGrid.innerHTML+=`
-<div class="card">
-<b>${p.name}</b>
-<p>${p.description}</p>
-<div class="price">${p.price}</div>
-<button class="buy" onclick='openBuy(${JSON.stringify(p)})'>Satın Al</button>
-</div>`;
-});
+/* CATEGORY */
+function openCategory(cat){
+  home.style.display = "none";
+  products.style.display = "block";
+  catTitle.innerText = cat.toUpperCase();
+  productGrid.innerHTML = "";
+
+  PRODUCTS[cat].forEach(p => {
+    productGrid.innerHTML += `
+      <div class="card">
+        <b>${p.name}</b>
+        <p>${p.description}</p>
+        <div class="price">${p.price}</div>
+        <button class="buy" onclick='openBuy(${JSON.stringify(p)})'>Satın Al</button>
+      </div>
+    `;
+  });
 }
 
+/* BUY */
 function openBuy(p){
-current=p;
-buyPop.style.display="flex";
-bName.innerText=p.name;
-bDesc.innerText=p.description;
-bPrice.innerText=p.price;
+  currentProduct = p;
+  buyPopup.style.display = "flex";
+  bName.innerText = p.name;
+  bDesc.innerText = p.description;
+  bPrice.innerText = p.price;
 }
 
-function closeBuy(){buyPop.style.display="none"}
-function goWA(){
-window.open("https://wa.me/6282261958495?text="+encodeURIComponent(current.name),"blank");
+function closeBuy(){
+  buyPopup.style.display = "none";
 }
-function goTG(){
-window.open("https://t.me/mtow1?text="+encodeURIComponent(current.name),"blank");
+
+/* LINKS */
+function goWhatsApp(){
+  window.open(
+    "https://wa.me/6282261958495?text=" +
+    encodeURIComponent(currentProduct.name),
+    "_blank"
+  );
+}
+
+function goTelegram(){
+  window.open(
+    "https://t.me/mtow1?text=" +
+    encodeURIComponent(currentProduct.name),
+    "_blank"
+  );
 }
 </script>
 
