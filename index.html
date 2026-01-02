@@ -2,24 +2,24 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <title>MTOW Market</title>
 
 <style>
 :root{
-  --bg:#050b1e;
-  --panel:rgba(255,255,255,.07);
-  --text:#e8eeff;
-  --muted:#9aa3c7;
+  --bg:#050b18;
+  --panel:#0b1224;
+  --card:#0f1833;
   --accent:#7c4dff;
-  --green:#2dd4bf;
+  --text:#eaf0ff;
+  --muted:#9aa4c7;
+  --wa:#25D366;
 }
 
 *{box-sizing:border-box}
-
-body{
+html,body{
   margin:0;
-  font-family:Inter,Arial,sans-serif;
+  font-family:Inter,system-ui,Arial;
   background:var(--bg);
   color:var(--text);
 }
@@ -28,115 +28,158 @@ body{
 header{
   position:sticky;
   top:0;
+  z-index:100;
   height:60px;
-  background:#060f2c;
+  background:linear-gradient(90deg,#0b1224,#050b18);
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:0 14px;
-  z-index:5;
 }
-
-header b{font-size:18px}
-
+header h1{
+  font-size:18px;
+  color:var(--accent);
+}
 header button{
   background:var(--accent);
+  color:#fff;
   border:0;
-  padding:8px 12px;
+  padding:8px 14px;
   border-radius:10px;
-  font-weight:900;
-  color:#021025;
+  font-weight:700;
+  cursor:pointer;
 }
 
 /* MAIN */
 main{
-  max-width:1100px;
+  padding:16px;
+  max-width:1200px;
   margin:auto;
-  padding:12px;
 }
 
-section{margin-bottom:20px}
-
-/* CARD */
-.card{
-  background:var(--panel);
-  padding:14px;
+/* ANNOUNCEMENT */
+.announce{
+  background:linear-gradient(180deg,#101a3a,#0b1224);
   border-radius:14px;
-  margin-bottom:12px;
+  padding:14px;
+  display:flex;
+  gap:14px;
+  align-items:center;
 }
-
-/* ANNOUNCEMENTS */
-.announce-title{
-  font-size:20px;
-  margin-bottom:10px;
+.announce img{
+  width:120px;
+  height:120px;
+  border-radius:12px;
+  object-fit:cover;
+}
+.announceText{
+  font-weight:600;
+  color:var(--muted);
 }
 
 /* CATEGORIES */
-.categories{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding-bottom:4px;
+#categories{
+  margin-top:26px;
 }
-
-.cat-btn{
-  flex:0 0 auto;
-  padding:10px 14px;
-  border-radius:12px;
-  background:var(--panel);
-  border:0;
-  color:var(--text);
-  font-weight:900;
+#categories h2{
+  margin-bottom:12px;
+}
+.catGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+  gap:12px;
+}
+.catBtn{
+  background:var(--card);
+  border-radius:14px;
+  padding:14px;
+  text-align:center;
+  cursor:pointer;
+  font-weight:800;
+  transition:.2s;
+}
+.catBtn:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 30px rgba(124,77,255,.25);
 }
 
 /* PRODUCTS */
-.grid{
+#products{
+  display:none;
+  margin-top:30px;
+}
+.prodGrid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
   gap:14px;
 }
-
-.price{
-  color:var(--green);
-  font-weight:900;
-  margin:6px 0;
-}
-
-.buy{
-  width:100%;
+.card{
+  background:var(--card);
+  border-radius:14px;
   padding:12px;
-  border-radius:12px;
-  border:0;
-  background:var(--accent);
+}
+.card img{
+  width:100%;
+  height:140px;
+  object-fit:contain;
+}
+.card h3{
+  margin:8px 0 4px;
+}
+.price{
+  color:#2dd4bf;
   font-weight:900;
-  color:#021025;
+}
+.card button{
+  width:100%;
+  margin-top:10px;
+  background:var(--accent);
+  color:#fff;
+  border:0;
+  padding:10px;
+  border-radius:10px;
+  font-weight:800;
 }
 
-/* FULL SCREEN POPUP */
+/* POPUP */
 .popup{
   position:fixed;
   inset:0;
-  background:var(--bg);
+  background:rgba(0,0,0,.6);
   display:none;
-  flex-direction:column;
-  z-index:20;
-}
-
-.popup-header{
-  height:60px;
-  background:#060f2c;
-  display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:0 14px;
+  justify-content:center;
+  z-index:200;
 }
-
-.popup-content{
-  padding:16px;
+.popupBox{
+  background:var(--panel);
+  padding:20px;
+  border-radius:16px;
+  width:90%;
+  max-width:360px;
 }
-
-.popup-content button{
+.popupBox h3{
+  margin-top:0;
+}
+.popupBox button{
+  width:100%;
+  padding:12px;
   margin-top:12px;
+  border-radius:12px;
+  border:0;
+  font-weight:800;
+}
+.waBtn{
+  background:var(--wa);
+  color:#002b12;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  .announce{
+    flex-direction:column;
+    text-align:center;
+  }
 }
 </style>
 </head>
@@ -144,136 +187,111 @@ section{margin-bottom:20px}
 <body>
 
 <header>
-  <button onclick="showHome()">🏠 Ana Sayfa</button>
-  <b>MTOW Market</b>
+  <h1>MTOW</h1>
+  <button onclick="scrollToCategories()">Kategoriler</button>
 </header>
 
 <main>
 
-<!-- HOME -->
-<section id="home">
-  <h2 class="announce-title">📢 Duyurular</h2>
-  <div id="announcements"></div>
+<!-- ANNOUNCEMENT -->
+<section class="announce">
+  <img id="annGif" src="">
+  <div class="announceText" id="annText">Yükleniyor...</div>
+</section>
 
+<!-- CATEGORIES -->
+<section id="categories">
   <h2>🛍️ Kategoriler</h2>
-  <div class="categories" id="categories"></div>
+  <div class="catGrid" id="catGrid"></div>
 </section>
 
 <!-- PRODUCTS -->
-<section id="products" style="display:none">
-  <h2 id="categoryTitle"></h2>
-  <div class="grid" id="productGrid"></div>
+<section id="products">
+  <h2 id="prodTitle"></h2>
+  <div class="prodGrid" id="prodGrid"></div>
 </section>
 
 </main>
 
-<!-- BUY POPUP -->
-<div class="popup" id="buyPopup">
-  <div class="popup-header">
-    <b>Satın Al</b>
-    <button onclick="closeBuy()">✖</button>
-  </div>
-
-  <div class="popup-content">
-    <h3 id="bName"></h3>
-    <p id="bDesc"></p>
-    <div class="price" id="bPrice"></div>
-
-    <button class="buy" onclick="goWhatsApp()">WhatsApp ile İletişim</button>
-    <button class="buy" onclick="goTelegram()">Telegram ile İletişim</button>
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popupBox">
+    <h3 id="popName"></h3>
+    <p id="popInfo"></p>
+    <button class="waBtn" id="waBtn">WhatsApp ile Satın Al</button>
+    <button onclick="closePopup()">Kapat</button>
   </div>
 </div>
 
 <script>
-let PRODUCTS = {};
-let CURRENT_PRODUCT = null;
+const PRODUCTS_JSON = "data/products.json";
+const ANN_JSON = "data/announcements.json";
+const WA_LINK = "https://wa.me/6282261958495";
+
+let products = {};
+let currentProduct = null;
 
 /* LOAD ANNOUNCEMENTS */
-fetch("data/announcements.json")
-.then(r => r.json())
-.then(data => {
-  const box = document.getElementById("announcements");
-  data.forEach(a => {
-    box.innerHTML += `
-      <div class="card">
-        <b>${a.title}</b>
-        <p>${a.content}</p>
-      </div>
-    `;
-  });
+fetch(ANN_JSON).then(r=>r.json()).then(d=>{
+  document.getElementById("annGif").src = d[0].gif;
+  document.getElementById("annText").innerText = d[0].content;
 });
 
-/* LOAD PRODUCTS + CATEGORIES */
-fetch("data/products.json")
-.then(r => r.json())
-.then(data => {
-  PRODUCTS = data;
-  const catBox = document.getElementById("categories");
-
-  Object.keys(PRODUCTS).forEach(cat => {
-    catBox.innerHTML += `
-      <button class="cat-btn" onclick="openCategory('${cat}')">
-        ${cat.toUpperCase()}
-      </button>
-    `;
-  });
+/* LOAD PRODUCTS */
+fetch(PRODUCTS_JSON).then(r=>r.json()).then(data=>{
+  products = data;
+  renderCategories();
 });
 
-/* NAV */
-function showHome(){
-  home.style.display = "block";
-  products.style.display = "none";
+function renderCategories(){
+  const grid = document.getElementById("catGrid");
+  grid.innerHTML="";
+  Object.keys(products).forEach(cat=>{
+    const b = document.createElement("div");
+    b.className="catBtn";
+    b.innerText = cat.toUpperCase();
+    b.onclick=()=>openCategory(cat);
+    grid.appendChild(b);
+  });
 }
 
-/* CATEGORY OPEN */
 function openCategory(cat){
-  home.style.display = "none";
-  products.style.display = "block";
-  categoryTitle.innerText = cat.toUpperCase();
-  productGrid.innerHTML = "";
-
-  PRODUCTS[cat].forEach(p => {
-    productGrid.innerHTML += `
-      <div class="card">
-        <b>${p.name}</b>
-        <p>${p.description}</p>
-        <div class="price">${p.price}</div>
-        <button class="buy" onclick='openBuy(${JSON.stringify(p)})'>
-          Satın Al
-        </button>
-      </div>
+  document.getElementById("products").style.display="block";
+  document.getElementById("prodTitle").innerText = cat.toUpperCase();
+  const g = document.getElementById("prodGrid");
+  g.innerHTML="";
+  products[cat].forEach(p=>{
+    const c=document.createElement("div");
+    c.className="card";
+    c.innerHTML=`
+      <img src="${p.gif}">
+      <h3>${p.name}</h3>
+      <div class="price">${p.price}</div>
+      <button>Satın Al</button>
     `;
+    c.querySelector("button").onclick=()=>buyPopup(p,cat);
+    g.appendChild(c);
   });
 }
 
-/* BUY POPUP */
-function openBuy(p){
-  CURRENT_PRODUCT = p;
-  buyPopup.style.display = "flex";
-  bName.innerText = p.name;
-  bDesc.innerText = p.description;
-  bPrice.innerText = p.price;
+function buyPopup(p,cat){
+  currentProduct = p;
+  document.getElementById("popName").innerText=p.name;
+  document.getElementById("popInfo").innerText=
+    `Kategori: ${cat}\nFiyat: ${p.price}`;
+  document.getElementById("popup").style.display="flex";
+  document.getElementById("waBtn").onclick=()=>{
+    const msg=`Merhaba, ${p.name} satın almak istiyorum. (${p.price})`;
+    window.open(WA_LINK+"?text="+encodeURIComponent(msg));
+  };
 }
 
-function closeBuy(){
-  buyPopup.style.display = "none";
+function closePopup(){
+  document.getElementById("popup").style.display="none";
 }
 
-/* LINKS */
-function goWhatsApp(){
-  window.open(
-    "https://wa.me/6282261958495?text=" +
-    encodeURIComponent(CURRENT_PRODUCT.name),
-    "_blank"
-  );
-}
-
-function goTelegram(){
-  window.open(
-    "https://t.me/mtow1?text=" +
-    encodeURIComponent(CURRENT_PRODUCT.name),
-    "_blank"
-  );
+function scrollToCategories(){
+  document.getElementById("categories").scrollIntoView({behavior:"smooth"});
 }
 </script>
 
