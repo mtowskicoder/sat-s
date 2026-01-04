@@ -7,302 +7,310 @@
 
 <style>
 :root{
+  --bg:#0b1020;
+  --card:#141c3a;
   --accent:#7c4dff;
-  --text:#eaf0ff;
+  --text:#eef1ff;
   --muted:#9aa4c7;
-  --wa:#25D366;
-  --tg:#229ED9;
 }
 
-/* KATEGORİ RENKLERİ */
-body.pubg{--accent:#facc15;}
-body.whatsapp{--accent:#22c55e;}
-body.telegram{--accent:#38bdf8;}
-body.default{--accent:#7c4dff;}
-
 *{box-sizing:border-box}
-html,body{
+
+body{
   margin:0;
-  font-family:Inter,system-ui,Arial;
+  font-family:system-ui,Arial;
+  background:linear-gradient(-45deg,#050b18,#1b1450,#050b18);
+  background-size:400% 400%;
+  animation:bg 14s infinite;
   color:var(--text);
 }
 
-/* 🌌 ARKA PLAN */
-body{
-  background:linear-gradient(-45deg,#050b18,#0b1224,#1a1440,#050b18);
-  background-size:400% 400%;
-  animation:bg 14s ease infinite;
-}
 @keyframes bg{
   0%{background-position:0% 50%}
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
 }
 
-/* HEADER */
 header{
-  position:fixed;
-  top:0;left:0;right:0;
   height:60px;
-  background:rgba(5,11,24,.9);
-  backdrop-filter:blur(10px);
   display:flex;
   align-items:center;
-  padding:0 14px;
-  z-index:100;
+  justify-content:center;
+  font-size:22px;
+  font-weight:900;
+  color:var(--accent);
 }
-.menuBtn{
-  font-size:26px;
-  cursor:pointer;
-  margin-right:12px;
-}
-header h1{font-size:18px;color:var(--accent)}
 
-/* SIDEBAR */
-.sidebar{
-  position:fixed;
-  top:0;left:-260px;
-  width:260px;
-  height:100%;
-  background:#0b1224;
-  transition:.3s;
-  z-index:200;
-  padding:20px;
-}
-.sidebar.open{left:0}
-.sidebar h2{color:var(--accent)}
-.sidebar button{
-  width:100%;
-  background:none;
-  border:0;
-  color:var(--text);
-  padding:12px 0;
-  text-align:left;
-  font-weight:800;
-  cursor:pointer;
-}
-.subCats{
-  padding-left:12px;
-  display:none;
-}
-.subCats button{color:var(--muted)}
-.subCats.show{display:block}
-
-/* MAIN */
-main{
-  padding-top:70px;
-  padding-bottom:20px;
-  max-width:1100px;
-  margin:auto;
-}
+/* PAGES */
 .page{display:none;padding:16px}
 .page.active{display:block}
 
-/* ANNOUNCE */
+/* HOME */
 .announce{
-  background:rgba(15,24,51,.85);
-  border-radius:18px;
-  padding:16px;
-  display:flex;
-  gap:16px;
-  align-items:center;
+  background:var(--card);
+  border-radius:16px;
+  padding:12px;
 }
 .announce img{
-  width:120px;height:120px;
-  border-radius:14px;
+  width:100%;
+  border-radius:12px;
+  max-height:220px;
   object-fit:cover;
 }
-.announce p{color:var(--muted);font-weight:600}
+.announce h3{
+  margin:10px 0 0;
+  font-size:16px;
+}
+
+.homeBottom{
+  margin-top:40px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.catBtn{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#7c4dff,#38bdf8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  box-shadow:0 0 35px rgba(124,77,255,.7);
+  cursor:pointer;
+}
+
+/* CATEGORIES */
+.catGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+.catCard{
+  background:var(--card);
+  padding:16px;
+  border-radius:16px;
+  text-align:center;
+  cursor:pointer;
+}
+.catCard img{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+}
 
 /* PRODUCTS */
 .prodGrid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  grid-template-columns:repeat(2,1fr);
   gap:16px;
 }
 .card{
-  background:rgba(15,24,51,.9);
-  border-radius:18px;
-  padding:14px;
+  background:var(--card);
+  border-radius:16px;
+  padding:12px;
 }
 .card img{
   width:100%;
-  height:140px;
+  height:120px;
   object-fit:contain;
 }
-.price{color:#2dd4bf;font-weight:900}
-.card button{
+.price{
+  color:#2dd4bf;
+  font-weight:900;
+}
+button{
   width:100%;
-  margin-top:12px;
-  background:var(--accent);
+  margin-top:8px;
+  padding:10px;
+  border-radius:10px;
   border:0;
-  padding:12px;
-  border-radius:12px;
+  background:var(--accent);
+  color:white;
   font-weight:900;
 }
 
-/* POPUP */
+.back{
+  margin-bottom:12px;
+  color:var(--muted);
+  cursor:pointer;
+}
+
+/* BUY POPUP */
 .popup{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.65);
+  background:rgba(0,0,0,.6);
   display:none;
   align-items:center;
   justify-content:center;
-  z-index:300;
+  z-index:10;
 }
 .popupBox{
-  background:#0b1224;
-  border-radius:18px;
+  background:var(--card);
   padding:20px;
+  border-radius:16px;
   width:90%;
-  max-width:360px;
+  max-width:320px;
+  text-align:center;
 }
 .popupBox button{
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  border:0;
   margin-top:10px;
-  font-weight:900;
 }
-.waBtn{background:var(--wa);color:#002b12}
-.tgBtn{background:var(--tg);color:#00233a}
+.wa{background:#25D366;color:#002b12}
+.tg{background:#229ED9;color:#021018}
 </style>
 </head>
 
-<body class="default">
+<body>
 
-<header>
-  <div class="menuBtn" onclick="toggleMenu()">☰</div>
-  <h1>MTOW Market</h1>
-</header>
+<header>MTOW MARKET</header>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <h2>Menü</h2>
-  <button onclick="showHome()">🏠 Ana Sayfa</button>
-  <button onclick="toggleCats()">🛍️ Kategoriler</button>
-  <div class="subCats" id="catList"></div>
-</div>
+<!-- HOME -->
+<section id="home" class="page">
+  <div class="announce" id="announce"></div>
 
-<main>
-  <!-- HOME -->
-  <section id="home" class="page active">
-    <div class="announce">
-      <img id="annGif">
-      <p id="annText">Yükleniyor...</p>
-    </div>
-  </section>
+  <div class="homeBottom">
+    <div class="catBtn" onclick="goCategories()">🛒</div>
+    <div style="margin-top:8px;color:var(--muted)">Kategoriler</div>
+  </div>
+</section>
 
-  <!-- PRODUCTS -->
-  <section id="products" class="page">
-    <h2 id="prodTitle"></h2>
-    <div class="prodGrid" id="prodGrid"></div>
-  </section>
-</main>
+<!-- CATEGORIES -->
+<section id="categories" class="page">
+  <div class="back" onclick="goHome()">← Geri</div>
+  <div class="catGrid" id="catGrid"></div>
+</section>
 
-<!-- POPUP -->
+<!-- PRODUCTS -->
+<section id="products" class="page">
+  <div class="back" onclick="goCategories()">← Geri</div>
+  <h2 id="prodTitle"></h2>
+  <div class="prodGrid" id="prodGrid"></div>
+</section>
+
+<!-- BUY POPUP -->
 <div class="popup" id="popup">
   <div class="popupBox">
-    <h3 id="popName"></h3>
-    <p id="popInfo"></p>
-    <button class="waBtn" id="waBtn">WhatsApp</button>
-    <button class="tgBtn" id="tgBtn">Telegram</button>
-    <button onclick="closePopup()">Kapat</button>
+    <h3 id="popupTitle"></h3>
+    <button class="wa" id="waBtn">WhatsApp</button>
+    <button class="tg" id="tgBtn">Telegram</button>
+    <button onclick="closePopup()">İptal</button>
   </div>
 </div>
 
 <script>
-const ANN_JSON="data/announcements.json";
-const PRODUCTS_JSON="data/products.json";
+/* CONFIG */
+const PRODUCTS_URL = "data/products.json";
+const ANNOUNCE_URL = "data/announcements.json";
+const WHATSAPP = "https://wa.me/6282261958495";
+const TELEGRAM = "https://t.me/mtow1";
 
-const WA_LINK="https://wa.me/6282261958495";
-const TG_LINK="https://t.me/mtow_support"; // değiştir
+/* STATE */
+let DATA = {};
+let CURRENT_PRODUCT = "";
+let CURRENT_CATEGORY = null;
 
-let products={};
-
-/* MENU */
-function toggleMenu(){
-  sidebar.classList.toggle("open");
-}
-function toggleCats(){
-  catList.classList.toggle("show");
-}
-
-/* PAGE */
-function showHome(){
-  closeMenu();
-  document.body.className="default";
-  home.classList.add("active");
-  productsPage(false);
-}
-function productsPage(show){
-  home.classList.remove("active");
-  products.classList.toggle("active",show);
-}
-function closeMenu(){
-  sidebar.classList.remove("open");
+/* PAGE CONTROL + PERSIST */
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  localStorage.setItem("mtow_page", id);
+  if(CURRENT_CATEGORY) localStorage.setItem("mtow_category", CURRENT_CATEGORY);
 }
 
-/* ANNOUNCE */
-fetch(ANN_JSON).then(r=>r.json()).then(a=>{
-  annGif.src=a[0].gif;
-  annText.innerText=a[0].content;
+function goHome(){
+  CURRENT_CATEGORY = null;
+  localStorage.removeItem("mtow_category");
+  showPage("home");
+}
+
+function goCategories(){
+  showPage("categories");
+}
+
+/* ANNOUNCEMENT */
+fetch(ANNOUNCE_URL)
+.then(r=>r.json())
+.then(a=>{
+  announce.innerHTML = `
+    <img src="${a.gif}">
+    <h3>${a.text}</h3>
+  `;
 });
+
+/* LOAD PRODUCTS */
+fetch(PRODUCTS_URL)
+.then(r=>r.json())
+.then(d=>{
+  DATA = d;
+  renderCategories();
+  restoreState();
+});
+
+/* CATEGORIES */
+function renderCategories(){
+  catGrid.innerHTML="";
+  Object.keys(DATA).forEach(key=>{
+    const c = DATA[key];
+    const div = document.createElement("div");
+    div.className="catCard";
+    div.innerHTML=`
+      <img src="${c.icon}">
+      <div>${c.title}</div>
+    `;
+    div.onclick=()=>openProducts(key);
+    catGrid.appendChild(div);
+  });
+}
 
 /* PRODUCTS */
-fetch(PRODUCTS_JSON).then(r=>r.json()).then(p=>{
-  products=p;
-  renderCats();
-});
-
-function renderCats(){
-  catList.innerHTML="";
-  Object.keys(products).forEach(cat=>{
-    const b=document.createElement("button");
-    b.innerText=cat.toUpperCase();
-    b.onclick=()=>openCategory(cat);
-    catList.appendChild(b);
-  });
-}
-
-function openCategory(cat){
-  closeMenu();
-  document.body.className=cat;
-  productsPage(true);
-  prodTitle.innerText=cat.toUpperCase();
+function openProducts(key){
+  CURRENT_CATEGORY = key;
+  showPage("products");
+  prodTitle.innerText = DATA[key].title;
   prodGrid.innerHTML="";
-  products[cat].forEach(p=>{
-    const c=document.createElement("div");
-    c.className="card";
-    c.innerHTML=`
+
+  DATA[key].items.forEach(p=>{
+    const d = document.createElement("div");
+    d.className="card";
+    d.innerHTML=`
       <img src="${p.gif}">
-      <h3>${p.name}</h3>
+      <div>${p.name}</div>
       <div class="price">${p.price}</div>
-      <button>Satın Al</button>
+      <button onclick="buy('${p.name}','${p.price}')">Satın Al</button>
     `;
-    c.querySelector("button").onclick=()=>buyPopup(p,cat);
-    prodGrid.appendChild(c);
+    prodGrid.appendChild(d);
   });
 }
 
-/* POPUP */
-function buyPopup(p,cat){
-  popName.innerText=p.name;
-  popInfo.innerText=`Kategori: ${cat}\nFiyat: ${p.price}`;
+/* BUY */
+function buy(name,price){
+  CURRENT_PRODUCT = `Ürün: ${name}\nFiyat: ${price}`;
   popup.style.display="flex";
-
-  const msg=encodeURIComponent(
-    `Merhaba, ${p.name} satın almak istiyorum (${p.price})`
-  );
-  waBtn.onclick=()=>window.open(WA_LINK+"?text="+msg);
-  tgBtn.onclick=()=>window.open(TG_LINK+"?text="+msg);
+  popupTitle.innerText = name;
 }
-
 function closePopup(){
   popup.style.display="none";
 }
+waBtn.onclick=()=>window.open(`${WHATSAPP}?text=${encodeURIComponent(CURRENT_PRODUCT)}`);
+tgBtn.onclick=()=>window.open(`${TELEGRAM}?text=${encodeURIComponent(CURRENT_PRODUCT)}`);
+
+/* RESTORE PAGE AFTER REFRESH */
+function restoreState(){
+  const page = localStorage.getItem("mtow_page") || "home";
+  const cat = localStorage.getItem("mtow_category");
+
+  if(page === "products" && cat && DATA[cat]){
+    openProducts(cat);
+  }else{
+    showPage(page);
+  }
+}
+
+/* DEFAULT */
+showPage("home");
 </script>
 
 </body>
