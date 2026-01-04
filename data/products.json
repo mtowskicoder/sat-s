@@ -1,21 +1,48 @@
 {
-  "pubg": [
-    {
-      "name": "PUBG UC 60",
-      "price": "50₺",
-      "gif": "https://media3.giphy.com/media/aVmxtJLqovaeICfH4g/giphy.gif"
-    },
-    {
-      "name": "PUBG UC 325",
-      "price": "250₺",
-      "gif": "https://media3.giphy.com/media/aVmxtJLqovaeICfH4g/giphy.gif"
-    }
-  ],
-  "whatsapp": [
-    {
-      "name": "WhatsApp Kanal Kurulum",
-      "price": "100₺",
-      "gif": "https://media1.giphy.com/media/DRinNvjCXc5Iexx0CH/giphy.gif"
-    }
-  ]
+  "pubg": {
+    "title": "PUBG Mobile UC",
+    "icon": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif",
+    "items": [
+      {
+        "name": "PUBG 325 UC",
+        "price": "160₺",
+        "gif": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif"
+      },
+      {
+        "name": "PUBG 660 UC",
+        "price": "300₺",
+        "gif": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif"
+      },
+      {
+        "name": "PUBG 1320 UC",
+        "price": "600₺",
+        "gif": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif"
+      },
+      {
+        "name": "PUBG 1800 UC",
+        "price": "800₺",
+        "gif": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif"
+      },
+      {
+        "name": "PUBG 2460 UC",
+        "price": "1100₺",
+        "gif": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif"
+      },
+      {
+        "name": "PUBG 3600 UC",
+        "price": "1500₺",
+        "gif": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif"
+      },
+      {
+        "name": "PUBG 5400 UC",
+        "price": "2000₺",
+        "gif": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif"
+      },
+      {
+        "name": "PUBG 7200 UC",
+        "price": "2650₺",
+        "gif": "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUybGpwdzl1NDlneG85NGVjc2lhZnV5NnptNmljMDlyZ2g2Y3M0eDNrNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Li0OOdFFgAfECfuE9H/giphy.gif"
+      }
+    ]
+  }
 }
